@@ -1,0 +1,21 @@
+.entry {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.story {
+  padding: 40px 60px;
+  background: #e9efe3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.formSection {
+  display: grid;
+  place-items: center;
+  padding: 55px;
+}
+
