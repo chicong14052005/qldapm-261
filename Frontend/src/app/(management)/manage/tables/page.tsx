@@ -1,0 +1,6 @@
+import WorkspaceShell from "@/components/layout/WorkspaceShell";
+
+export default function ManageTablesPage() {
+  return <WorkspaceShell initialTab="tables" />;
+}
+

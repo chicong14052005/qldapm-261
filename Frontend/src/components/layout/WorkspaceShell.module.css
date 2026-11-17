@@ -1,0 +1,12 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.workspace {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  display: flex;
+  flex-direction: column;
+}
+

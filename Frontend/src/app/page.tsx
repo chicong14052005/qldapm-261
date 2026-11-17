@@ -1,2 +1,5 @@
-import RestaurantApp from "@/components/RestaurantApp";
-export default function Page(){return <RestaurantApp/>;}
+import WorkspaceShell from "@/components/layout/WorkspaceShell";
+
+export default function HomePage() {
+  return <WorkspaceShell />;
+}

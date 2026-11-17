@@ -1,0 +1,11 @@
+.sidebar {
+  width: var(--sidebar-width);
+  position: fixed;
+  inset: 0 auto 0 0;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  padding: 31px 22px;
+  display: flex;
+  flex-direction: column;
+}
+

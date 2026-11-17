@@ -1,0 +1,12 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 19px;
+}
+
+.occupied {
+  border-color: #c9d8c5;
+  background: #f9fcf7;
+}
+

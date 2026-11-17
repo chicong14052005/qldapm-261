@@ -1,0 +1,4 @@
+export const STAFF_POLL_INTERVAL_MS = 1000;
+export const GUEST_POLL_INTERVAL_MS = 2000;
+export const NOTICE_TIMEOUT_MS = 8000;
+

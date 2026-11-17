@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #f7f8f4;
+  --panel: #fff;
+  --ink: #23362c;
+  --muted: #849087;
+  --green: #286348;
+  --green-hover: #194d36;
+  --light: #eaf2e9;
+  --line: #e7ebe4;
+  --orange: #d7a765;
+  --red: #b95143;
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-xl: 15px;
+  --sidebar-width: 242px;
+  --topbar-height: 81px;
+  --shadow-modal: 0 20px 80px #19332533;
+}
+

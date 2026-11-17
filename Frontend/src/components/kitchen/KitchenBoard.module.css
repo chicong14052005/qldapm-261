@@ -1,0 +1,11 @@
+.availabilityPanel {
+  margin-top: 28px;
+}
+
+.availabilityGrid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
