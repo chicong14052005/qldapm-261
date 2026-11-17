@@ -1,0 +1,12 @@
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.unavailable img {
+  filter: grayscale(0.7);
+  opacity: 0.65;
+}
+

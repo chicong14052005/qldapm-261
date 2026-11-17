@@ -1,0 +1,21 @@
+.qrModal {
+  text-align: left;
+  max-width: 520px;
+}
+
+.imageArea {
+  display: grid;
+  place-items: center;
+  min-height: 230px;
+  margin: 18px 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+

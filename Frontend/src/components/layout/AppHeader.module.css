@@ -1,0 +1,10 @@
+.header {
+  height: var(--topbar-height);
+  padding: 0 38px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
