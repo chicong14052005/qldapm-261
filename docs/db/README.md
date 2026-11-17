@@ -6,24 +6,24 @@
 
 ## Danh mục từng bảng
 
-| Nhóm | Bảng | Vai trò |
-|---|---|---|
-| Tài khoản | [staff_users](staff_users.md) | Danh tính, mật khẩu hash, trạng thái |
-| Tài khoản | [roles](roles.md) | Năm role nội bộ |
-| Tài khoản | [user_roles](user_roles.md) | Một nhân viên có nhiều role |
-| Tài khoản | [staff_sessions](staff_sessions.md) | Phiên nhân viên có thể thu hồi |
-| Thực đơn | [menu_categories](menu_categories.md) | Nhóm và thứ tự menu |
-| Thực đơn | [menu_items](menu_items.md) | Món, giá hiện tại, còn/hết |
-| Bàn/khách | [restaurant_tables](restaurant_tables.md) | Bàn vật lý và QR cố định |
-| Bàn/khách | [visits](visits.md) | Từng lượt khách ở bàn |
-| Bàn/khách | [guest_sessions](guest_sessions.md) | Quyền khách theo đúng lượt |
-| Đặt món | [orders](orders.md) | Đơn tại bàn hoặc mang về |
-| Đặt món | [order_batches](order_batches.md) | Đợt gửi và quyết định phê duyệt |
-| Đặt món | [order_items](order_items.md) | Dòng món, snapshot và tiến độ |
-| Thanh toán | [payments](payments.md) | Tiền, thời điểm và người nhận |
-| Hạ tầng | [audit_events](audit_events.md) | Nhật ký trước/sau, actor, lý do |
-| Hạ tầng | [idempotency_records](idempotency_records.md) | Chống lặp command và replay response |
-| EF Core | [__EFMigrationsHistory](__EFMigrationsHistory.md) | Migration đã áp dụng |
+| Nhóm       | Bảng                                                | Vai trò                              |
+| ---------- | --------------------------------------------------- | ------------------------------------ |
+| Tài khoản  | [staff_users](staff_users.md)                       | Danh tính, mật khẩu hash, trạng thái |
+| Tài khoản  | [roles](roles.md)                                   | Năm role nội bộ                      |
+| Tài khoản  | [user_roles](user_roles.md)                         | Một nhân viên có nhiều role          |
+| Tài khoản  | [staff_sessions](staff_sessions.md)                 | Phiên nhân viên có thể thu hồi       |
+| Thực đơn   | [menu_categories](menu_categories.md)               | Nhóm và thứ tự menu                  |
+| Thực đơn   | [menu_items](menu_items.md)                         | Món, giá hiện tại, còn/hết           |
+| Bàn/khách  | [restaurant_tables](restaurant_tables.md)           | Bàn vật lý và QR cố định             |
+| Bàn/khách  | [visits](visits.md)                                 | Từng lượt khách ở bàn                |
+| Bàn/khách  | [guest_sessions](guest_sessions.md)                 | Quyền khách theo đúng lượt           |
+| Đặt món    | [orders](orders.md)                                 | Đơn tại bàn hoặc mang về             |
+| Đặt món    | [order_batches](order_batches.md)                   | Đợt gửi và quyết định phê duyệt      |
+| Đặt món    | [order_items](order_items.md)                       | Dòng món, snapshot và tiến độ        |
+| Thanh toán | [payments](payments.md)                             | Tiền, thời điểm và người nhận        |
+| Hạ tầng    | [audit_events](audit_events.md)                     | Nhật ký trước/sau, actor, lý do      |
+| Hạ tầng    | [idempotency_records](idempotency_records.md)       | Chống lặp command và replay response |
+| EF Core    | [\_\_EFMigrationsHistory](__EFMigrationsHistory.md) | Migration đã áp dụng                 |
 
 Mỗi file trình bày vai trò → từng trường/kiểu/NULL/DEFAULT → PK/FK/CHECK → index → trigger → vòng đời/giới hạn. [TRIGGERS.md](TRIGGERS.md) chứa phần thân SQL hiện hành và giải thích từng hàm.
 
@@ -58,12 +58,12 @@ ERD lược bớt các FK actor/người duyệt để dễ đọc; danh sách F
 
 ## Chuỗi migration thực tế
 
-| Thứ tự | Migration ID / file | Thay đổi |
-|---|---|---|
-| 001 | `202611020001_InitialSchema` · [InitialMigration.cs](../../Backend/Restaurant.Api/Data/InitialMigration.cs) | Đọc SQL nhúng [schema.sql](../../Backend/Restaurant.Api/Data/schema.sql), tạo 15 bảng, index và trigger nền |
-| 002 | `202611020002_IntegrityGuards` · [IntegrityMigration.cs](../../Backend/Restaurant.Api/Data/IntegrityMigration.cs) | DEFAULT timestamp/version, CHECK bổ sung, guard order/batch/table/visit, index FK |
-| 003 | `202611020003_FixedTableQr` · [FixedTableQrMigration.cs](../../Backend/Restaurant.Api/Data/FixedTableQrMigration.cs) | Ciphertext QR cố định, thay guard_visit, bỏ join-code/generation |
-| 004 | `202611030004_PaymentRecipientHistory` · [PaymentHistoryMigration.cs](../../Backend/Restaurant.Api/Data/PaymentHistoryMigration.cs) | Snapshot người thu, kiểm INSERT, index lịch sử, giữ dòng/đợt PAID |
+| Thứ tự | Migration ID / file                                                                                                                 | Thay đổi                                                                                                    |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 001    | `202611020001_InitialSchema` · [InitialMigration.cs](../../Backend/Restaurant.Api/Data/InitialMigration.cs)                         | Đọc SQL nhúng [schema.sql](../../Backend/Restaurant.Api/Data/schema.sql), tạo 15 bảng, index và trigger nền |
+| 002    | `202611020002_IntegrityGuards` · [IntegrityMigration.cs](../../Backend/Restaurant.Api/Data/IntegrityMigration.cs)                   | DEFAULT timestamp/version, CHECK bổ sung, guard order/batch/table/visit, index FK                           |
+| 003    | `202611020003_FixedTableQr` · [FixedTableQrMigration.cs](../../Backend/Restaurant.Api/Data/FixedTableQrMigration.cs)                | Ciphertext QR cố định, thay guard_visit, bỏ join-code/generation                                            |
+| 004    | `202611030004_PaymentRecipientHistory` · [PaymentHistoryMigration.cs](../../Backend/Restaurant.Api/Data/PaymentHistoryMigration.cs) | Snapshot người thu, kiểm INSERT, index lịch sử, giữ dòng/đợt PAID                                           |
 
 Đây là EF Core SQL-first migration, mỗi class có `Up()`/`Down()`, không dùng bộ file `migration_vN_up.sql`/`migration_vN_down.sql` độc lập. **Down hiện throw, không hỗ trợ rollback tự động**. Không sửa bản đã chạy để nâng database; phải thêm migration mới. Không có EF ModelSnapshot/design-time scaffolding trong bản hiện tại. Chi tiết và giới hạn tại [GUIDE](../../GUIDE/DATABASE-MIGRATIONS.md).
 
