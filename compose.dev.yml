@@ -1,0 +1,20 @@
+# Override chạy chế độ Development cho Frontend (có Next.js Dev Indicator & Hot Reload)
+# Chạy bằng lệnh:
+#   docker compose -f compose.yml -f compose.dev.yml up -d --build
+# Khi hoàn thiện sản phẩm / nộp bài (Production):
+#   docker compose up -d --build
+services:
+  frontend:
+    build:
+      context: ./Frontend
+      target: dev
+    env_file:
+      - ./Frontend/.env
+    environment:
+      NODE_ENV: development
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ./Frontend/src:/app/src
+      - ./Frontend/public:/app/public
+      - ./Frontend/next.config.ts:/app/next.config.ts
+      - ./Frontend/tsconfig.json:/app/tsconfig.json
