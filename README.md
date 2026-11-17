@@ -10,21 +10,31 @@ CO3011 · Nhóm 5 · Baseline tài liệu ngày **02/11/2026**.
 
 Mở Docker Desktop (Linux containers), tại repo chạy:
 
+1. Nếu đang trong giai đoạn phát triển (development) thì chạy:
+
+```PowerShell
+# Override chạy chế độ Development cho Frontend (có Next.js Dev Indicator & Hot Reload)
+docker compose -f compose.yml -f compose.dev.yml up -d --build
+```
+
+2. Khi đã hoàn thiện sản phẩm và chạy demo thì chạy:
+
 ```powershell
+# Khi hoàn thiện sản phẩm / nộp bài (Production):
 docker compose up -d --build
 ```
 
 Mở **[http://localhost:3000](http://localhost:3000)**. Compose chờ DB, tự áp dụng migration và seed30 bàn/20 món/5 tài khoản. Không cần SDK10 hoặc npm host.
 
-| Username | Vai trò | Password local mặc định |
-|---|---|---|
-| admin | Admin, có quyền nghiệp vụ quản lý | RestaurantDemo!2026 |
-| manager | Quản lý | RestaurantDemo!2026 |
-| waiter | Phục vụ | RestaurantDemo!2026 |
-| kitchen | Bếp | RestaurantDemo!2026 |
-| cashier | Thu ngân | RestaurantDemo!2026 |
+| Username | Vai trò                           | Password local mặc định |
+| -------- | --------------------------------- | ----------------------- |
+| admin    | Admin, có quyền nghiệp vụ quản lý | RestaurantDemo!2026     |
+| manager  | Quản lý                           | RestaurantDemo!2026     |
+| waiter   | Phục vụ                           | RestaurantDemo!2026     |
+| kitchen  | Bếp                               | RestaurantDemo!2026     |
+| cashier  | Thu ngân                          | RestaurantDemo!2026     |
 
-Có thể copy `.env.example` thành `.env` trước seed đầu để đổi cấu hình. Seed chạy lại **không reset** tài khoản/giá/món đã sửa. Gateway chỉ bind127.0.0.1, DB không publish host port; đây là cấu hình demo local.
+Có thể copy `.env.example` thành `.env` trước seed đầu để đổi cấu hình. Seed chạy lại **không reset** tài khoản/giá/món đã sửa. Gateway chỉ bind127.0.0.1, DB publish host port (5433:5432); đây là cấu hình demo local.
 
 1. Admin/waiter mở lượt trên bàn. Bấm **Xem QR & link** để xem ảnh QR cố định, URL gốc, sao chép hoặc tải PNG.
 2. Mở link trong cửa sổ ẩn danh là vào menu đúng bàn/lượt, không nhập mã. QR dùng lại qua các lượt; chưa mở lượt thì trang báo liên hệ nhân viên. [Hướng dẫn QR](GUIDE/QR-TAI-BAN.md).
@@ -72,15 +82,15 @@ Backend thực tế: `Restaurant.Api/{Domain,Data,Services}` + `Restaurant.Tests
 
 ## Phân hệ
 
-| Mã | Đặc tả duy nhất | Phạm vi |
-|---|---|---|
-| P1.1 | [Tài khoản và phân quyền](SSOT/P1.1-tai-khoan-va-phan-quyen.md) | S1 |
-| P1.2 | [Thực đơn và tình trạng món](SSOT/P1.2-thuc-don-va-tinh-trang-mon.md) | S2, S9 |
-| P1.3 | [Bàn và lượt khách](SSOT/P1.3-ban-va-luot-khach.md) | S3 |
-| P1.4 | [Đặt món và điều chỉnh đơn](SSOT/P1.4-dat-mon-va-dieu-chinh-don.md) | S4, S5, S8, S11 |
-| P1.5 | [Xử lý món tại bếp](SSOT/P1.5-xu-ly-mon-tai-bep.md) | S6 |
-| P1.6 | [Theo dõi và xác nhận phục vụ](SSOT/P1.6-theo-doi-va-phuc-vu.md) | S7, bàn giao S5 |
-| P1.7 | [Thanh toán và hoàn tất đơn](SSOT/P1.7-thanh-toan-va-hoan-tat.md) | S10 |
+| Mã   | Đặc tả duy nhất                                                       | Phạm vi         |
+| ---- | --------------------------------------------------------------------- | --------------- |
+| P1.1 | [Tài khoản và phân quyền](SSOT/P1.1-tai-khoan-va-phan-quyen.md)       | S1              |
+| P1.2 | [Thực đơn và tình trạng món](SSOT/P1.2-thuc-don-va-tinh-trang-mon.md) | S2, S9          |
+| P1.3 | [Bàn và lượt khách](SSOT/P1.3-ban-va-luot-khach.md)                   | S3              |
+| P1.4 | [Đặt món và điều chỉnh đơn](SSOT/P1.4-dat-mon-va-dieu-chinh-don.md)   | S4, S5, S8, S11 |
+| P1.5 | [Xử lý món tại bếp](SSOT/P1.5-xu-ly-mon-tai-bep.md)                   | S6              |
+| P1.6 | [Theo dõi và xác nhận phục vụ](SSOT/P1.6-theo-doi-va-phuc-vu.md)      | S7, bàn giao S5 |
+| P1.7 | [Thanh toán và hoàn tất đơn](SSOT/P1.7-thanh-toan-va-hoan-tat.md)     | S10             |
 
 Stack lựa chọn: **C# / ASP.NET Core .NET 10 + EF Core/Npgsql + PostgreSQL 16; React / Next.js App Router / TypeScript; Docker Compose cho toàn bộ môi trường**. Chi tiết lý do và giới hạn bằng chứng nằm trong ADR-0001.
 

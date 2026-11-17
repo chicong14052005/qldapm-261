@@ -1,7 +1,7 @@
 # Hướng dẫn làm việc trong repository
 
 - Không xóa Docker images, prune Docker hoặc xóa dữ liệu/volume. Không thao tác dữ liệu các dự án khác. Quyền dọn dev ở một công việc trước không áp dụng cho công việc mới.
-- Không đọc/commit `.env`; dùng `.env.example` khi cần biết tên cấu hình. Không stage `temp-docs/` nếu chủ dự án chưa yêu cầu.
+- Không commit `.env` nhưng vẫn có quyền đọc .env; có thể tham khảo `.env.example` khi cần biết tên cấu hình. Không stage `temp-docs/` nếu chủ dự án chưa yêu cầu.
 - Hoàn tất feature: stage đúng file, commit cục bộ rõ thay đổi/kiểm chứng; không tự push remote.
 
 ## Đồng bộ code và tài liệu là điều kiện hoàn tất
@@ -15,5 +15,7 @@
 - Kiểm thử phù hợp với thay đổi; không chạy smoke tạo dữ liệu nếu nhiệm vụ chỉ là tài liệu hoặc chỉ đọc. Tham khảo `GUIDE/DATABASE-MIGRATIONS.md`.
 
 <!-- postman-cli:installation:start -->
+
 Postman CLI is installed on this device, and can be used for API Engineering work.
+
 <!-- postman-cli:installation:end -->
