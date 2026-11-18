@@ -217,7 +217,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setOrderId(null);
         setOrder(null);
         setCart([]);
-        setError("Lượt khách đã kết thúc. Quét lại QR của bàn khi nhân viên mở lượt mới.");
+        setError("Phiên gọi món tại bàn đã kết thúc hoặc được nhân viên thu hồi. Quét lại QR của bàn khi sẵn sàng.");
       }
     },
     [guest],
@@ -444,7 +444,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           },
           {
             name: "tenderedVnd",
-            label: "Tiền khách đưa (tiền mặt)",
+            label: "Tiền khách đưa",
             type: "number",
             value: o.totalVnd ?? 0,
             required: false,
