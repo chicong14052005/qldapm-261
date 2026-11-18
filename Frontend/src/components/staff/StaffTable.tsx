@@ -1,4 +1,5 @@
 "use client";
+import { Plus } from "lucide-react";
 import { roleNames } from "@/config/roles";
 import { useAuth } from "@/hooks/useAuth";
 import type { StaffMember } from "@/types/auth";
@@ -17,6 +18,7 @@ export default function StaffTable() {
       <div className="section-bar">
         <h2>Đội ngũ nhà hàng</h2>
         <button
+          type="button"
           className="primary"
           onClick={() =>
             ask("Thêm nhân viên", buildCreateStaffFields(), async (v) => {
@@ -29,7 +31,8 @@ export default function StaffTable() {
             })
           }
         >
-          ＋ Thêm nhân viên
+          <Plus size={18} strokeWidth={2.2} aria-hidden="true" />
+          Thêm nhân viên
         </button>
       </div>
       <div className="table-wrap">

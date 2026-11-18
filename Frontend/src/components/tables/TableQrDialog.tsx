@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import QRCode from "qrcode";
 import { copyTableUrl } from "@/lib/copy-table-url";
 import type { TableQr } from "@/types/table";
@@ -80,8 +81,13 @@ export default function TableQrDialog({
             <span className="eyebrow">QR CỐ ĐỊNH TẠI BÀN</span>
             <h2 id="table-qr-title">Bàn {qr.code}</h2>
           </div>
-          <button className="icon-btn" aria-label="Đóng QR" onClick={onClose}>
-            ×
+          <button
+            type="button"
+            className="icon-btn"
+            aria-label="Đóng QR"
+            onClick={onClose}
+          >
+            <X size={20} strokeWidth={2} aria-hidden="true" />
           </button>
         </div>
         <p className="muted">

@@ -1,5 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
+import { X } from "lucide-react";
 import styles from "./Modal.module.css";
 
 export default function Modal({
@@ -31,8 +32,13 @@ export default function Modal({
             {eyebrow && <span className="eyebrow">{eyebrow}</span>}
             <h2 id={ariaLabelledBy}>{title}</h2>
           </div>
-          <button className="icon-btn" onClick={onClose} aria-label="Đóng">
-            ×
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={onClose}
+            aria-label="Đóng"
+          >
+            <X size={20} strokeWidth={2} aria-hidden="true" />
           </button>
         </div>
         {children}

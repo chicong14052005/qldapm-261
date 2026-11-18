@@ -1,4 +1,5 @@
 "use client";
+import { ArrowRight } from "lucide-react";
 import { api } from "@/lib/api";
 import { formatTime, money } from "@/lib/format";
 import { useAuth } from "@/hooks/useAuth";
@@ -49,8 +50,13 @@ export default function OrderDetailPanel({
               <strong>
                 {o.totalVnd != null ? money(o.totalVnd) : "Chưa chốt tiền"}
               </strong>
-              <button className="secondary" onClick={() => selectOrder(o.id)}>
-                Chi tiết →
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => selectOrder(o.id)}
+              >
+                <span>Chi tiết</span>
+                <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
               </button>
             </div>
             {isBilling && (

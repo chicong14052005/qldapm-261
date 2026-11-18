@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Plus, RefreshCw } from "lucide-react";
 import { navs } from "@/config/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
@@ -57,6 +58,16 @@ export default function WorkspaceShell({
     startNewTakeaway,
     retryPending,
   } = useAuth();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileNavOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [mobileNavOpen]);
 
   useEffect(() => {
     if (!user || !initialTab) return;
@@ -80,9 +91,15 @@ export default function WorkspaceShell({
 
   return (
     <div className={`app ${styles.shell} ${guest ? "customer" : ""}`.trim()}>
-      <RoleSidebar />
+      <RoleSidebar
+        mobileOpen={mobileNavOpen}
+        onCloseMobile={() => setMobileNavOpen(false)}
+      />
       <div className={`workspace ${styles.workspace}`}>
-        <AppHeader title={title} />
+        <AppHeader
+          title={title}
+          onToggleMobileNav={() => setMobileNavOpen((v) => !v)}
+        />
         <main className="main">
           <div className="page-heading">
             <div>
@@ -103,6 +120,7 @@ export default function WorkspaceShell({
             </div>
             <div className="heading-actions">
               <button
+                type="button"
                 className="secondary"
                 onClick={() =>
                   tab === "payment-history"
@@ -110,11 +128,17 @@ export default function WorkspaceShell({
                     : run(refresh)
                 }
               >
-                ↻ Làm mới
+                <RefreshCw size={18} strokeWidth={2} aria-hidden="true" />
+                Làm mới
               </button>
               {!guest && has("WAITER", "CASHIER", "MANAGER", "ADMIN") && (
-                <button className="primary" onClick={startNewTakeaway}>
-                  ＋ Đơn mang về
+                <button
+                  type="button"
+                  className="primary"
+                  onClick={startNewTakeaway}
+                >
+                  <Plus size={18} strokeWidth={2} aria-hidden="true" />
+                  Đơn mang về
                 </button>
               )}
             </div>
@@ -148,7 +172,8 @@ export default function WorkspaceShell({
 
           {user.mustChangePassword && (
             <div className="alert error">
-              Tài khoản cần đổi mật khẩu lần đầu. Nhấn biểu tượng ⚙ ở góc trên.
+              Tài khoản cần đổi mật khẩu lần đầu. Nhấn biểu tượng Cài đặt ở góc
+              trên để cập nhật.
             </div>
           )}
 

@@ -1,3 +1,5 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
 export default function Pagination({
   page,
   totalPages,
@@ -22,21 +24,24 @@ export default function Pagination({
       </span>
       <div>
         <button
+          type="button"
           className="secondary"
           disabled={loading || page <= 1}
           onClick={onPrev}
         >
-          ← Trước
+          <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
+          Trước
         </button>
         <button
+          type="button"
           className="secondary"
           disabled={loading || page >= totalPages}
           onClick={onNext}
         >
-          Sau →
+          Sau
+          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
         </button>
       </div>
     </div>
   );
 }
-

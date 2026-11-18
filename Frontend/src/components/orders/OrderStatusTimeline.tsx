@@ -1,11 +1,14 @@
 "use client";
+import { ReceiptText } from "lucide-react";
 import StatusBadge from "@/components/common/StatusBadge";
 import type { Order } from "@/types/order";
 
 export default function OrderStatusTimeline({ order }: { order: Order | null }) {
   return (
     <div className="order-title">
-      <span>▤</span>
+      <span className="order-title-icon" aria-hidden="true">
+        <ReceiptText size={20} strokeWidth={1.9} />
+      </span>
       <div>
         <h2>
           {order?.tableCode
