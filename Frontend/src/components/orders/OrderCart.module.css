@@ -1,9 +1,4 @@
+/* Responsive sticky/static rules live in .order-panel inside src/styles/layout.css */
 .panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  position: sticky;
-  top: 20px;
-  overflow: hidden;
+  border-radius: var(--radius-xl);
 }
-

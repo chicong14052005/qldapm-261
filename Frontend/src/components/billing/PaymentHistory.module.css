@@ -1,12 +1,8 @@
+/* Filter grid responsive rules live in .history-filters inside src/styles/layout.css */
 .filters {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
   margin-top: 20px;
-  padding: 20px;
 }
 
 .detailModal {
   max-width: 880px;
 }
-

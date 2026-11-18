@@ -42,6 +42,7 @@ export default function KitchenBoard() {
         <div className={`availability-grid ${styles.availabilityGrid}`}>
           {menu.items.map((m) => (
             <button
+              type="button"
               className={m.isAvailable ? "secondary" : "danger-btn"}
               key={m.id}
               onClick={() =>
@@ -58,7 +59,11 @@ export default function KitchenBoard() {
                 })
               }
             >
-              {m.isAvailable ? "●" : "○"} {m.name}
+              <span
+                className={m.isAvailable ? "status-dot-on" : "status-dot-off"}
+                aria-hidden="true"
+              />
+              <span>{m.name}</span>
             </button>
           ))}
         </div>

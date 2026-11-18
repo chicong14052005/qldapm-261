@@ -1,4 +1,5 @@
 "use client";
+import { X } from "lucide-react";
 import type { FormConfig } from "@/types/api";
 import type { Category } from "@/types/menu";
 import { roleNames } from "@/config/roles";
@@ -26,8 +27,13 @@ export default function ConfirmDialog({
       <section className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="section-bar">
           <h2>{form.title}</h2>
-          <button className="icon-btn" onClick={onClose}>
-            ×
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={onClose}
+            aria-label="Đóng"
+          >
+            <X size={20} strokeWidth={2} aria-hidden="true" />
           </button>
         </div>
         {form.description && <p className="muted">{form.description}</p>}

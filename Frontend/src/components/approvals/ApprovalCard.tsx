@@ -1,4 +1,5 @@
 "use client";
+import { Check } from "lucide-react";
 import { formatTime, money } from "@/lib/format";
 import StatusBadge from "@/components/common/StatusBadge";
 import type { ApprovalBatch } from "@/types/order";
@@ -42,11 +43,13 @@ export default function ApprovalCard({
           Từ chối
         </button>
         <button
+          type="button"
           className="primary"
           disabled={busy || !connected}
           onClick={() => onApprove(batch)}
         >
-          Duyệt toàn đợt ✓
+          <span>Duyệt toàn đợt</span>
+          <Check size={16} strokeWidth={2.2} aria-hidden="true" />
         </button>
       </div>
     </article>

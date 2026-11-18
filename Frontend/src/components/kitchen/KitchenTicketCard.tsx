@@ -1,4 +1,5 @@
 "use client";
+import { ArrowRight, Check, StickyNote } from "lucide-react";
 import { formatTime } from "@/lib/format";
 import StatusBadge from "@/components/common/StatusBadge";
 import type { KitchenQueueItem } from "@/types/order";
@@ -29,19 +30,29 @@ export default function KitchenTicketCard({
         {item.orderCode} · Đợt {item.sequenceNo}
         {item.sequenceNo > 1 ? " · GỌI THÊM" : ""}
       </p>
-      {item.note && <p className="note">✎ {item.note}</p>}
+      {item.note && (
+        <p className="note">
+          <StickyNote size={16} strokeWidth={2} aria-hidden="true" />
+          <span>{item.note}</span>
+        </p>
+      )}
       <div className="card-bottom">
         <small className="muted">{formatTime(item.eligibleAt)}</small>
         {mode === "serving" ? (
           <button
+            type="button"
             className="primary"
             disabled={busy || !connected}
             onClick={() => onAction(item, "serve")}
           >
-            {item.orderType === "TAKEAWAY" ? "Đã giao khách" : "Đã phục vụ"} ✓
+            <span>
+              {item.orderType === "TAKEAWAY" ? "Đã giao khách" : "Đã phục vụ"}
+            </span>
+            <Check size={16} strokeWidth={2.2} aria-hidden="true" />
           </button>
         ) : item.status !== "READY" ? (
           <button
+            type="button"
             className="primary"
             disabled={busy || !connected}
             onClick={() =>
@@ -55,12 +66,14 @@ export default function KitchenTicketCard({
               )
             }
           >
-            {item.status === "PLACED"
-              ? "Tiếp nhận"
-              : item.status === "ACCEPTED"
-                ? "Bắt đầu nấu"
-                : "Hoàn thành"}{" "}
-            →
+            <span>
+              {item.status === "PLACED"
+                ? "Tiếp nhận"
+                : item.status === "ACCEPTED"
+                  ? "Bắt đầu nấu"
+                  : "Hoàn thành"}
+            </span>
+            <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
           </button>
         ) : (
           <span className="muted">Chờ nhân viên bàn giao</span>

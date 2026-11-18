@@ -1,3 +1,5 @@
+import BrandLogo from "@/components/common/BrandLogo";
+
 export default function LoadingSpinner({
   message = "Đang chuẩn bị gian bếp…",
 }: {
@@ -5,9 +7,8 @@ export default function LoadingSpinner({
 }) {
   return (
     <div className="loading">
-      <div className="brand-mark">B</div>
+      <BrandLogo size={56} />
       <p>{message}</p>
     </div>
   );
 }
-

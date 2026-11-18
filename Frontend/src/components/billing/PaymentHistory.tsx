@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import { api, labels, money } from "@/lib/api";
 import { dateTime } from "@/lib/date-time";
 import { paymentMethodNames } from "@/config/status";
@@ -315,11 +316,12 @@ export default function PaymentHistory({
                 </h2>
               </div>
               <button
+                type="button"
                 className="icon-btn"
                 aria-label="Đóng chi tiết thanh toán"
                 onClick={() => setSelectedId(null)}
               >
-                ×
+                <X size={20} strokeWidth={2} aria-hidden="true" />
               </button>
             </div>
             {detailError && (
