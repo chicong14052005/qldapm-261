@@ -6,23 +6,23 @@
 
 Build/chạy dự án trong Docker Compose; host không cần SDK .NET/Node để chạy ứng dụng. [compose.yml](../compose.yml) có project mặc định `restaurant_ordering`, PostgreSQL 16 Alpine, backend .NET 10, frontend Next.js/Node 24 và gateway Caddy.
 
-| Service | Chức năng / phụ thuộc hiện tại |
-|---|---|
-| postgres | `postgres:16-alpine`, restart unless-stopped, healthcheck pg_isready, volume postgres_data |
-| migrate | Build runtime backend, chạy `--migrate`, đợi postgres healthy, restart no; mount auth_keys |
-| backend | ASP.NET runtime; đợi migrate kết thúc thành công, mount auth_keys; hiện chưa khai báo user non-root |
-| frontend | Next standalone, user node, đợi backend running; chưa có healthcheck Compose riêng |
-| gateway | Caddy route API/backend và web/frontend, bind `127.0.0.1:${PORT:-3000}:80`; không HTTPS local |
+| Service  | Chức năng / phụ thuộc hiện tại                                                                      |
+| -------- | --------------------------------------------------------------------------------------------------- |
+| postgres | `postgres:16-alpine`, restart unless-stopped, healthcheck pg_isready, volume postgres_data          |
+| migrate  | Build runtime backend, chạy `--migrate`, đợi postgres healthy, restart no; mount auth_keys          |
+| backend  | ASP.NET runtime; đợi migrate kết thúc thành công, mount auth_keys; hiện chưa khai báo user non-root |
+| frontend | Next standalone, user node, đợi backend running; chưa có healthcheck Compose riêng                  |
+| gateway  | Caddy route API/backend và web/frontend, bind `127.0.0.1:${PORT:-3000}:80`; không HTTPS local       |
 
 Backend dùng hostname `postgres`, browser dùng gateway. DB không public port mặc định. Image tags như file Compose/Dockerfile hiện tại, chưa pin toàn bộ bằng digest. Không có `compose.dev.yml`, `compose.test.yml`, backend-dev hay Infrastructure project trong bản hiện tại.
 
 ## 2. Migration có phiên bản
 
-Chọn **EF Core SQL-first migrations**: class `[Migration]` chứa SQL trong `Up()`, EF history ghi mỗi bản đã áp dụng. InitialMigration đọc SQL resource `schema.sql`; các migration sau ALTER/add trigger/index. Có 4 bản thực tế, xem [danh sách](../docs/db/README.md#chuỗi-migration-thực-tế).
+Chọn **EF Core SQL-first migrations**: class `[Migration]` chứa SQL trong `Up()`, EF history ghi mỗi bản đã áp dụng. InitialMigration đọc SQL resource `schema.sql`; các migration sau ALTER/add trigger/index. Có 5 bản thực tế (001–005), xem [danh sách](../docs/db/README.md#chuỗi-migration-thực-tế).
 
 Không sửa SQL của migration đã áp dụng. EF không checksum lại nội dung cũ: sửa schema.sql sẽ khiến DB mới và DB đã có khác nhau. Thay đổi schema phải là migration tiếp theo, cùng entity/mapping/service tương ứng.
 
-`Down()` ở cả 4 bản hiện throw NotSupportedException, **chưa có rollback tự động**. Dùng forward migration được review; phục hồi backup cần kế hoạch riêng. Không quảng bá lệnh downgrade như tính năng chạy được. Transaction rollback khi migration đang chạy lỗi là chuyện khác với hạ phiên bản đã hoàn tất.
+**Hiện cả 5 `Down()` đều throw NotSupportedException.** Nghĩa là có upgrade từng bản nhưng chưa hỗ trợ rollback tự động về bản trước. `Down()` không xóa dữ liệu và không phải rollback đã được kiểm thử. Dùng forward migration được review; phục hồi backup cần kế hoạch riêng. Không quảng bá lệnh downgrade như tính năng chạy được. Transaction rollback khi migration đang chạy lỗi là chuyện khác với hạ phiên bản đã hoàn tất.
 
 Không có EF ModelSnapshot, design-time factory, dotnet-ef tool manifest hoặc bundle EF trong codebase hiện hành. Vì dùng SQL thủ công cho CHECK/trigger/partial index, chưa tự scaffold schema từ model. Không thêm bộ migration_vN_up/down song song làm nguồn thực thi thứ hai.
 

@@ -549,7 +549,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/v1/tables",
-        "description": "Sơ đồ bàn và lượt đang mở — Nhân viên\nBàn có khách: visit={id,partySize,version,orderId}. Không trả QR hash, joinCode hoặc join HMAC."
+        "description": "Sơ đồ bàn và lượt đang mở — Nhân viên\nBàn có khách: visit={id,partySize,version,orderId,hasActiveGuestSession}. Không trả QR hash, joinCode hoặc join HMAC."
       }
     },
     {
@@ -634,7 +634,34 @@
       }
     },
     {
-      "name": "25 Xem lại QR và URL cố định của bàn",
+      "name": "25 Mở khóa QR bàn đang có khách để cấp phiên mới",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Actor",
+            "value": "{{actor}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/tables/{{tableId}}/qr/unlock",
+        "description": "Mở khóa QR bàn đang có khách để cấp phiên mới — WAITER / MANAGER / ADMIN\nThu hồi guest session đang hoạt động của lượt OPEN hiện tại mà không đóng lượt hoặc mất đơn, giúp một thiết bị khác tại bàn quét lại QR khi máy cũ lỡ mất phiên/hết pin.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "26 Xem lại QR và URL cố định của bàn",
       "request": {
         "method": "GET",
         "header": [
@@ -652,7 +679,7 @@
       }
     },
     {
-      "name": "26 Đọc thông tin QR công khai",
+      "name": "27 Đọc thông tin QR công khai",
       "request": {
         "method": "GET",
         "header": [
@@ -670,7 +697,7 @@
       }
     },
     {
-      "name": "27 Mở lượt khách",
+      "name": "28 Mở lượt khách",
       "request": {
         "method": "POST",
         "header": [
@@ -697,7 +724,7 @@
       }
     },
     {
-      "name": "28 Khách tham gia lượt đang mở bằng QR cố định",
+      "name": "29 Khách tham gia lượt đang mở bằng QR cố định",
       "request": {
         "method": "POST",
         "header": [
@@ -711,7 +738,7 @@
           }
         ],
         "url": "{{baseUrl}}/api/v1/guest/join",
-        "description": "Khách tham gia lượt đang mở bằng QR cố định — Công khai\nLưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả409 TABLE_NOT_OPEN, QR sai/bàn inactive trả404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.",
+        "description": "Khách tham gia lượt đang mở bằng QR cố định — Công khai\nLưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả 409 TABLE_NOT_OPEN; bàn đã có thực khách đang giữ phiên trả 409 TABLE_QR_CLAIMED (trừ khi thực khách đó bấm Thoát hoặc nhân viên gọi POST /tables/{id}/qr/unlock); QR sai/bàn inactive trả 404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.",
         "body": {
           "mode": "raw",
           "raw": "{\n  \"qrToken\": \"{{qrToken}}\"\n}",
@@ -724,7 +751,7 @@
       }
     },
     {
-      "name": "29 Lượt hiện tại của khách",
+      "name": "30 Lượt hiện tại của khách",
       "request": {
         "method": "GET",
         "header": [
@@ -742,7 +769,7 @@
       }
     },
     {
-      "name": "30 Danh sách đơn",
+      "name": "31 Danh sách đơn",
       "request": {
         "method": "GET",
         "header": [
@@ -760,7 +787,7 @@
       }
     },
     {
-      "name": "31 Chi tiết đơn và mọi đợt gọi",
+      "name": "32 Chi tiết đơn và mọi đợt gọi",
       "request": {
         "method": "GET",
         "header": [
@@ -778,7 +805,7 @@
       }
     },
     {
-      "name": "32 Tạo đơn mang về và đợt đầu",
+      "name": "33 Tạo đơn mang về và đợt đầu",
       "request": {
         "method": "POST",
         "header": [
@@ -805,7 +832,7 @@
       }
     },
     {
-      "name": "33 Gửi đợt món đầu/gọi thêm",
+      "name": "34 Gửi đợt món đầu/gọi thêm",
       "request": {
         "method": "POST",
         "header": [
@@ -832,7 +859,7 @@
       }
     },
     {
-      "name": "34 Đợt gọi thêm chờ duyệt",
+      "name": "35 Đợt gọi thêm chờ duyệt",
       "request": {
         "method": "GET",
         "header": [
@@ -850,7 +877,7 @@
       }
     },
     {
-      "name": "35 Duyệt toàn đợt",
+      "name": "36 Duyệt toàn đợt",
       "request": {
         "method": "POST",
         "header": [
@@ -877,7 +904,7 @@
       }
     },
     {
-      "name": "36 Từ chối toàn đợt",
+      "name": "37 Từ chối toàn đợt",
       "request": {
         "method": "POST",
         "header": [
@@ -904,7 +931,7 @@
       }
     },
     {
-      "name": "37 Rút toàn đợt chờ",
+      "name": "38 Rút toàn đợt chờ",
       "request": {
         "method": "POST",
         "header": [
@@ -931,7 +958,7 @@
       }
     },
     {
-      "name": "38 Hàng đợi chế biến",
+      "name": "39 Hàng đợi chế biến",
       "request": {
         "method": "GET",
         "header": [
@@ -949,7 +976,7 @@
       }
     },
     {
-      "name": "39 Lịch sử sửa/hủy gần đây",
+      "name": "40 Lịch sử sửa/hủy gần đây",
       "request": {
         "method": "GET",
         "header": [
@@ -967,7 +994,7 @@
       }
     },
     {
-      "name": "40 Bếp tiếp nhận món",
+      "name": "41 Bếp tiếp nhận món",
       "request": {
         "method": "POST",
         "header": [
@@ -994,7 +1021,7 @@
       }
     },
     {
-      "name": "41 Bắt đầu chuẩn bị",
+      "name": "42 Bắt đầu chuẩn bị",
       "request": {
         "method": "POST",
         "header": [
@@ -1021,7 +1048,7 @@
       }
     },
     {
-      "name": "42 Bếp hoàn thành món",
+      "name": "43 Bếp hoàn thành món",
       "request": {
         "method": "POST",
         "header": [
@@ -1048,7 +1075,7 @@
       }
     },
     {
-      "name": "43 Giảm số lượng/sửa ghi chú trước nấu",
+      "name": "44 Giảm số lượng/sửa ghi chú trước nấu",
       "request": {
         "method": "PATCH",
         "header": [
@@ -1075,7 +1102,7 @@
       }
     },
     {
-      "name": "44 Hủy dòng món",
+      "name": "45 Hủy dòng món",
       "request": {
         "method": "POST",
         "header": [
@@ -1102,7 +1129,7 @@
       }
     },
     {
-      "name": "45 Hủy đơn chưa từng bắt đầu nấu",
+      "name": "46 Hủy đơn chưa từng bắt đầu nấu",
       "request": {
         "method": "POST",
         "header": [
@@ -1129,7 +1156,7 @@
       }
     },
     {
-      "name": "46 Danh sách món READY",
+      "name": "47 Danh sách món READY",
       "request": {
         "method": "GET",
         "header": [
@@ -1147,7 +1174,7 @@
       }
     },
     {
-      "name": "47 Xác nhận bàn giao món",
+      "name": "48 Xác nhận bàn giao món",
       "request": {
         "method": "POST",
         "header": [
@@ -1174,7 +1201,7 @@
       }
     },
     {
-      "name": "48 Đơn đang chờ thu tiền",
+      "name": "49 Đơn đang chờ thu tiền",
       "request": {
         "method": "GET",
         "header": [
@@ -1192,7 +1219,7 @@
       }
     },
     {
-      "name": "49 Admin tra cứu toàn bộ lịch sử thanh toán",
+      "name": "50 Admin tra cứu toàn bộ lịch sử thanh toán",
       "request": {
         "method": "GET",
         "header": [
@@ -1210,7 +1237,7 @@
       }
     },
     {
-      "name": "50 Admin xem đầy đủ đơn và người nhận thanh toán",
+      "name": "51 Admin xem đầy đủ đơn và người nhận thanh toán",
       "request": {
         "method": "GET",
         "header": [
@@ -1228,7 +1255,7 @@
       }
     },
     {
-      "name": "51 Xin thanh toán và chốt tiền",
+      "name": "52 Xin thanh toán và chốt tiền",
       "request": {
         "method": "POST",
         "header": [
@@ -1255,7 +1282,7 @@
       }
     },
     {
-      "name": "52 Mở lại đơn chờ trả",
+      "name": "53 Mở lại đơn chờ trả",
       "request": {
         "method": "POST",
         "header": [
@@ -1282,7 +1309,7 @@
       }
     },
     {
-      "name": "53 Xác nhận thực nhận tiền",
+      "name": "54 Xác nhận thực nhận tiền",
       "request": {
         "method": "POST",
         "header": [
@@ -1309,7 +1336,7 @@
       }
     },
     {
-      "name": "54 Biên nhận nội bộ",
+      "name": "55 Biên nhận nội bộ",
       "request": {
         "method": "GET",
         "header": [
@@ -1327,7 +1354,7 @@
       }
     },
     {
-      "name": "55 Tra kết quả theo Idempotency-Key",
+      "name": "56 Tra kết quả theo Idempotency-Key",
       "request": {
         "method": "GET",
         "header": [

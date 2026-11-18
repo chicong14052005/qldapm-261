@@ -59,7 +59,9 @@ public partial class ApiService
         var tables=await db.RestaurantTables.AsNoTracking().OrderBy(t=>t.Code).ToListAsync();
         var visits=await db.Visits.AsNoTracking().Where(v=>v.Status=="OPEN").ToListAsync();
         var orders=await db.Orders.AsNoTracking().Where(o=>o.VisitId!=null && o.Status!="PAID"&&o.Status!="CANCELLED").ToListAsync();
-        return new {items=tables.Select(t=>new {t.Id,t.Code,t.Capacity,t.IsActive,t.Version,visit=visits.Where(v=>v.TableId==t.Id).Select(v=>new {v.Id,v.PartySize,v.Version,orderId=orders.FirstOrDefault(o=>o.VisitId==v.Id)?.Id}).FirstOrDefault()})};
+        var now=DateTimeOffset.UtcNow;
+        var activeVisitIds=(await db.GuestSessions.AsNoTracking().Where(s=>s.RevokedAt==null&&s.ExpiresAt>now).Select(s=>s.VisitId).Distinct().ToListAsync()).ToHashSet();
+        return new {items=tables.Select(t=>new {t.Id,t.Code,t.Capacity,t.IsActive,t.Version,visit=visits.Where(v=>v.TableId==t.Id).Select(v=>new {v.Id,v.PartySize,v.Version,orderId=orders.FirstOrDefault(o=>o.VisitId==v.Id)?.Id,hasActiveGuestSession=activeVisitIds.Contains(v.Id)}).FirstOrDefault()})};
     }
     public async Task<IResult> TableWrite(Guid? id,JsonObject b)=>await Command(b,async()=>
     {
@@ -90,8 +92,25 @@ public partial class ApiService
     {
         var h=Hash(token);var t=await db.RestaurantTables.AsNoTracking().SingleOrDefaultAsync(t=>t.QrTokenHash==h&&t.IsActive);
         Rules.Require(t!=null,"RESOURCE_NOT_FOUND","Mã bàn không hợp lệ.",404);
-        return new {tableCode=t!.Code,hasOpenVisit=await db.Visits.AnyAsync(v=>v.TableId==t.Id&&v.Status=="OPEN")};
+        var v=await db.Visits.AsNoTracking().SingleOrDefaultAsync(v=>v.TableId==t!.Id&&v.Status=="OPEN");
+        var now=DateTimeOffset.UtcNow;
+        var hasActiveGuestSession=v!=null&&await db.GuestSessions.AsNoTracking().AnyAsync(s=>s.VisitId==v.Id&&s.RevokedAt==null&&s.ExpiresAt>now);
+        return new {tableCode=t!.Code,hasOpenVisit=v!=null,hasActiveGuestSession};
     }
+    public async Task<IResult> UnlockGuestQr(Guid id,JsonObject b)=>await Command(b,async()=>
+    {
+        Require("WAITER","MANAGER","ADMIN");
+        var t=await Lock<RestaurantTable>("restaurant_tables",id);
+        var v=await db.Visits.SingleOrDefaultAsync(v=>v.TableId==t.Id&&v.Status=="OPEN");
+        Rules.Require(v!=null,"TABLE_NOT_OPEN","Bàn chưa có lượt khách đang mở.");
+        await Lock<Visit>("visits",v!.Id);
+        var now=DateTimeOffset.UtcNow;
+        var activeSessions=await db.GuestSessions.Where(s=>s.VisitId==v.Id&&s.RevokedAt==null).ToListAsync();
+        foreach(var session in activeSessions) session.RevokedAt=now<session.CreatedAt?session.CreatedAt:now;
+        var order=await db.Orders.SingleAsync(o=>o.VisitId==v.Id);
+        Audit("GUEST_QR_UNLOCKED","VISIT",v.Id,new {activeGuestSessions=activeSessions.Count},new {activeGuestSessions=0});
+        return new {visitId=v.Id,orderId=order.Id,tableCode=v.TableCodeSnapshot,revokedCount=activeSessions.Count};
+    });
     public async Task<IResult> OpenVisit(Guid id,JsonObject b)=>await Command(b,async()=>
     {
         var a=Require("WAITER","MANAGER","ADMIN");var t=await Lock<RestaurantTable>("restaurant_tables",id);
@@ -111,13 +130,18 @@ public partial class ApiService
         var v=await db.Visits.SingleOrDefaultAsync(v=>v.TableId==t.Id&&v.Status=="OPEN");
         Rules.Require(v!=null,"TABLE_NOT_OPEN","Bàn chưa có lượt khách đang mở. Vui lòng liên hệ nhân viên.");
         await Lock<Visit>("visits",v!.Id);var order=await db.Orders.SingleAsync(o=>o.VisitId==v.Id);
+        var now=DateTimeOffset.UtcNow;
         if(Http.Request.Cookies.TryGetValue("ros_guest",out var previousToken))
         {
-            var previousHash=Hash(previousToken);var now=DateTimeOffset.UtcNow;
+            var previousHash=Hash(previousToken);
             if(await db.GuestSessions.AnyAsync(s=>s.VisitId==v.Id&&s.TokenHash==previousHash&&s.RevokedAt==null&&s.ExpiresAt>now))
             {await tx.CommitAsync();return new {visitId=v.Id,orderId=order.Id,tableCode=v.TableCodeSnapshot};}
         }
-        var token=Token();var s=new GuestSession {VisitId=v.Id,TokenHash=Hash(token),ExpiresAt=DateTimeOffset.UtcNow.AddHours(12)};db.GuestSessions.Add(s);
+        var existing=await db.GuestSessions.Where(s=>s.VisitId==v.Id&&s.RevokedAt==null).ToListAsync();
+        Rules.Require(!existing.Any(s=>s.ExpiresAt>now),"TABLE_QR_CLAIMED","Bàn này đang có thực khách giữ phiên gọi món. Nếu cần quét lại, vui lòng liên hệ nhân viên để mở khóa QR.");
+        foreach(var expired in existing) expired.RevokedAt=now<expired.CreatedAt?expired.CreatedAt:now;
+        if(existing.Count>0) await db.SaveChangesAsync();
+        var token=Token();var s=new GuestSession {VisitId=v.Id,TokenHash=Hash(token),ExpiresAt=now.AddHours(12)};db.GuestSessions.Add(s);
         await db.SaveChangesAsync();await tx.CommitAsync();Cookie("ros_guest",token,12);
         return new {visitId=v.Id,orderId=order.Id,tableCode=v.TableCodeSnapshot};
     }

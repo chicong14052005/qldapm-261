@@ -1,12 +1,76 @@
 .card {
-  background: var(--panel);
-  border: 1px solid var(--line);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 19px;
+  padding: 18px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .occupied {
-  border-color: #c9d8c5;
-  background: #f9fcf7;
+  border-color: #b9d2c0;
+  background: #fbfdfb;
 }
 
+.code {
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 14px 0 6px;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 44px;
+  margin-bottom: 16px;
+}
+
+.metaPrimary {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.metaSub {
+  font-size: 100%!important;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--ink-subtle);
+}
+
+.metaSubClaimed {
+  color: var(--brand-600);
+}
+
+.metaSubWaiting {
+  color: var(--warning);
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ctaBtn {
+  font-size: 15px !important;
+  padding: 10px 14px !important;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 44px;
+}
+
+.linkBtn {
+  font-size: 13px !important;
+  padding: 6px 8px !important;
+  white-space: nowrap;
+}

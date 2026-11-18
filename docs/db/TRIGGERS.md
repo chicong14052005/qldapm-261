@@ -1,6 +1,6 @@
 # Trigger functions hiện hành
 
-Được đọc từ PostgreSQL catalog sau `202611030004_PaymentRecipientHistory`; không thực thi SQL trong tài liệu này. [Danh mục bảng](README.md).
+Được đọc từ PostgreSQL catalog sau `202611180005_SingleActiveGuestPerVisit`; không thực thi SQL trong tài liệu này. [Danh mục bảng](README.md).
 
 SQL được giữ nguyên để tra cứu điều kiện thực tế. `BEFORE` kiểm ngay trên từng dòng; constraint trigger `DEFERRABLE INITIALLY DEFERRED` kiểm khi transaction commit. Không tuyên bố trigger bao phủ mọi phân quyền hoặc mọi validation API.
 

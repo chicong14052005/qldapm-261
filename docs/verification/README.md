@@ -66,3 +66,12 @@ Kiểm tra sau dọn: orders=0, payments=0, visits=0; đăng nhập admin thành
 - Kiểm tra guard bằng dữ liệu mô phỏng trong bộ nhớ: thiếu giải thích cột mới bị từ chối; fingerprint backend lệch làm check báo lỗi. Không sửa DB/file nguồn để thử lỗi.
 - Kiểm liên kết local trong các Markdown thay đổi: đạt. `git diff --check` đạt.
 - Không đổi mã ứng dụng/schema/migration; không chạy lại unit/HTTP tạo dữ liệu cho thay đổi tài liệu này. [Tài liệu DB](../db/README.md) · [Quyết định đồng bộ](../../ADR/0011-dong-bo-tai-lieu-database.md).
+
+## Khóa 1 phiên khách QR mỗi lượt OPEN — 18/11/2026
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Migration `202611180005_SingleActiveGuestPerVisit` trên DB thật | Áp dụng thành công, tạo partial unique index `ux_guest_sessions_active_visit` |
+| HTTP QR với khóa 1 phiên khách/lượt (`scripts/qr_smoke.py`) | Đạt — [qr-result.json](qr-result.json): chặn thiết bị thứ 2 (`409`), cho phép quét lại sau khi khách bấm Thoát hoặc nhân viên gọi `POST /tables/{id}/qr/unlock` |
+| Backend build (`dotnet build`) & API docs (`generate_api_docs.py`) | Đạt (`0` warnings/errors), đồng bộ 56 endpoints |
+| Frontend `tsc --noEmit`, unit tests, `next build` | Đạt (7/7 unit tests, 14/14 routes) |

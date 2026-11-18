@@ -1,6 +1,6 @@
 # Danh mục API thực thi
 
-**55 endpoint** · Base URL: `http://localhost:3000` · [Hướng dẫn Postman](POSTMAN.md).
+**56 endpoint** · Base URL: `http://localhost:3000` · [Hướng dẫn Postman](POSTMAN.md).
 
 | Method | API | Tài liệu |
 |---|---|---|
@@ -28,34 +28,35 @@
 | POST | `/api/v1/tables` | [Thêm bàn](22-post-api-v1-tables.md) |
 | PATCH | `/api/v1/tables/{id}` | [Sửa/ẩn bàn trống](23-patch-api-v1-tables-id.md) |
 | POST | `/api/v1/tables/{id}/qr/rotate` | [Thay QR cố định khi cần vô hiệu link cũ](24-post-api-v1-tables-id-qr-rotate.md) |
-| GET | `/api/v1/tables/{id}/qr` | [Xem lại QR và URL cố định của bàn](25-get-api-v1-tables-id-qr.md) |
-| GET | `/api/v1/qr/{token}` | [Đọc thông tin QR công khai](26-get-api-v1-qr-token.md) |
-| POST | `/api/v1/tables/{id}/visits` | [Mở lượt khách](27-post-api-v1-tables-id-visits.md) |
-| POST | `/api/v1/guest/join` | [Khách tham gia lượt đang mở bằng QR cố định](28-post-api-v1-guest-join.md) |
-| GET | `/api/v1/guest/current` | [Lượt hiện tại của khách](29-get-api-v1-guest-current.md) |
-| GET | `/api/v1/orders` | [Danh sách đơn](30-get-api-v1-orders.md) |
-| GET | `/api/v1/orders/{id}` | [Chi tiết đơn và mọi đợt gọi](31-get-api-v1-orders-id.md) |
-| POST | `/api/v1/takeaway-orders` | [Tạo đơn mang về và đợt đầu](32-post-api-v1-takeaway-orders.md) |
-| POST | `/api/v1/orders/{id}/batches` | [Gửi đợt món đầu/gọi thêm](33-post-api-v1-orders-id-batches.md) |
-| GET | `/api/v1/approval-batches` | [Đợt gọi thêm chờ duyệt](34-get-api-v1-approval-batches.md) |
-| POST | `/api/v1/batches/{id}/approve` | [Duyệt toàn đợt](35-post-api-v1-batches-id-approve.md) |
-| POST | `/api/v1/batches/{id}/reject` | [Từ chối toàn đợt](36-post-api-v1-batches-id-reject.md) |
-| POST | `/api/v1/batches/{id}/withdraw` | [Rút toàn đợt chờ](37-post-api-v1-batches-id-withdraw.md) |
-| GET | `/api/v1/kitchen/items` | [Hàng đợi chế biến](38-get-api-v1-kitchen-items.md) |
-| GET | `/api/v1/kitchen/changes` | [Lịch sử sửa/hủy gần đây](39-get-api-v1-kitchen-changes.md) |
-| POST | `/api/v1/order-items/{id}/accept` | [Bếp tiếp nhận món](40-post-api-v1-order-items-id-accept.md) |
-| POST | `/api/v1/order-items/{id}/prepare` | [Bắt đầu chuẩn bị](41-post-api-v1-order-items-id-prepare.md) |
-| POST | `/api/v1/order-items/{id}/ready` | [Bếp hoàn thành món](42-post-api-v1-order-items-id-ready.md) |
-| PATCH | `/api/v1/order-items/{id}` | [Giảm số lượng/sửa ghi chú trước nấu](43-patch-api-v1-order-items-id.md) |
-| POST | `/api/v1/order-items/{id}/cancel` | [Hủy dòng món](44-post-api-v1-order-items-id-cancel.md) |
-| POST | `/api/v1/orders/{id}/cancel` | [Hủy đơn chưa từng bắt đầu nấu](45-post-api-v1-orders-id-cancel.md) |
-| GET | `/api/v1/serving/items` | [Danh sách món READY](46-get-api-v1-serving-items.md) |
-| POST | `/api/v1/order-items/{id}/serve` | [Xác nhận bàn giao món](47-post-api-v1-order-items-id-serve.md) |
-| GET | `/api/v1/checkout/orders` | [Đơn đang chờ thu tiền](48-get-api-v1-checkout-orders.md) |
-| GET | `/api/v1/admin/payments` | [Admin tra cứu toàn bộ lịch sử thanh toán](49-get-api-v1-admin-payments.md) |
-| GET | `/api/v1/admin/payments/{id}` | [Admin xem đầy đủ đơn và người nhận thanh toán](50-get-api-v1-admin-payments-id.md) |
-| POST | `/api/v1/orders/{id}/request-payment` | [Xin thanh toán và chốt tiền](51-post-api-v1-orders-id-request-payment.md) |
-| POST | `/api/v1/orders/{id}/reopen` | [Mở lại đơn chờ trả](52-post-api-v1-orders-id-reopen.md) |
-| POST | `/api/v1/orders/{id}/payments` | [Xác nhận thực nhận tiền](53-post-api-v1-orders-id-payments.md) |
-| GET | `/api/v1/orders/{id}/receipt` | [Biên nhận nội bộ](54-get-api-v1-orders-id-receipt.md) |
-| GET | `/api/v1/requests/{key}` | [Tra kết quả theo Idempotency-Key](55-get-api-v1-requests-key.md) |
+| POST | `/api/v1/tables/{id}/qr/unlock` | [Mở khóa QR bàn đang có khách để cấp phiên mới](25-post-api-v1-tables-id-qr-unlock.md) |
+| GET | `/api/v1/tables/{id}/qr` | [Xem lại QR và URL cố định của bàn](26-get-api-v1-tables-id-qr.md) |
+| GET | `/api/v1/qr/{token}` | [Đọc thông tin QR công khai](27-get-api-v1-qr-token.md) |
+| POST | `/api/v1/tables/{id}/visits` | [Mở lượt khách](28-post-api-v1-tables-id-visits.md) |
+| POST | `/api/v1/guest/join` | [Khách tham gia lượt đang mở bằng QR cố định](29-post-api-v1-guest-join.md) |
+| GET | `/api/v1/guest/current` | [Lượt hiện tại của khách](30-get-api-v1-guest-current.md) |
+| GET | `/api/v1/orders` | [Danh sách đơn](31-get-api-v1-orders.md) |
+| GET | `/api/v1/orders/{id}` | [Chi tiết đơn và mọi đợt gọi](32-get-api-v1-orders-id.md) |
+| POST | `/api/v1/takeaway-orders` | [Tạo đơn mang về và đợt đầu](33-post-api-v1-takeaway-orders.md) |
+| POST | `/api/v1/orders/{id}/batches` | [Gửi đợt món đầu/gọi thêm](34-post-api-v1-orders-id-batches.md) |
+| GET | `/api/v1/approval-batches` | [Đợt gọi thêm chờ duyệt](35-get-api-v1-approval-batches.md) |
+| POST | `/api/v1/batches/{id}/approve` | [Duyệt toàn đợt](36-post-api-v1-batches-id-approve.md) |
+| POST | `/api/v1/batches/{id}/reject` | [Từ chối toàn đợt](37-post-api-v1-batches-id-reject.md) |
+| POST | `/api/v1/batches/{id}/withdraw` | [Rút toàn đợt chờ](38-post-api-v1-batches-id-withdraw.md) |
+| GET | `/api/v1/kitchen/items` | [Hàng đợi chế biến](39-get-api-v1-kitchen-items.md) |
+| GET | `/api/v1/kitchen/changes` | [Lịch sử sửa/hủy gần đây](40-get-api-v1-kitchen-changes.md) |
+| POST | `/api/v1/order-items/{id}/accept` | [Bếp tiếp nhận món](41-post-api-v1-order-items-id-accept.md) |
+| POST | `/api/v1/order-items/{id}/prepare` | [Bắt đầu chuẩn bị](42-post-api-v1-order-items-id-prepare.md) |
+| POST | `/api/v1/order-items/{id}/ready` | [Bếp hoàn thành món](43-post-api-v1-order-items-id-ready.md) |
+| PATCH | `/api/v1/order-items/{id}` | [Giảm số lượng/sửa ghi chú trước nấu](44-patch-api-v1-order-items-id.md) |
+| POST | `/api/v1/order-items/{id}/cancel` | [Hủy dòng món](45-post-api-v1-order-items-id-cancel.md) |
+| POST | `/api/v1/orders/{id}/cancel` | [Hủy đơn chưa từng bắt đầu nấu](46-post-api-v1-orders-id-cancel.md) |
+| GET | `/api/v1/serving/items` | [Danh sách món READY](47-get-api-v1-serving-items.md) |
+| POST | `/api/v1/order-items/{id}/serve` | [Xác nhận bàn giao món](48-post-api-v1-order-items-id-serve.md) |
+| GET | `/api/v1/checkout/orders` | [Đơn đang chờ thu tiền](49-get-api-v1-checkout-orders.md) |
+| GET | `/api/v1/admin/payments` | [Admin tra cứu toàn bộ lịch sử thanh toán](50-get-api-v1-admin-payments.md) |
+| GET | `/api/v1/admin/payments/{id}` | [Admin xem đầy đủ đơn và người nhận thanh toán](51-get-api-v1-admin-payments-id.md) |
+| POST | `/api/v1/orders/{id}/request-payment` | [Xin thanh toán và chốt tiền](52-post-api-v1-orders-id-request-payment.md) |
+| POST | `/api/v1/orders/{id}/reopen` | [Mở lại đơn chờ trả](53-post-api-v1-orders-id-reopen.md) |
+| POST | `/api/v1/orders/{id}/payments` | [Xác nhận thực nhận tiền](54-post-api-v1-orders-id-payments.md) |
+| GET | `/api/v1/orders/{id}/receipt` | [Biên nhận nội bộ](55-get-api-v1-orders-id-receipt.md) |
+| GET | `/api/v1/requests/{key}` | [Tra kết quả theo Idempotency-Key](56-get-api-v1-requests-key.md) |

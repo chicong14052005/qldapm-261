@@ -875,7 +875,7 @@
     "/api/v1/tables": {
       "get": {
         "summary": "Sơ đồ bàn và lượt đang mở",
-        "description": "Nhân viên; Bàn có khách: visit={id,partySize,version,orderId}. Không trả QR hash, joinCode hoặc join HMAC.",
+        "description": "Nhân viên; Bàn có khách: visit={id,partySize,version,orderId,hasActiveGuestSession}. Không trả QR hash, joinCode hoặc join HMAC.",
         "parameters": [],
         "responses": {
           "200": {
@@ -1056,6 +1056,55 @@
         }
       }
     },
+    "/api/v1/tables/{id}/qr/unlock": {
+      "post": {
+        "summary": "Mở khóa QR bàn đang có khách để cấp phiên mới",
+        "description": "WAITER / MANAGER / ADMIN; Thu hồi guest session đang hoạt động của lượt OPEN hiện tại mà không đóng lượt hoặc mất đơn, giúp một thiết bị khác tại bàn quét lại QR khi máy cũ lỡ mất phiên/hết pin.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thành công; example phản ánh shape, ID động cần thay.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "visitId": "<visitId>",
+                  "orderId": "<orderId>",
+                  "tableCode": "B01",
+                  "revokedCount": 1
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business/version conflict"
+          },
+          "422": {
+            "description": "Validation failed"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {},
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/tables/{id}/qr": {
       "get": {
         "summary": "Xem lại QR và URL cố định của bàn",
@@ -1117,7 +1166,8 @@
               "application/json": {
                 "example": {
                   "tableCode": "B01",
-                  "hasOpenVisit": true
+                  "hasOpenVisit": true,
+                  "hasActiveGuestSession": false
                 }
               }
             }
@@ -1186,7 +1236,7 @@
     "/api/v1/guest/join": {
       "post": {
         "summary": "Khách tham gia lượt đang mở bằng QR cố định",
-        "description": "Công khai; Lưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả409 TABLE_NOT_OPEN, QR sai/bàn inactive trả404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.",
+        "description": "Công khai; Lưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả 409 TABLE_NOT_OPEN; bàn đã có thực khách đang giữ phiên trả 409 TABLE_QR_CLAIMED (trừ khi thực khách đó bấm Thoát hoặc nhân viên gọi POST /tables/{id}/qr/unlock); QR sai/bàn inactive trả 404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.",
         "parameters": [],
         "responses": {
           "200": {

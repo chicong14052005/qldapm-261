@@ -1,4 +1,5 @@
 "use client";
+import { LayoutGrid, Plus } from "lucide-react";
 import { api } from "@/lib/api";
 import { padStatNumber } from "@/lib/format";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,7 +23,9 @@ function Stat({
         <strong>{padStatNumber(value)}</strong>
         <small>{detail}</small>
       </div>
-      <span className="stat-icon">▦</span>
+      <span className="stat-icon" aria-hidden="true">
+        <LayoutGrid size={20} strokeWidth={1.9} />
+      </span>
     </article>
   );
 }
@@ -35,6 +38,7 @@ export default function TableGrid() {
     has,
     ask,
     mutate,
+    notify,
     run,
     selectOrder,
     openTable,
@@ -43,6 +47,7 @@ export default function TableGrid() {
 
   const tables = data as Table[];
   const canManage = has("MANAGER", "ADMIN");
+  const canUnlockQr = has("WAITER", "MANAGER", "ADMIN");
 
   return (
     <>
@@ -69,6 +74,7 @@ export default function TableGrid() {
         </h2>
         {canManage && (
           <button
+            type="button"
             className="secondary"
             onClick={() =>
               ask("Thêm bàn", buildCreateTableFields(), async (v) => {
@@ -79,7 +85,8 @@ export default function TableGrid() {
               })
             }
           >
-            ＋ Thêm bàn
+            <Plus size={18} strokeWidth={2} aria-hidden="true" />
+            Thêm bàn
           </button>
         )}
       </div>
@@ -91,12 +98,26 @@ export default function TableGrid() {
             busy={busy}
             connected={connected}
             canManage={canManage}
+            canUnlockQr={canUnlockQr}
             onSelectOrder={selectOrder}
             onOpenTable={openTable}
             onViewQr={(table) =>
               run(async () => {
                 setTableQr(await api(`/tables/${table.id}/qr`));
               })
+            }
+            onUnlockQr={(table) =>
+              ask(
+                `Mở khóa QR bàn ${table.code}`,
+                [],
+                async () => {
+                  await mutate(`/tables/${table.id}/qr/unlock`, {});
+                  notify(
+                    `Đã thu hồi phiên khách cũ của bàn ${table.code}. Một thiết bị mới tại bàn có thể quét QR ngay.`,
+                  );
+                },
+                "Phiên của thiết bị đang giữ bàn sẽ bị thu hồi nhưng đơn và các món đã gọi vẫn giữ nguyên, để một thiết bị khác tại bàn quét lại QR.",
+              )
             }
             onEditTable={(table) =>
               ask("Chỉnh sửa bàn", buildEditTableFields(table), async (v) => {

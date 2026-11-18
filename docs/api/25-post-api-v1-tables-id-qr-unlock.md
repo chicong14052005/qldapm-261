@@ -1,12 +1,12 @@
-# POST /api/v1/guest/join
+# POST /api/v1/tables/{id}/qr/unlock
 
-Khách tham gia lượt đang mở bằng QR cố định. **Quyền:** Công khai.
+Mở khóa QR bàn đang có khách để cấp phiên mới. **Quyền:** WAITER / MANAGER / ADMIN.
 
 Hợp đồng test của endpoint đã implement; nghiệp vụ do [SSOT P1.3](../../SSOT/P1.3-ban-va-luot-khach.md) sở hữu. Các chuỗi `<...>` trong response là giá trị minh họa cần thay bằng dữ liệu server thật.
 
 ## URL và headers
 
-`POST {{baseUrl}}/api/v1/guest/join`
+`POST {{baseUrl}}/api/v1/tables/{{tableId}}/qr/unlock`
 
 `Content-Type: application/json`
 
@@ -18,9 +18,7 @@ Hợp đồng test của endpoint đã implement; nghiệp vụ do [SSOT P1.3](.
 ## Payload đầy đủ cho kịch bản mẫu
 
 ```json
-{
-  "qrToken": "{{qrToken}}"
-}
+{}
 ```
 
 ## Response thành công — HTTP 200
@@ -29,11 +27,12 @@ Hợp đồng test của endpoint đã implement; nghiệp vụ do [SSOT P1.3](.
 {
   "visitId": "<visitId>",
   "orderId": "<orderId>",
-  "tableCode": "B01"
+  "tableCode": "B01",
+  "revokedCount": 1
 }
 ```
 
-Lưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả409 TABLE_NOT_OPEN, QR sai/bàn inactive trả404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.
+Thu hồi guest session đang hoạt động của lượt OPEN hiện tại mà không đóng lượt hoặc mất đơn, giúp một thiết bị khác tại bàn quét lại QR khi máy cũ lỡ mất phiên/hết pin.
 
 ## Cách thử và lỗi cần kiểm tra
 

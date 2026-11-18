@@ -80,7 +80,7 @@ def render_functions(metadata):
            f'Được đọc từ PostgreSQL catalog sau `{metadata["migrations"][-1]}`; không thực thi SQL trong tài liệu này. [Danh mục bảng](README.md).', '',
            'SQL được giữ nguyên để tra cứu điều kiện thực tế. `BEFORE` kiểm ngay trên từng dòng; constraint trigger `DEFERRABLE INITIALLY DEFERRED` kiểm khi transaction commit. Không tuyên bố trigger bao phủ mọi phân quyền hoặc mọi validation API.','']
     for f in metadata['functions']:
-        lines += [f'## `{f["name"]}`','',FUNCTION_NOTES[f['name']],'','```sql',f['definition'].rstrip(),'```','']
+        lines += [f'## `{f["name"]}`','',FUNCTION_NOTES[f['name']],'','```sql',f['definition'].replace('\r\n','\n').rstrip(),'```','']
     return '\n'.join(lines)
 
 def main():
@@ -100,7 +100,7 @@ def main():
         if stale:raise SystemExit('FAIL: DB docs/source changed; review semantics, SSOT/ADR, metadata and regenerate: '+', '.join(stale))
         print(f'PASS: {len(names)} tables, {sum(len(t["columns"]) for t in metadata["tables"])} fields, {len(metadata["functions"])} trigger functions and backend source fingerprints match documentation.')
     else:
-        for name,content in generated.items():(OUT/name).write_text(content,encoding='utf-8')
+        for name,content in generated.items():(OUT/name).write_text(content,encoding='utf-8',newline='\n')
         print(f'Generated {len(names)} table documents and trigger reference. Review SSOT/ADR and semantic explanations before commit.')
 
 if __name__=='__main__':main()

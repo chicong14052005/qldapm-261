@@ -1,6 +1,6 @@
 # `restaurant_tables` — Bàn và QR cố định
 
-Đối chiếu schema: `202611030004_PaymentRecipientHistory` · review 03/11/2026. [Danh mục DB](README.md) · [ADR-0003](../../ADR/0003-database.md).
+Đối chiếu schema: `202611180005_SingleActiveGuestPerVisit` · review 03/11/2026. [Danh mục DB](README.md) · [ADR-0003](../../ADR/0003-database.md).
 
 ## 1. Vai trò và phạm vi
 

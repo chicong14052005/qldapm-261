@@ -2,6 +2,7 @@ export type TableVisit = {
   id?: string;
   orderId: string;
   partySize: number;
+  hasActiveGuestSession?: boolean;
 };
 
 export type Table = {
@@ -26,5 +27,7 @@ export type TableQrPublicInfo = {
   tableId?: string;
   tableCode?: string;
   hasActiveVisit?: boolean;
+  hasOpenVisit?: boolean;
+  hasActiveGuestSession?: boolean;
 };
 

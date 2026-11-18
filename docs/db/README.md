@@ -1,6 +1,6 @@
 # Cơ sở dữ liệu hiện hành
 
-03/11/2026 · PostgreSQL 16 · **15 bảng ứng dụng + 1 bảng lịch sử EF Core** · schema sau migration004.
+18/11/2026 · PostgreSQL 16 · **15 bảng ứng dụng + 1 bảng lịch sử EF Core** · schema sau migration005.
 
 Đọc từ tổng quan ở đây, sau đó mở file riêng của từng bảng. Tài liệu mô tả **mã và schema đã triển khai**, không coi thiết kế dự kiến là ràng buộc DB đã có. [ADR-0003](../../ADR/0003-database.md) giải thích cấu trúc; [SSOT](../../SSOT/README.md) giữ quy tắc nghiệp vụ; [hướng dẫn migration](../../GUIDE/DATABASE-MIGRATIONS.md) giải thích vận hành.
 
@@ -64,6 +64,7 @@ ERD lược bớt các FK actor/người duyệt để dễ đọc; danh sách F
 | 002    | `202611020002_IntegrityGuards` · [IntegrityMigration.cs](../../Backend/Restaurant.Api/Data/IntegrityMigration.cs)                   | DEFAULT timestamp/version, CHECK bổ sung, guard order/batch/table/visit, index FK                           |
 | 003    | `202611020003_FixedTableQr` · [FixedTableQrMigration.cs](../../Backend/Restaurant.Api/Data/FixedTableQrMigration.cs)                | Ciphertext QR cố định, thay guard_visit, bỏ join-code/generation                                            |
 | 004    | `202611030004_PaymentRecipientHistory` · [PaymentHistoryMigration.cs](../../Backend/Restaurant.Api/Data/PaymentHistoryMigration.cs) | Snapshot người thu, kiểm INSERT, index lịch sử, giữ dòng/đợt PAID                                           |
+| 005    | `202611180005_SingleActiveGuestPerVisit` · [SingleActiveGuestMigration.cs](../../Backend/Restaurant.Api/Data/SingleActiveGuestMigration.cs) | Ràng buộc tối đa 1 phiên khách hoạt động/lượt (`ux_guest_sessions_active_visit`)                            |
 
 Đây là EF Core SQL-first migration, mỗi class có `Up()`/`Down()`, không dùng bộ file `migration_vN_up.sql`/`migration_vN_down.sql` độc lập. **Down hiện throw, không hỗ trợ rollback tự động**. Không sửa bản đã chạy để nâng database; phải thêm migration mới. Không có EF ModelSnapshot/design-time scaffolding trong bản hiện tại. Chi tiết và giới hạn tại [GUIDE](../../GUIDE/DATABASE-MIGRATIONS.md).
 

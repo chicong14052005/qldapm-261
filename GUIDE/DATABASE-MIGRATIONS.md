@@ -2,17 +2,17 @@
 
 ## 1. Migration hiện tại hoạt động thế nào?
 
-Dự án đã dùng **migration có phiên bản tăng dần**, qua EF Core .NET/Npgsql. Có 4 class migration trong `Backend/Restaurant.Api/Data`; mỗi class có mã `[Migration("...")]` cùng `Up()` và `Down()`. Xem [danh sách và từng bảng](../docs/db/README.md).
+Dự án đã dùng **migration có phiên bản tăng dần**, qua EF Core .NET/Npgsql. Có 5 class migration trong `Backend/Restaurant.Api/Data`; mỗi class có mã `[Migration("...")]` cùng `Up()` và `Down()`. Xem [danh sách và từng bảng](../docs/db/README.md).
 
-`InitialMigration.Up()` đọc `schema.sql` nhúng trong assembly để tạo schema lần đầu. Migration002,003,004 thay đổi schema bằng SQL trong `Up()`, không sửa trực tiếp database bằng file schema mỗi lần khởi động. EF ghi bản đã áp dụng vào `__EFMigrationsHistory`; lần sau chỉ chạy các bản còn thiếu theo thứ tự.
+`InitialMigration.Up()` đọc `schema.sql` nhúng trong assembly để tạo schema lần đầu. Migration002, 003, 004, 005 thay đổi schema bằng SQL trong `Up()`, không sửa trực tiếp database bằng file schema mỗi lần khởi động. EF ghi bản đã áp dụng vào `__EFMigrationsHistory`; lần sau chỉ chạy các bản còn thiếu theo thứ tự.
 
-Ví dụ DB đã có 001–003 thì chỉ chạy 004; DB mới chạy đủ 001–004. Nếu chỉ sửa `schema.sql` sau khi 001 đã áp dụng, DB hiện tại **không nhận thay đổi đó**, còn DB mới lại nhận, gây lệch môi trường. Vì vậy giữ nguyên các bản đã chạy, thêm migration005 trở đi cho thay đổi mới.
+Ví dụ DB đã có 001–004 thì chỉ chạy 005; DB mới chạy đủ 001–005. Nếu chỉ sửa `schema.sql` sau khi 001 đã áp dụng, DB hiện tại **không nhận thay đổi đó**, còn DB mới lại nhận, gây lệch môi trường. Vì vậy giữ nguyên các bản đã chạy, thêm migration006 trở đi cho thay đổi mới.
 
 ## 2. Có up/down như file migration_v1_up.sql không?
 
 Khái niệm tương đương: `Up()` nâng phiên bản, `Down()` là vị trí để định nghĩa hạ phiên bản. Cách đóng gói hiện tại là C# class chứa SQL thay vì hai file SQL riêng. Không cần tạo thêm bộ SQL up/down song song vì dễ thành hai nguồn migration khác nhau.
 
-**Hiện cả 4 `Down()` đều throw NotSupportedException.** Nghĩa là có upgrade từng bản nhưng chưa hỗ trợ rollback tự động về bản trước. `Down()` không xóa dữ liệu và không phải rollback đã được kiểm thử. Bản MVP dùng migration sửa tiếp theo (forward migration); phục hồi từ backup chỉ thực hiện theo kế hoạch riêng trên đúng môi trường đã được cho phép.
+**Hiện cả 5 `Down()` đều throw NotSupportedException.** Nghĩa là có upgrade từng bản nhưng chưa hỗ trợ rollback tự động về bản trước. `Down()` không xóa dữ liệu và không phải rollback đã được kiểm thử. Bản MVP dùng migration sửa tiếp theo (forward migration); phục hồi từ backup chỉ thực hiện theo kế hoạch riêng trên đúng môi trường đã được cho phép.
 
 Transaction của một migration thất bại được rollback bởi EF/PostgreSQL khi các lệnh hỗ trợ transaction; việc đó khác với hạ một migration đã chạy thành công. Một chuỗi có thể đã áp dụng được vài bản rồi dừng ở bản sau; cần đọc history và lỗi, không giả định mọi bản được rollback cùng nhau.
 

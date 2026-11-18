@@ -1,12 +1,12 @@
-# ADR-0009 — QR cố định, vào lượt không cần mã
+# ADR-0009 — QR cố định tại bàn & khóa 1 phiên khách mỗi lượt
 
-03/11/2026 · Đã triển khai theo lựa chọn mới của chủ dự án. Thay cơ chế mã tham gia trong ADR-0003/0005/0007/0008; [P1.3](../SSOT/P1.3-ban-va-luot-khach.md) là SSOT nghiệp vụ hiện hành.
+03/11/2026 (cập nhật 18/11/2026) · Đã triển khai theo lựa chọn mới của chủ dự án. Thay cơ chế mã tham gia trong ADR-0003/0005/0007/0008; [P1.3](../SSOT/P1.3-ban-va-luot-khach.md) là SSOT nghiệp vụ hiện hành.
 
 ## Quyết định
 
 Mỗi bàn có một QR cố định. Nhân viên xem được ảnh QR, URL đầy đủ, nút sao chép, mở link gốc và tải PNG. Khách quét/mở link → frontend POST tham gia lượt OPEN của bàn → cấp guest cookie → menu/đơn. Không nhập mã, không tự mở bàn. Nhân viên vẫn mở lượt và gọi hộ như trước. Còn/hết món, phê duyệt gọi thêm, state món, tiền và đóng lượt không thay đổi.
 
-Link bàn cố định có thể được người đã lưu dùng lại khi bàn mở lượt mới; đây là đánh đổi của phương án được chủ dự án chọn. Cookie cũ vẫn bị thu hồi khi đóng lượt, không tự có quyền ở lượt mới; muốn tham gia lại cần thực hiện POST join từ QR/link. Backend vẫn kiểm đúng visit cho mọi API đơn. Không tự join lại trong background sau401.
+**Cập nhật 18/11/2026 — Khóa 1 phiên khách hoạt động/lượt:** Để ngăn người ngoài bàn lưu QR cố định rồi quét chèn gọi món ngoài tầm kiểm soát khi bàn đang có khách, mỗi lượt `OPEN` chỉ cho phép **tối đa 1 `GuestSession` đang hoạt động** (`revoked_at IS NULL` và `expires_at > now`). Thực khách đang giữ cookie hợp lệ reload/quét lại vẫn giữ nguyên phiên; thiết bị khác quét vào lượt đã có người giữ phiên sẽ bị từ chối HTTP 409 (`TABLE_QR_CLAIMED`). Quyền quét chỉ mở lại khi khách hiện tại bấm **Thoát**, khi nhân viên (`WAITER`/`MANAGER`/`ADMIN`) bấm **Mở khóa QR** (`POST /api/v1/tables/{id}/qr/unlock` để thu hồi phiên cũ mà giữ nguyên đơn), hoặc khi kết thúc lượt cũ và mở lượt mới. Link bàn cố định vẫn được giữ cho lượt sau khi nhân viên mở lượt mới; cookie cũ bị thu hồi khi đóng lượt/mở khóa và không tự có quyền ở lượt mới.
 
 ## Lưu trữ và nâng cấp
 
@@ -16,7 +16,7 @@ Column ciphertext cho phép NULL trong lúc nâng cấp DB cũ; seed backfill m�
 
 GET `/tables/{id}/qr` chỉ đọc, quyền WAITER/MANAGER/ADMIN; trả qrUrl tuyệt đối dựa PublicOrigin, qrPath, token và version. Không mỗi lần xem lại gọi rotate. POST `/qr/rotate` vẫn có cho MANAGER/ADMIN khi thật sự cần vô hiệu link đã in, UI có bước xác nhận. Rotate chặn join mới bằng link cũ nhưng không tự đóng lượt hoặc thu hồi cookie của khách đã tham gia; payment/cancel đóng lượt vẫn thu hồi mọi cookie theo cơ chế cũ.
 
-POST `/guest/join` chỉ cần qrToken. Transaction khóa table→visit để không cấp nhầm quyền khi đóng/mở cạnh tranh. Nếu cookie còn hiệu lực ở chính visit đó, trả cùng phiên; nếu không, cấp phiên mới cho đúng visit hiện tại. Bàn chưa mở409, QR sai/bàn inactive404. Endpoint xoay mã tham gia cũ đã bỏ. Rate limit join60/phút/IP để nhiều khách cùng router có thể tham gia; vẫn có CSRF/Origin validation.
+POST `/guest/join` chỉ cần qrToken. Transaction khóa table→visit để không cấp nhầm quyền khi đóng/mở cạnh tranh hoặc khi hai thiết bị quét đồng thời. Nếu cookie `ros_guest` còn hiệu lực ở chính visit đó, trả cùng phiên; nếu visit đã có phiên hoạt động khác (`revoked_at IS NULL` và chưa hết hạn), trả 409 `TABLE_QR_CLAIMED`; nếu các phiên cũ đã hết hạn, thu hồi trước khi cấp 1 phiên mới. Migration `202611180005_SingleActiveGuestPerVisit` thêm partial unique index `ux_guest_sessions_active_visit` trên `guest_sessions(visit_id) WHERE revoked_at IS NULL` để bảo đảm nguyên tắc 1 phiên hoạt động/lượt ngay ở tầng PostgreSQL. Endpoint `POST /tables/{id}/qr/unlock` (WAITER/MANAGER/ADMIN) thu hồi phiên khách hiện tại để đổi thiết bị trong cùng lượt mà không hủy đơn. Bàn chưa mở 409 `TABLE_NOT_OPEN`, QR sai/bàn inactive 404. Endpoint xoay mã tham gia cũ đã bỏ. Rate limit join 60/phút/IP; vẫn có CSRF/Origin validation.
 
 ## Frontend và kiểm chứng
 

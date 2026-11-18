@@ -80,6 +80,7 @@ app.MapGet("/api/v1/tables",(ApiService s)=>s.Tables());
 app.MapPost("/api/v1/tables",async(HttpContext c,ApiService s)=>await s.TableWrite(null,await ApiService.Body(c)));
 app.MapPatch("/api/v1/tables/{id:guid}",async(Guid id,HttpContext c,ApiService s)=>await s.TableWrite(id,await ApiService.Body(c)));
 app.MapPost("/api/v1/tables/{id:guid}/qr/rotate",async(Guid id,HttpContext c,ApiService s)=>await s.QrRotate(id,await ApiService.Body(c)));
+app.MapPost("/api/v1/tables/{id:guid}/qr/unlock",async(Guid id,HttpContext c,ApiService s)=>await s.UnlockGuestQr(id,await ApiService.Body(c)));
 app.MapGet("/api/v1/tables/{id:guid}/qr",(Guid id,ApiService s)=>s.TableQr(id));
 app.MapGet("/api/v1/qr/{token}",(string token,ApiService s)=>s.QrRead(token));
 app.MapPost("/api/v1/tables/{id:guid}/visits",async(Guid id,HttpContext c,ApiService s)=>await s.OpenVisit(id,await ApiService.Body(c)));
