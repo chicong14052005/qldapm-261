@@ -1,8 +1,13 @@
 .card {
-  background: var(--panel);
-  border: 1px solid var(--line);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  transition: border-color 0.16s ease;
+}
+
+.inCart {
+  border-color: var(--brand-600);
 }
 
 .unavailable img {
@@ -10,3 +15,76 @@
   opacity: 0.65;
 }
 
+.dishHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.qtyBadges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.qtyBadgeCart {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--brand-100);
+  color: var(--brand-700);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.qtyBadgeOrdered {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--canvas);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.dishStepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--brand-600);
+  border-radius: var(--radius-md);
+  background: var(--brand-100);
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.dishStepper button {
+  width: 38px;
+  min-height: 44px;
+  background: transparent;
+  color: var(--brand-700);
+  display: inline-grid;
+  place-items: center;
+}
+
+.dishStepper button:hover:not(:disabled) {
+  background: var(--brand-600);
+  color: #ffffff;
+}
+
+.dishStepper span {
+  min-width: 28px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-700);
+}

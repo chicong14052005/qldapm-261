@@ -35,6 +35,10 @@ Frontend/
 │
 ├── public/
 │   ├── icons/                      # Icon UI tĩnh (SVG)
+│   ├── login/
+│   │   └── login_background.png    # Ảnh nền trang đăng nhập / tham gia bàn ăn
+│   ├── logo/
+│   │   └── logo.ico                # Logo & Favicon chính thức của Bếp Nhà
 │   └── menu/
 │       └── placeholder.svg         # Ảnh mặc định cho món ăn
 │
@@ -52,7 +56,7 @@ Frontend/
     │
     ├── app/                        # Next.js App Router (Routing, Layout & Route-level CSS)
     │   ├── globals.css             # Chỉ import các file trong src/styles/ theo thứ tự (tokens -> reset -> primitives -> layout)
-    │   ├── layout.tsx              # RootLayout: import globals.css, font Be Vietnam Pro, bọc AppProviders
+    │   ├── layout.tsx              # RootLayout: import globals.css, font Inter & Agbalumo (next/font/google), favicon logo.ico, bọc AppProviders
     │   ├── error.tsx               # Error boundary cấp ứng dụng
     │   ├── global-error.tsx        # Fallback lỗi nghiêm trọng ở RootLayout
     │   ├── not-found.tsx           # Trang 404
@@ -103,11 +107,13 @@ Frontend/
     │
     ├── components/                 # UI Components tái sử dụng, chia theo domain + colocated .module.css
     │   ├── common/                 # UI primitives dùng chung toàn app
+    │   │   ├── BrandLogo.tsx
     │   │   ├── ConfirmDialog.tsx
     │   │   ├── EmptyState.tsx
     │   │   ├── LoadingSpinner.tsx
     │   │   ├── Modal.tsx
     │   │   ├── Modal.module.css
+    │   │   ├── NavIcon.tsx
     │   │   ├── Pagination.tsx
     │   │   ├── StatusBadge.tsx
     │   │   └── Toast.tsx

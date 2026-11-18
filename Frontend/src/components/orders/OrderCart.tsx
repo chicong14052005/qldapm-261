@@ -1,4 +1,5 @@
 "use client";
+import { ArrowRight, Minus, Plus, Utensils, X } from "lucide-react";
 import { money } from "@/lib/format";
 import { useAuth } from "@/hooks/useAuth";
 import OrderStatusTimeline from "./OrderStatusTimeline";
@@ -27,7 +28,7 @@ export default function OrderCart() {
   } = useAuth();
 
   return (
-    <aside className={`order-panel ${styles.panel}`}>
+    <aside id="order-cart-panel" className={`order-panel ${styles.panel}`}>
       <OrderStatusTimeline order={order} />
       {order && <OrderItemList batches={order.batches} />}
       <div className="cart-area">
@@ -37,7 +38,9 @@ export default function OrderCart() {
         </h3>
         {cart.length === 0 ? (
           <div className="empty-cart">
-            <span>♧</span>
+            <span className="empty-cart-icon" aria-hidden="true">
+              <Utensils size={22} strokeWidth={1.8} />
+            </span>
             <p>Chọn một món ngon từ thực đơn</p>
           </div>
         ) : (
@@ -46,19 +49,23 @@ export default function OrderCart() {
               <div className="cart-line-title">
                 <strong>{i.name}</strong>
                 <button
-                  className="text-btn"
+                  type="button"
+                  className="icon-btn"
+                  aria-label={`Xóa ${i.name}`}
                   onClick={() =>
                     setCart((c) =>
                       c.filter((x) => x.menuItemId !== i.menuItemId),
                     )
                   }
                 >
-                  ×
+                  <X size={16} strokeWidth={2} aria-hidden="true" />
                 </button>
               </div>
               <div className="cart-line-bottom">
                 <div className="stepper">
                   <button
+                    type="button"
+                    aria-label={`Giảm số lượng ${i.name}`}
                     onClick={() =>
                       setCart((c) =>
                         c.map((x) =>
@@ -69,11 +76,15 @@ export default function OrderCart() {
                       )
                     }
                   >
-                    −
+                    <Minus size={14} strokeWidth={2.2} aria-hidden="true" />
                   </button>
                   <span>{i.quantity}</span>
-                  <button onClick={() => addToCart({ id: i.menuItemId })}>
-                    ＋
+                  <button
+                    type="button"
+                    aria-label={`Tăng số lượng ${i.name}`}
+                    onClick={() => addToCart({ id: i.menuItemId })}
+                  >
+                    <Plus size={14} strokeWidth={2.2} aria-hidden="true" />
                   </button>
                 </div>
                 <strong>{money(i.quantity * i.observedPriceVnd)}</strong>
@@ -120,6 +131,7 @@ export default function OrderCart() {
           </strong>
         </div>
         <button
+          type="button"
           className="primary wide"
           disabled={
             cart.length === 0 ||
@@ -130,12 +142,14 @@ export default function OrderCart() {
           }
           onClick={sendCart}
         >
-          {busy
-            ? "Đang gửi…"
-            : order?.batches.length
-              ? "Gửi gọi thêm · Chờ phê duyệt"
-              : "Gửi món xuống bếp"}{" "}
-          →
+          <span>
+            {busy
+              ? "Đang gửi…"
+              : order?.batches.length
+                ? "Gửi gọi thêm · Chờ phê duyệt"
+                : "Gửi món xuống bếp"}
+          </span>
+          <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
         </button>
         {order?.status === "SERVING" && (
           <>
