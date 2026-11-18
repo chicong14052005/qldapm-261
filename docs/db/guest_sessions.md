@@ -1,10 +1,10 @@
 # `guest_sessions` — Phiên khách theo lượt
 
-Đối chiếu schema: `202611030004_PaymentRecipientHistory` · review 03/11/2026. [Danh mục DB](README.md) · [ADR-0003](../../ADR/0003-database.md).
+Đối chiếu schema: `202611180005_SingleActiveGuestPerVisit` · review 03/11/2026. [Danh mục DB](README.md) · [ADR-0003](../../ADR/0003-database.md).
 
 ## 1. Vai trò và phạm vi
 
-Phiên khách vô danh gắn đúng một visit sau khi quét QR. Nhiều thiết bị cùng bàn có thể có nhiều phiên cùng lượt; không cần customer account.
+Phiên khách vô danh gắn đúng một visit sau khi quét QR. Tại một thời điểm trong lượt OPEN chỉ có tối đa một phiên đang hoạt động (revoked_at IS NULL) nhờ partial unique index `ux_guest_sessions_active_visit` từ migration005; không cần customer account.
 
 Quy tắc nghiệp vụ: [P1.1](../../SSOT/P1.1-tai-khoan-va-phan-quyen.md), [P1.3](../../SSOT/P1.3-ban-va-luot-khach.md).
 
@@ -15,7 +15,7 @@ Kiểu, NULL và DEFAULT dưới đây là **định nghĩa tại PostgreSQL**, 
 | Trường | Kiểu PostgreSQL | Cho NULL | DEFAULT tại DB | Ý nghĩa và cách sử dụng |
 |---|---|---|---|---|
 | `id` | `uuid` | Không | Không có | Định danh UUID của bản ghi, khóa chính. Ứng dụng sinh Guid.NewGuid(); seed có thể dùng UUID cố định. Không có DEFAULT UUID tại DB. |
-| `visit_id` | `uuid` | Không | Không có | Lượt duy nhất mà phiên được quyền truy cập, FK RESTRICT đến visits.id. |
+| `visit_id` | `uuid` | Không | Không có | Lượt duy nhất mà phiên được quyền truy cập, FK RESTRICT đến visits.id. Partial UNIQUE (WHERE revoked_at IS NULL) đảm bảo mỗi lượt chỉ có tối đa một phiên hoạt động cùng lúc. |
 | `token_hash` | `bytea` | Không | Không có | SHA-256 của token cookie ros_guest, đúng 32 byte và UNIQUE. Không lưu token rõ. |
 | `created_at` | `timestamp with time zone` | Không | Không có | Thời điểm cấp phiên UTC do entity/server gán; DB không DEFAULT. |
 | `expires_at` | `timestamp with time zone` | Không | Không có | Hạn phiên phải sau created_at; backend đặt 12 giờ, DB không CHECK đúng 12 giờ. |
@@ -81,15 +81,20 @@ CREATE UNIQUE INDEX guest_sessions_token_hash_key ON public.guest_sessions USING
 CREATE INDEX ix_guest_visit ON public.guest_sessions USING btree (visit_id);
 ```
 
+```sql
+CREATE UNIQUE INDEX ux_guest_sessions_active_visit ON public.guest_sessions USING btree (visit_id) WHERE (revoked_at IS NULL);
+```
+
 ## 5. Trigger và quy tắc liên bảng
 
 Không có user-defined trigger trên bảng này. Các FK/CHECK ở trên vẫn được PostgreSQL thực thi.
 
 ## 6. Vòng đời, lưu ý và giới hạn
 
-- Backend cấp phiên tối đa 12 giờ theo service hiện tại. Quyền còn phụ thuộc visit OPEN và revoked_at, nên cookie cũ không dùng được sau đóng lượt.
-- QR bàn cố định không phải guest session. Khi có lượt mới cần tham gia lại; migration003 đã bỏ join_generation.
-- Audit và đợt món có thể tham chiếu phiên; giữ bản ghi để bảo toàn lịch sử, chỉ thu hồi quyền.
+- Backend cấp phiên tối đa 12 giờ theo service hiện tại. Quyền còn phụ thuộc visit OPEN và revoked_at, nên cookie cũ không dùng được sau đóng lượt hoặc khi bị thu hồi.
+- Khi bàn đang có một phiên hoạt động (revoked_at IS NULL và expires_at > now), thiết bị khác quét QR sẽ bị từ chối (409 TABLE_QR_CLAIMED) trừ khi thực khách hiện tại bấm Thoát hoặc nhân viên mở khóa QR (`/tables/{id}/qr/unlock`).
+- QR bàn cố định không phải guest session. Khi có lượt mới cần tham gia lại; migration003 đã bỏ join_generation, migration005 thêm `ux_guest_sessions_active_visit`.
+- Audit và đợt món có thể tham chiếu phiên; giữ bản ghi để bảo toàn lịch sử, chỉ thu hồi quyền qua `revoked_at`.
 
 ## 7. Cập nhật tài liệu
 

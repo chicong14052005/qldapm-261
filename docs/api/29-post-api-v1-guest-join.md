@@ -1,31 +1,39 @@
-# GET /api/v1/qr/{token}
+# POST /api/v1/guest/join
 
-Đọc thông tin QR công khai. **Quyền:** Công khai.
+Khách tham gia lượt đang mở bằng QR cố định. **Quyền:** Công khai.
 
 Hợp đồng test của endpoint đã implement; nghiệp vụ do [SSOT P1.3](../../SSOT/P1.3-ban-va-luot-khach.md) sở hữu. Các chuỗi `<...>` trong response là giá trị minh họa cần thay bằng dữ liệu server thật.
 
 ## URL và headers
 
-`GET {{baseUrl}}/api/v1/qr/{{qrToken}}`
+`POST {{baseUrl}}/api/v1/guest/join`
 
 `Content-Type: application/json`
+
+- `X-CSRF-TOKEN: <token lấy từ GET /api/v1/auth/csrf>`
+- `Idempotency-Key: <UUID mới cho một ý định; retry giữ nguyên>`
 
 - Cookie jar giữ phiên đăng nhập/tham gia. Với request khách, thêm `X-Actor: guest`.
 
 ## Payload đầy đủ cho kịch bản mẫu
 
-Không có request body.
+```json
+{
+  "qrToken": "{{qrToken}}"
+}
+```
 
 ## Response thành công — HTTP 200
 
 ```json
 {
-  "tableCode": "B01",
-  "hasOpenVisit": true
+  "visitId": "<visitId>",
+  "orderId": "<orderId>",
+  "tableCode": "B01"
 }
 ```
 
-
+Lưu cookie ros_guest. Khi cookie staff cũng có trong Postman, gửi X-Actor: guest cho request khách. Giới hạn 60 lần/phút/IP. Không nhập mã. Bàn chưa mở trả 409 TABLE_NOT_OPEN; bàn đã có thực khách đang giữ phiên trả 409 TABLE_QR_CLAIMED (trừ khi thực khách đó bấm Thoát hoặc nhân viên gọi POST /tables/{id}/qr/unlock); QR sai/bàn inactive trả 404. Gọi lại bằng cùng cookie hợp lệ giữ cùng phiên/lượt; không tạo order mới.
 
 ## Cách thử và lỗi cần kiểm tra
 

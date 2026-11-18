@@ -33,7 +33,7 @@ Không có request body.
 }
 ```
 
-Bàn có khách: visit={id,partySize,version,orderId}. Không trả QR hash, joinCode hoặc join HMAC.
+Bàn có khách: visit={id,partySize,version,orderId,hasActiveGuestSession}. Không trả QR hash, joinCode hoặc join HMAC.
 
 ## Cách thử và lỗi cần kiểm tra
 

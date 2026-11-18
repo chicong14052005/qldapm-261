@@ -1,6 +1,6 @@
 # ADR-0003 — PostgreSQL và cấu trúc dữ liệu hiện hành
 
-03/11/2026 · Đã triển khai đến migration004. Bản cập nhật này thay từ điển thiết kế ban đầu bằng mô tả đã đối chiếu code/catalog; không thay yêu cầu nghiệp vụ trong [SSOT](../SSOT/README.md).
+03/11/2026 (cập nhật 18/11/2026) · Đã triển khai đến migration005. Bản cập nhật này thay từ điển thiết kế ban đầu bằng mô tả đã đối chiếu code/catalog; không thay yêu cầu nghiệp vụ trong [SSOT](../SSOT/README.md).
 
 ## 1. Quyết định và nguồn dữ liệu
 
@@ -39,6 +39,7 @@ Tổng **15 bảng ứng dụng và 1 bảng EF**. [ERD](../docs/db/README.md#qu
 | Quy tắc | Cơ chế thực tế |
 |---|---|
 | Một lượt OPEN/bàn | Partial unique index visits(table_id) WHERE status='OPEN' |
+| Tối đa một phiên khách hoạt động/lượt | Partial unique index `ux_guest_sessions_active_visit` trên `guest_sessions(visit_id) WHERE revoked_at IS NULL` (migration005) + khóa visit trong `Join` |
 | Một order/visit và một payment/order | UNIQUE + FK; deferred trigger đòi mỗi visit có order và mỗi PAID có payment |
 | Guest không lẫn lượt | Auth kiểm visit OPEN/session; guard_batch kiểm guest session thuộc visit của order |
 | Đợt đầu tự duyệt, đợt thêm có quyết định | CHECK hình dạng reviewer/time/reason; guard_batch chặn sửa quyết định cuối và tự duyệt sai role |
@@ -75,7 +76,7 @@ Payment snapshot nullable chỉ tương thích dữ liệu dev cũ, không backf
 
 ## 7. Migration, tài liệu và thay đổi
 
-Chuỗi hiện tại: 001 InitialSchema → 002 IntegrityGuards → 003 FixedTableQr → 004 PaymentRecipientHistory. EF dùng `__EFMigrationsHistory`; các bản đã chạy không được sửa. `Down()` hiện throw, chưa hỗ trợ rollback tự động. [ADR-0004](0004-docker-va-migration.md) và [GUIDE](../GUIDE/DATABASE-MIGRATIONS.md) mô tả quy trình thực tế.
+Chuỗi hiện tại: 001 InitialSchema → 002 IntegrityGuards → 003 FixedTableQr → 004 PaymentRecipientHistory → 005 SingleActiveGuestPerVisit. EF dùng `__EFMigrationsHistory`; các bản đã chạy không được sửa. `Down()` hiện throw, chưa hỗ trợ rollback tự động. [ADR-0004](0004-docker-va-migration.md) và [GUIDE](../GUIDE/DATABASE-MIGRATIONS.md) mô tả quy trình thực tế.
 
 Khi code/schema đổi: cập nhật đúng SSOT, ADR liên quan, metadata và giải thích bảng trong cùng commit; chạy `python scripts/generate_db_docs.py --check`. [ADR-0011](0011-dong-bo-tai-lieu-database.md) quy định bộ tài liệu và kiểm tra stale. Fingerprint giúp báo nguồn backend đổi, không tự chứng minh ngữ nghĩa tài liệu.
 

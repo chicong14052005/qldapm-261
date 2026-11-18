@@ -7,15 +7,16 @@
     "Backend/Restaurant.Api/Data/PaymentHistoryMigration.cs": "75ce0cb29e8d9946d37d9064ab5f879bed6a2918fa5c5d34b3167553af2f5f69",
     "Backend/Restaurant.Api/Data/schema.sql": "63b45f42d8585b30dd463151cc96f7568a50317b182e4edced8978445325f511",
     "Backend/Restaurant.Api/Data/Seed.cs": "dc6fa5ec061dd9693b7ae12a90f9a2b703a1b6dacb24d426d5962ee3ca666f2a",
+    "Backend/Restaurant.Api/Data/SingleActiveGuestMigration.cs": "a36c39d0c087c7fcdd87bebde45ba201bf0128edd8d9c1ec4cce99226f4b1882",
     "Backend/Restaurant.Api/Domain/Entities.cs": "71fcce856c8f4d4a1c83a12b022d18b02022b1e9fe7824b58e9562b772225086",
     "Backend/Restaurant.Api/Domain/PaymentHistoryQuery.cs": "1fe5516062c457afa7a50eace88e31a82d17a1bad82e9d260b9c35ee34e361a2",
     "Backend/Restaurant.Api/Domain/Rules.cs": "e6c4807b45adfd88e23c930e13831a99616e0bcde845d676f470e221d3dd75bd",
-    "Backend/Restaurant.Api/Program.cs": "3a5c11f49914612db99350b181a021fea20a56e94e60ad0d043ce9627c149c66",
+    "Backend/Restaurant.Api/Program.cs": "bfdb34419c63b5fdea35ea53f546d8d60da124fc118a980922a31ccffae6f5de",
     "Backend/Restaurant.Api/Restaurant.Api.csproj": "81e4dc6bce0ab58b989a1f87e4ce3cb3ea72aafe0fde71e285a65b6324cc6b52",
     "Backend/Restaurant.Api/Services/Accounts.cs": "675896ce127b20ad774b5b6d11a32627bc5844b68909f7f815604d13838508ce",
     "Backend/Restaurant.Api/Services/ApiService.cs": "da2bac19637ceecebb62404990e918b62facfd9683db5dd9989940b364660aa0",
     "Backend/Restaurant.Api/Services/Billing.cs": "b1973ae1e41a4d2b5ccd5ed247adecb1428d50b12af020db997613475a969d9e",
-    "Backend/Restaurant.Api/Services/MenuAndVisits.cs": "3f233d3207c60d9c87a6537fd2e48c6f74c62db7ea8a00f1ecc26a8613dddd73",
+    "Backend/Restaurant.Api/Services/MenuAndVisits.cs": "743d7cadb2f86bee22ba6ac1d99e6b22aae510b6065643e01cb5809d1b811d37",
     "Backend/Restaurant.Api/Services/Ordering.cs": "94a768d23d47bc167d317e95658f4d28e15895d460ba5b92ff2d84563903deab"
   }
 }
