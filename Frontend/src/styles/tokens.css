@@ -1,22 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
-
+/* Design System: Bếp Nhà (Figma 110:4199) · Flat operational palette, zero gradients, zero glassmorphism */
 :root {
-  --bg: #f7f8f4;
-  --panel: #fff;
-  --ink: #23362c;
-  --muted: #849087;
-  --green: #286348;
-  --green-hover: #194d36;
-  --light: #eaf2e9;
-  --line: #e7ebe4;
-  --orange: #d7a765;
-  --red: #b95143;
+  /* Brand */
+  --brand-600: #286348;
+  --brand-700: #204f3a;
+  --brand-100: #e4f1e8;
+
+  /* Surfaces & Neutrals */
+  --canvas: #f7f8f4;
+  --surface: #ffffff;
+  --surface-tint: #f0f7f1;
+  --ink: #1f2c23;
+  --ink-muted: #4b5d50;
+  --ink-subtle: #748078;
+  --border: #dde5dd;
+
+  /* Semantic Status */
+  --success: #28704b;
+  --warning: #98601c;
+  --danger: #b64b43;
+  --info: #2b6783;
+
+  --status-placed-bg: #e8f2f7;
+  --status-placed-fg: #2b6783;
+  --status-accepted-bg: #e4f1e8;
+  --status-accepted-fg: #204f3a;
+  --status-preparing-bg: #fff1d8;
+  --status-preparing-fg: #98601c;
+  --status-ready-bg: #e3f3e8;
+  --status-ready-fg: #28704b;
+  --status-served-bg: #f0f7f1;
+  --status-served-fg: #204f3a;
+  --status-cancelled-bg: #fceae7;
+  --status-cancelled-fg: #b64b43;
+
+  --disabled-bg: #ebeee8;
+  --disabled-fg: #748078;
+
+  /* Compatibility Aliases */
+  --bg: var(--canvas);
+  --panel: var(--surface);
+  --muted: var(--ink-subtle);
+  --green: var(--brand-600);
+  --green-hover: var(--brand-700);
+  --light: var(--brand-100);
+  --line: var(--border);
+  --orange: var(--warning);
+  --red: var(--danger);
+
+  /* Typography */
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-agbalumo), "Agbalumo", serif;
+
+  /* Radii & Layout */
   --radius-sm: 6px;
   --radius-md: 9px;
   --radius-lg: 12px;
-  --radius-xl: 15px;
-  --sidebar-width: 242px;
-  --topbar-height: 81px;
-  --shadow-modal: 0 20px 80px #19332533;
+  --radius-xl: 16px;
+  --sidebar-width: 232px;
+  --sidebar-compact: 80px;
+  --topbar-height: 76px;
+  --mobile-nav-height: 68px;
+  --shadow-modal: 0 20px 60px rgba(31, 44, 35, 0.22);
 }
-

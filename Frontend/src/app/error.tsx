@@ -1,4 +1,5 @@
 "use client";
+import BrandLogo from "@/components/common/BrandLogo";
 
 export default function ErrorBoundary({
   error,
@@ -9,13 +10,12 @@ export default function ErrorBoundary({
 }) {
   return (
     <div className="loading">
-      <div className="brand-mark">B</div>
+      <BrandLogo size={56} />
       <h2>Đã xảy ra sự cố không mong muốn</h2>
       <p className="muted">{error.message || "Vui lòng thử tải lại trang."}</p>
-      <button className="primary" onClick={reset}>
+      <button type="button" className="primary" onClick={reset}>
         Thử lại
       </button>
     </div>
   );
 }
-

@@ -11,12 +11,19 @@ export default function GlobalError({
     <html lang="vi">
       <body>
         <div className="loading">
-          <div className="brand-mark">B</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo/logo.ico"
+            alt="Bếp Nhà"
+            width={56}
+            height={56}
+            className="brand-logo-img"
+          />
           <h2>Hệ thống gặp lỗi nghiêm trọng</h2>
           <p className="muted">
             {error.message || "Không thể khởi chạy giao diện."}
           </p>
-          <button className="primary" onClick={reset}>
+          <button type="button" className="primary" onClick={reset}>
             Tải lại ứng dụng
           </button>
         </div>
@@ -24,4 +31,3 @@ export default function GlobalError({
     </html>
   );
 }
-
