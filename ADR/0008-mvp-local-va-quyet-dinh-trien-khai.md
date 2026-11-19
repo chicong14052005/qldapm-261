@@ -23,6 +23,12 @@ ASP.NET Core .NET10, Npgsql EF provider10.0.0, Next.js16.4.4, React19.3.1, TypeS
 
 Frontend CSS riêng và React hooks, chưa thêm Tailwind/TanStack Query/React Hook Form/Zod để giảm thời gian dựng. `RestaurantApp.tsx` chứa UI theo vai trò, `lib/api.ts` chứa transport/CSRF/errors/key. Backend vẫn kiểm quyền/validation độc lập.
 
+### Điều chỉnh UI thanh toán — 19/11/2026
+
+Trang thanh toán desktop được đồng bộ theo Figma `BN / 08 / Thanh toán / desktop` (node `115:4412`) bằng CSS Modules và các design token sẵn có, không đưa Tailwind hoặc thư viện UI mới vào dự án. Danh sách chờ và chi tiết đơn hiển thị song song; frontend đọc chi tiết đơn đã chọn bằng endpoint hiện hữu `GET /api/v1/orders/{id}`. Luồng `payForm`, payload thanh toán, expectedVersion, Idempotency-Key và xử lý transaction backend không thay đổi.
+
+Trang lịch sử thanh toán admin tiếp tục dùng endpoint/phân trang/bộ lọc/modal hiện hữu nhưng trình bày theo Figma `BN / 09 / Lịch sử thanh toán / desktop` (node `115:4599`): metric cards, search bar và bảng 5 cột; bộ lọc nâng cao thu gọn để không làm sai bố cục chính. Không thêm API thống kê: số hóa đơn dùng `totalCount`, còn tổng thu và số đơn mang về ghi rõ là tổng hợp trên trang kết quả hiện tại.
+
 ## Migration thực tế
 
 **SQL-first EF migrations**: InitialMigration đọc embedded `Data/schema.sql`; IntegrityMigration thêm defaults/index/guards. Job migrate gọi `Database.MigrateAsync()` và seed idempotent; API không tự migrate. Không EnsureCreated, không sửa migration đã áp dụng.

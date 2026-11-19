@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { SlidersHorizontal, X } from "lucide-react";
 import { api, labels, money } from "@/lib/api";
 import { dateTime } from "@/lib/date-time";
 import { paymentMethodNames } from "@/config/status";
@@ -35,6 +35,34 @@ function Receiver({ value }: { value: PaymentRecipient }) {
   );
 }
 
+function paymentTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return new Intl.DateTimeFormat("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
+  }).format(date);
+}
+
+function compactMoney(value: number) {
+  if (value < 1_000_000) return money(value);
+  return new Intl.NumberFormat("vi-VN", {
+    notation: "compact",
+    maximumFractionDigits: 2,
+  })
+    .format(value)
+    .replace("Tr", "tr");
+}
+
+function destination(row: PaymentHistoryPage["items"][number]) {
+  if (row.orderType === "DINE_IN") {
+    return row.tableCode ? `Bàn ${row.tableCode}` : "Tại bàn";
+  }
+  return "Mang về";
+}
+
 export default function PaymentHistory({
   refreshToken,
 }: {
@@ -50,6 +78,7 @@ export default function PaymentHistory({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<any>(null);
   const [detailError, setDetailError] = useState("");
+  const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -121,167 +150,190 @@ export default function PaymentHistory({
   const field = (name: keyof PaymentFilters, value: string) =>
     setDraft((old) => ({ ...old, [name]: value }));
 
+  const visibleRevenue =
+    result?.items.reduce((total, row) => total + row.amountVnd, 0) ?? 0;
+  const visibleTakeaway =
+    result?.items.filter((row) => row.orderType === "TAKEAWAY").length ?? 0;
+
   return (
     <section
       className="payment-history"
       aria-label="Lịch sử thanh toán của admin"
     >
-      <p className="muted">
-        Tra cứu toàn bộ đơn đã thanh toán. Thời gian và bộ lọc ngày theo giờ
-        Việt Nam (UTC+07:00).
-      </p>
+      <div className={styles.metrics} aria-label="Tổng quan lịch sử thanh toán">
+        <article className={styles.metricCard}>
+          <span>Đã thanh toán</span>
+          <strong>{result?.totalCount ?? 0}</strong>
+          <small>Hóa đơn hoàn tất</small>
+        </article>
+        <article className={styles.metricCard}>
+          <span>Tổng thu</span>
+          <strong>{compactMoney(visibleRevenue)}</strong>
+          <small>Trong trang hiện tại</small>
+        </article>
+        <article className={styles.metricCard}>
+          <span>Đơn mang về</span>
+          <strong>{String(visibleTakeaway).padStart(2, "0")}</strong>
+          <small>Trong trang hiện tại</small>
+        </article>
+      </div>
       <form
-        className={`history-filters panel ${styles.filters}`}
+        className={styles.filterForm}
         onSubmit={(event) => {
           event.preventDefault();
           setPage(1);
           setFilters({ ...draft });
         }}
       >
-        <label className="history-search">
-          Tìm đơn, biên nhận, bàn hoặc người nhận
-          <input
-            value={draft.search}
-            onChange={(e) => field("search", e.target.value)}
-            maxLength={120}
-            placeholder="VD: DH-..., BN-..., B01, tên thu ngân"
-          />
-        </label>
-        <label>
-          Từ ngày
-          <input
-            type="date"
-            value={draft.fromDate}
-            onChange={(e) => field("fromDate", e.target.value)}
-          />
-        </label>
-        <label>
-          Đến hết ngày
-          <input
-            type="date"
-            value={draft.toDate}
-            onChange={(e) => field("toDate", e.target.value)}
-          />
-        </label>
-        <label>
-          Phương thức
-          <select
-            value={draft.method}
-            onChange={(e) => field("method", e.target.value)}
-          >
-            <option value="">Tất cả</option>
-            {Object.entries(paymentMethodNames).map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Loại đơn
-          <select
-            value={draft.orderType}
-            onChange={(e) => field("orderType", e.target.value)}
-          >
-            <option value="">Tất cả</option>
-            <option value="DINE_IN">Tại bàn</option>
-            <option value="TAKEAWAY">Mang về</option>
-          </select>
-        </label>
-        <label>
-          Người nhận tiền
-          <select
-            value={draft.receivedByStaffId}
-            onChange={(e) => field("receivedByStaffId", e.target.value)}
-          >
-            <option value="">Tất cả nhân viên</option>
-            {staff.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.displayName} ({u.username}){u.isActive ? "" : " · Đã khóa"}
-              </option>
-            ))}
-          </select>
-        </label>
-        <div className="history-filter-actions">
-          <button className="primary" disabled={loading}>
-            Áp dụng bộ lọc
-          </button>
+        <div className={styles.searchBar}>
+          <label className={styles.searchLabel}>
+            <span className={styles.visuallyHidden}>
+              Tìm đơn, biên nhận, bàn hoặc người nhận
+            </span>
+            <input
+              value={draft.search}
+              onChange={(e) => field("search", e.target.value)}
+              maxLength={120}
+              placeholder="Tìm theo mã hóa đơn..."
+            />
+          </label>
           <button
             type="button"
-            className="secondary"
-            onClick={() => {
-              setDraft({ ...emptyFilters });
-              setFilters({ ...emptyFilters });
-              setPage(1);
-            }}
+            className={`secondary ${styles.filterToggle}`}
+            aria-expanded={advancedFiltersOpen}
+            onClick={() => setAdvancedFiltersOpen((open) => !open)}
           >
-            Xóa bộ lọc
+            <SlidersHorizontal size={16} strokeWidth={2} aria-hidden="true" />
+            Bộ lọc
           </button>
         </div>
+        {advancedFiltersOpen && (
+          <div className={styles.advancedFilters}>
+            <label>
+              Từ ngày
+              <input
+                type="date"
+                value={draft.fromDate}
+                onChange={(e) => field("fromDate", e.target.value)}
+              />
+            </label>
+            <label>
+              Đến hết ngày
+              <input
+                type="date"
+                value={draft.toDate}
+                onChange={(e) => field("toDate", e.target.value)}
+              />
+            </label>
+            <label>
+              Phương thức
+              <select
+                value={draft.method}
+                onChange={(e) => field("method", e.target.value)}
+              >
+                <option value="">Tất cả</option>
+                {Object.entries(paymentMethodNames).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Loại đơn
+              <select
+                value={draft.orderType}
+                onChange={(e) => field("orderType", e.target.value)}
+              >
+                <option value="">Tất cả</option>
+                <option value="DINE_IN">Tại bàn</option>
+                <option value="TAKEAWAY">Mang về</option>
+              </select>
+            </label>
+            <label>
+              Người nhận tiền
+              <select
+                value={draft.receivedByStaffId}
+                onChange={(e) => field("receivedByStaffId", e.target.value)}
+              >
+                <option value="">Tất cả nhân viên</option>
+                {staff.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.displayName} ({u.username})
+                    {u.isActive ? "" : " · Đã khóa"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className={styles.filterActions}>
+              <button className="primary" disabled={loading}>
+                Áp dụng bộ lọc
+              </button>
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {
+                  setDraft({ ...emptyFilters });
+                  setFilters({ ...emptyFilters });
+                  setPage(1);
+                }}
+              >
+                Xóa bộ lọc
+              </button>
+            </div>
+          </div>
+        )}
+        {!advancedFiltersOpen && (
+          <button className={styles.hiddenSubmit} tabIndex={-1} aria-hidden="true">
+            Tìm kiếm
+          </button>
+        )}
       </form>
       {error && (
         <div className="alert error" role="alert">
           {error}
         </div>
       )}
-      <div className="section-bar">
-        <h2>
-          Đơn đã thanh toán <small>{result?.totalCount ?? 0} kết quả</small>
-        </h2>
-        <span className="muted">
-          {loading ? "Đang tải…" : "Xếp theo thời điểm thanh toán mới nhất"}
-        </span>
-      </div>
-      <div className="table-wrap">
-        <table className="history-table">
+      <div className={`table-wrap ${styles.tableWrap}`}>
+        <table className={styles.historyTable}>
           <thead>
             <tr>
-              <th>Đơn / Biên nhận</th>
-              <th>Bàn / Mang về</th>
-              <th>Thời điểm thanh toán</th>
-              <th>Người nhận tiền</th>
-              <th>Phương thức</th>
-              <th>Số tiền</th>
-              <th>Chi tiết</th>
+              <th>Mã hóa đơn</th>
+              <th>Loại đơn</th>
+              <th>Thời gian</th>
+              <th>Thanh toán</th>
+              <th>Tổng tiền</th>
             </tr>
           </thead>
           <tbody>
             {result?.items.map((row) => (
-              <tr key={row.paymentId}>
+              <tr
+                key={row.paymentId}
+                className={styles.historyRow}
+                tabIndex={0}
+                aria-label={`Xem chi tiết hóa đơn ${row.receiptNo}`}
+                onClick={() => setSelectedId(row.paymentId)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedId(row.paymentId);
+                  }
+                }}
+              >
                 <td>
-                  <strong>{row.orderCode}</strong>
-                  <small>{row.receiptNo}</small>
+                  <strong>{row.receiptNo}</strong>
                 </td>
+                <td>{destination(row)}</td>
                 <td>
-                  <strong>{row.tableCode ?? row.pickupCode}</strong>
-                  <small>
-                    {row.orderType === "DINE_IN" ? "Tại bàn" : "Mang về"}
-                    {row.pickupName ? " · " + row.pickupName : ""}
-                  </small>
-                </td>
-                <td>
-                  <time dateTime={row.paidAt}>{dateTime(row.paidAt)}</time>
-                  <small>UTC+07:00</small>
-                </td>
-                <td>
-                  <Receiver value={row.receivedBy} />
+                  <time dateTime={row.paidAt}>{paymentTime(row.paidAt)}</time>
                 </td>
                 <td>{paymentMethodNames[row.method] ?? row.method}</td>
-                <td className="history-amount">{money(row.amountVnd)}</td>
-                <td>
-                  <button
-                    className="secondary"
-                    aria-label={"Xem đơn " + row.orderCode}
-                    onClick={() => setSelectedId(row.paymentId)}
-                  >
-                    Xem chi tiết
-                  </button>
-                </td>
+                <td className={styles.amount}>{money(row.amountVnd)}</td>
               </tr>
             ))}
             {!loading && result?.items.length === 0 && (
               <tr>
-                <td colSpan={7} className="history-empty">
+                <td colSpan={5} className="history-empty">
                   Không có đơn đã thanh toán phù hợp với bộ lọc.
                 </td>
               </tr>

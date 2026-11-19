@@ -88,6 +88,9 @@ export default function WorkspaceShell({
   }
 
   const title = navs.find((n) => n.id === tab)?.label ?? "Thực đơn";
+  const isBilling = tab === "billing";
+  const isPaymentHistory = tab === "payment-history";
+  const hasSimpleHeading = isBilling || isPaymentHistory;
 
   return (
     <div className={`app ${styles.shell} ${guest ? "customer" : ""}`.trim()}>
@@ -103,45 +106,54 @@ export default function WorkspaceShell({
         <main className="main">
           <div className="page-heading">
             <div>
-              <span className="eyebrow">
-                {guest ? "CHÚC BẠN NGON MIỆNG" : "VẬN HÀNH MỖI NGÀY"}
-              </span>
+              {!hasSimpleHeading && (
+                <span className="eyebrow">
+                  {guest ? "CHÚC BẠN NGON MIỆNG" : "VẬN HÀNH MỖI NGÀY"}
+                </span>
+              )}
               <h1>
                 {title}
-                <span className="heading-dot">.</span>
+                {!hasSimpleHeading && <span className="heading-dot">.</span>}
               </h1>
               <p className="muted">
-                {tab === "tables"
+                {isBilling
+                  ? "Xác nhận thanh toán và hoàn tất lượt khách."
+                  : isPaymentHistory
+                    ? "Tra cứu giao dịch đã hoàn tất của nhà hàng."
+                  : tab === "tables"
                   ? "Mỗi bàn ăn, một trải nghiệm được chăm chút."
                   : tab === "menu"
                     ? "Món ngon từ nguyên liệu tươi, dành cho mọi khẩu vị."
                     : "Theo dõi công việc và cập nhật trạng thái ngay tại đây."}
               </p>
             </div>
-            <div className="heading-actions">
-              <button
-                type="button"
-                className="secondary"
-                onClick={() =>
-                  tab === "payment-history"
-                    ? setPaymentHistoryRefresh((v) => v + 1)
-                    : run(refresh)
-                }
-              >
-                <RefreshCw size={18} strokeWidth={2} aria-hidden="true" />
-                Làm mới
-              </button>
-              {!guest && has("WAITER", "CASHIER", "MANAGER", "ADMIN") && (
+            {!hasSimpleHeading && (
+              <div className="heading-actions">
                 <button
                   type="button"
-                  className="primary"
-                  onClick={startNewTakeaway}
+                  className="secondary"
+                  onClick={() =>
+                    tab === "payment-history"
+                      ? setPaymentHistoryRefresh((v) => v + 1)
+                      : run(refresh)
+                  }
                 >
-                  <Plus size={18} strokeWidth={2} aria-hidden="true" />
-                  Đơn mang về
+                  <RefreshCw size={18} strokeWidth={2} aria-hidden="true" />
+                  Làm mới
                 </button>
-              )}
-            </div>
+                {!guest &&
+                  has("WAITER", "CASHIER", "MANAGER", "ADMIN") && (
+                    <button
+                      type="button"
+                      className="primary"
+                      onClick={startNewTakeaway}
+                    >
+                      <Plus size={18} strokeWidth={2} aria-hidden="true" />
+                      Đơn mang về
+                    </button>
+                  )}
+              </div>
+            )}
           </div>
 
           {!connected && (
