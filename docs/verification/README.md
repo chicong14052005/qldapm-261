@@ -89,3 +89,16 @@ Kiểm tra sau dọn: orders=0, payments=0, visits=0; đăng nhập admin thành
 | Mở luồng xác nhận | Đạt: CTA mở form hiện hữu với `CASH`/`BANK_TRANSFER`; không submit, không tạo payment hay thay đổi dữ liệu |
 
 Kiểm tra chỉ đọc dữ liệu chờ thanh toán đang có. Không chạy migration/seed/smoke, không xác nhận thanh toán và không thay đổi API, payload, expectedVersion, idempotency hoặc transaction backend.
+
+## UI lịch sử thanh toán theo Figma — 19/11/2026
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Đối chiếu Figma `BN / 09 / Lịch sử thanh toán / desktop` node `115:4599` | Đạt: 3 metric cards, search bar và bảng 5 cột dùng đúng token/kích thước/bố cục chính |
+| Production frontend build + TypeScript | Đạt, 14/14 routes được build |
+| Desktop 1440×900 | Render bằng dữ liệu local thật, 5 cột, không tràn ngang — [ảnh desktop](payment-history-figma-desktop.png) |
+| Mobile 390×844 | Metric cards xếp một cột, document không tràn ngang; bảng có vùng cuộn riêng — [ảnh mobile](payment-history-figma-mobile.png) |
+| Bộ lọc nâng cao | Đạt: giữ đủ 2 trường ngày, phương thức, loại đơn, người nhận, apply/clear; panel đóng mặc định |
+| Chi tiết thanh toán | Đạt: bấm hàng mở modal chỉ đọc hiện hữu; không gửi mutation |
+
+Kiểm tra chỉ đọc lịch sử hiện có. Không chạy migration/seed/smoke, không tạo payment và không thay đổi route, query, phân trang hoặc payload API.

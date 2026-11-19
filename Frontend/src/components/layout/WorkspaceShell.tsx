@@ -89,6 +89,8 @@ export default function WorkspaceShell({
 
   const title = navs.find((n) => n.id === tab)?.label ?? "Thực đơn";
   const isBilling = tab === "billing";
+  const isPaymentHistory = tab === "payment-history";
+  const hasSimpleHeading = isBilling || isPaymentHistory;
 
   return (
     <div className={`app ${styles.shell} ${guest ? "customer" : ""}`.trim()}>
@@ -104,18 +106,20 @@ export default function WorkspaceShell({
         <main className="main">
           <div className="page-heading">
             <div>
-              {!isBilling && (
+              {!hasSimpleHeading && (
                 <span className="eyebrow">
                   {guest ? "CHÚC BẠN NGON MIỆNG" : "VẬN HÀNH MỖI NGÀY"}
                 </span>
               )}
               <h1>
                 {title}
-                {!isBilling && <span className="heading-dot">.</span>}
+                {!hasSimpleHeading && <span className="heading-dot">.</span>}
               </h1>
               <p className="muted">
                 {isBilling
                   ? "Xác nhận thanh toán và hoàn tất lượt khách."
+                  : isPaymentHistory
+                    ? "Tra cứu giao dịch đã hoàn tất của nhà hàng."
                   : tab === "tables"
                   ? "Mỗi bàn ăn, một trải nghiệm được chăm chút."
                   : tab === "menu"
@@ -123,7 +127,7 @@ export default function WorkspaceShell({
                     : "Theo dõi công việc và cập nhật trạng thái ngay tại đây."}
               </p>
             </div>
-            {!isBilling && (
+            {!hasSimpleHeading && (
               <div className="heading-actions">
                 <button
                   type="button"
