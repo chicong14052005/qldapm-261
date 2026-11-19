@@ -75,3 +75,17 @@ Kiểm tra sau dọn: orders=0, payments=0, visits=0; đăng nhập admin thành
 | HTTP QR với khóa 1 phiên khách/lượt (`scripts/qr_smoke.py`) | Đạt — [qr-result.json](qr-result.json): chặn thiết bị thứ 2 (`409`), cho phép quét lại sau khi khách bấm Thoát hoặc nhân viên gọi `POST /tables/{id}/qr/unlock` |
 | Backend build (`dotnet build`) & API docs (`generate_api_docs.py`) | Đạt (`0` warnings/errors), đồng bộ 56 endpoints |
 | Frontend `tsc --noEmit`, unit tests, `next build` | Đạt (7/7 unit tests, 14/14 routes) |
+
+## UI trang thanh toán theo Figma — 19/11/2026
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Đối chiếu Figma `BN / 08 / Thanh toán / desktop` node `115:4412` | Đạt: danh sách chờ bên trái, selected edge, chi tiết món/tổng tiền/note/CTA bên phải dùng đúng token hiện có |
+| Production frontend build + TypeScript | Đạt, 14/14 routes được build |
+| Frontend unit trong Docker | 7/7 đạt |
+| Desktop 1440×900 | Đã render bằng dữ liệu local thật; chọn mặc định đơn đầu, không tràn ngang — [ảnh desktop](payment-page-figma-desktop.png) |
+| Mobile 390×844 | Hai cột chuyển thành một cột, không tràn ngang — [ảnh mobile](payment-page-figma-mobile.png) |
+| Chọn đơn khác | Đạt: selected card và metadata chi tiết cùng chuyển sang đơn được chọn |
+| Mở luồng xác nhận | Đạt: CTA mở form hiện hữu với `CASH`/`BANK_TRANSFER`; không submit, không tạo payment hay thay đổi dữ liệu |
+
+Kiểm tra chỉ đọc dữ liệu chờ thanh toán đang có. Không chạy migration/seed/smoke, không xác nhận thanh toán và không thay đổi API, payload, expectedVersion, idempotency hoặc transaction backend.
