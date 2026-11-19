@@ -4,6 +4,7 @@ import { formatTime } from "@/lib/format";
 import StatusBadge from "@/components/common/StatusBadge";
 import type { KitchenQueueItem } from "@/types/order";
 import styles from "./KitchenBoard.module.css";
+import servingStyles from "../serving/ServingQueue.module.css";
 
 const WAITING_AFTER_MINUTES = 5;
 const LATE_AFTER_MINUTES = 15;
@@ -48,6 +49,34 @@ export default function KitchenTicketCard({ item, mode, busy, connected, onActio
   const statusClass = statusClasses[item.status];
   const ageClass = waitAge ? ageClasses[waitAge.urgency] : undefined;
 
+  if (mode === "serving") {
+    return (
+      <article className={servingStyles.ticket}>
+        <div className={servingStyles.ticketInfo}>
+          <p className={servingStyles.ticketMeta}>
+            {item.destination} <span aria-hidden="true">•</span> #{item.orderCode}
+          </p>
+          <h3 className={servingStyles.ticketName}>{item.menuNameSnapshot}</h3>
+          <p className={servingStyles.ticketQuantity}>
+            {String(item.quantity).padStart(2, "0")} phần
+          </p>
+        </div>
+        <div className={servingStyles.ticketActions}>
+          <span className={servingStyles.readyLabel}>Hoàn thành</span>
+          <button
+            type="button"
+            className={`primary ${servingStyles.serveButton}`}
+            disabled={busy || !connected}
+            onClick={() => onAction(item, "serve")}
+          >
+            <span>{item.orderType === "TAKEAWAY" ? "Đã giao khách" : "Đã phục vụ"}</span>
+            <Check size={16} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article className={`panel kitchen-card ${styles.ticket} ${waitAge?.isLate ? styles.lateTicket : ""}`}>
       <div className="card-top">
@@ -66,9 +95,7 @@ export default function KitchenTicketCard({ item, mode, busy, connected, onActio
           {waitAge && <span className={`${styles.waitAge} ${ageClass ?? ""}`}>{waitAge.label}</span>}
           <small className={styles.ticketTime}>Vào bếp: {formatTime(item.eligibleAt)}</small>
         </div>
-        {mode === "serving" ? (
-          <button type="button" className="primary" disabled={busy || !connected} onClick={() => onAction(item, "serve")}><span>{item.orderType === "TAKEAWAY" ? "Đã giao khách" : "Đã phục vụ"}</span><Check size={16} strokeWidth={2.2} aria-hidden="true" /></button>
-        ) : item.status !== "READY" ? (
+        {item.status !== "READY" ? (
           <button type="button" className="primary" disabled={busy || !connected} onClick={() => onAction(item, item.status === "PLACED" ? "accept" : item.status === "ACCEPTED" ? "prepare" : "ready")}><span>{item.status === "PLACED" ? "Tiếp nhận" : item.status === "ACCEPTED" ? "Bắt đầu nấu" : "Hoàn thành"}</span><ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" /></button>
         ) : <span className={styles.readyMessage}>Đang chờ phục vụ</span>}
       </div>
