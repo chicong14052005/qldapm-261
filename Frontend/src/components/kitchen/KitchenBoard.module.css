@@ -1,5 +1,303 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.column {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+}
+
+.waitingColumn {
+  border-top: 4px solid var(--info);
+}
+
+.cookingColumn {
+  border-top: 4px solid var(--warning);
+}
+
+.readyColumn {
+  border-top: 4px solid var(--success);
+}
+
+.columnHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.columnHeader h3,
+.availabilityHeading h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.columnHeader p,
+.availabilityHeading p {
+  margin: 5px 0 0;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.count {
+  display: grid;
+  min-width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 999px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.waiting {
+  background: var(--status-placed-bg);
+  color: var(--status-placed-fg);
+}
+
+.cooking {
+  background: var(--status-preparing-bg);
+  color: var(--status-preparing-fg);
+}
+
+.ready {
+  background: var(--status-ready-bg);
+  color: var(--status-ready-fg);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 18px;
+}
+
+.metric {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+}
+
+.metricLabel {
+  color: var(--ink-muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.metricValue {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.waitingMetric .metricValue {
+  color: var(--info);
+}
+
+.cookingMetric .metricValue {
+  color: var(--warning);
+}
+
+.readyMetric .metricValue {
+  color: var(--success);
+}
+
+.lateMetric .metricValue {
+  color: var(--danger);
+}
+
+.ticketList {
+  display: grid;
+  gap: 12px;
+  min-height: 170px;
+  padding: 12px;
+}
+
+.emptyColumn {
+  display: grid;
+  min-height: 138px;
+  place-items: center;
+  margin: 0;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  color: var(--ink-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 18px;
+}
+
+.ticket {
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+.lateTicket {
+  border-color: color-mix(in srgb, var(--danger) 58%, var(--border));
+  border-left: 5px solid var(--danger);
+}
+
+.destination {
+  color: var(--brand-600);
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.itemStatus {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.placedStatus {
+  background: var(--status-placed-bg);
+  color: var(--status-placed-fg);
+}
+
+.acceptedStatus {
+  background: var(--status-accepted-bg);
+  color: var(--status-accepted-fg);
+}
+
+.preparingStatus {
+  background: var(--status-preparing-bg);
+  color: var(--status-preparing-fg);
+}
+
+.readyStatus {
+  background: var(--status-ready-bg);
+  color: var(--status-ready-fg);
+}
+
+.ticketTitle {
+  margin: 14px 0 0;
+  font-size: clamp(22px, 1.6vw, 27px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.ticketMeta {
+  margin: 7px 0 0;
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+.note {
+  border: 1px solid color-mix(in srgb, var(--warning) 45%, transparent);
+  background: color-mix(in srgb, var(--warning) 13%, var(--panel));
+}
+
+.ticketFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timeDetails {
+  display: grid;
+  gap: 4px;
+}
+
+.ticketTime {
+  color: var(--ink-muted);
+}
+
+.waitAge {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 13px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.ageNew {
+  background: var(--status-placed-bg);
+  color: var(--status-placed-fg);
+}
+
+.ageWaiting {
+  background: var(--status-preparing-bg);
+  color: var(--status-preparing-fg);
+}
+
+.ageLate {
+  background: color-mix(in srgb, var(--danger) 13%, var(--panel));
+  color: var(--danger);
+}
+
+.readyMessage {
+  color: var(--status-ready-fg);
+  font-size: 14px;
+  font-weight: 750;
+  text-align: right;
+}
+
+.columnTabs {
+  display: none;
+}
+
+.columnTab {
+  display: inline-flex;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.activeTab {
+  border-color: var(--brand-600);
+  background: var(--surface-tint);
+  box-shadow: inset 0 -3px 0 var(--brand-600);
+}
+
 .availabilityPanel {
-  margin-top: 28px;
+  margin-top: 24px;
+}
+
+.availabilityHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.availabilitySummary {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--surface-tint);
+  color: var(--ink-muted);
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .availabilityGrid {
@@ -9,3 +307,121 @@
   margin-top: 18px;
 }
 
+.availabilityButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  transition: background .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.available {
+  border-color: color-mix(in srgb, var(--success) 32%, var(--border));
+}
+
+.availabilityButton:hover:not(:disabled) {
+  border-color: var(--brand-600);
+  background: var(--surface-tint);
+}
+
+.availabilityButton:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+
+.unavailable {
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+  background: color-mix(in srgb, var(--danger) 9%, var(--panel));
+  color: var(--danger);
+}
+
+.unavailable:hover:not(:disabled) {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 14%, var(--panel));
+}
+
+.availabilityName {
+  font-weight: 650;
+}
+
+.availabilityState {
+  padding-left: 8px;
+  border-left: 1px solid currentColor;
+  font-size: 12px;
+  opacity: .8;
+}
+
+@media (max-width: 1100px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .columnTabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-bottom: 12px;
+    padding-bottom: 3px;
+  }
+
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .column {
+    display: none;
+  }
+
+  .activeColumn {
+    display: block;
+  }
+
+  .ticketList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .metric {
+    padding: 12px;
+  }
+
+  .metricLabel {
+    font-size: 12px;
+  }
+
+  .metricValue {
+    font-size: 23px;
+  }
+
+  .columnHeader h3,
+  .availabilityHeading h3 {
+    font-size: 16px;
+  }
+
+  .availabilityHeading,
+  .ticketFooter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .availabilitySummary {
+    align-self: flex-start;
+  }
+
+  .availabilityState {
+    display: none;
+  }
+
+  .ticketFooter :global(button) {
+    width: 100%;
+    justify-content: center;
+  }
+}
