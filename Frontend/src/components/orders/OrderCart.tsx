@@ -26,6 +26,11 @@ export default function OrderCart() {
     setOrderId,
     setOrder,
   } = useAuth();
+  const canCancelTakeawayDraft =
+    !order &&
+    cart.length > 0 &&
+    !guest &&
+    has("WAITER", "CASHIER", "MANAGER", "ADMIN");
 
   return (
     <aside id="order-cart-panel" className={`order-panel ${styles.panel}`}>
@@ -151,6 +156,26 @@ export default function OrderCart() {
           </span>
           <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
         </button>
+        {canCancelTakeawayDraft && (
+          <button
+            type="button"
+            className="danger-btn wide"
+            disabled={busy}
+            onClick={() =>
+              ask(
+                "Hủy đơn mang về mới",
+                [],
+                async () => {
+                  setCart([]);
+                  notify("Đã hủy đơn mang về.");
+                },
+                "Các món đang chọn sẽ bị xóa khỏi giỏ. Đơn chưa được gửi xuống bếp nên chưa phát sinh trên hệ thống.",
+              )
+            }
+          >
+            Hủy toàn đơn
+          </button>
+        )}
         {order?.status === "SERVING" && (
           <>
             <button
