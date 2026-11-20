@@ -1,8 +1,8 @@
 "use client";
 import { Check } from "lucide-react";
 import { formatTime, money } from "@/lib/format";
-import StatusBadge from "@/components/common/StatusBadge";
 import type { ApprovalBatch } from "@/types/order";
+import styles from "./ApprovalQueue.module.css";
 
 export default function ApprovalCard({
   batch,
@@ -18,37 +18,49 @@ export default function ApprovalCard({
   onApprove: (batch: ApprovalBatch) => void;
 }) {
   return (
-    <article className="panel">
-      <div className="card-top">
-        <strong className="destination">{batch.destination}</strong>
-        <StatusBadge status="PENDING" />
-      </div>
-      <h3>
-        {batch.orderCode} · Đợt {batch.sequenceNo}
-      </h3>
-      <p className="muted">Gửi lúc {formatTime(batch.createdAt)}</p>
-      {batch.items.map((i) => (
-        <div className="approval-item" key={i.id}>
-          <span>
-            <strong>
-              {i.quantity} × {i.menuNameSnapshot}
-            </strong>
-            <small>{i.note}</small>
-          </span>
-          <strong>{money(i.quantity * i.unitPriceVnd)}</strong>
+    <article className={styles.card}>
+      <div className={styles.cardContent}>
+        <div className={styles.cardHeader}>
+          <strong className={styles.destination}>{batch.destination}</strong>
+          <small className={styles.submittedAt}>Gửi lúc {formatTime(batch.createdAt)}</small>
         </div>
-      ))}
-      <div className="card-bottom">
-        <button className="danger-btn" onClick={() => onReject(batch)}>
+        <p className={styles.orderMeta}>
+          {batch.orderCode} · Đợt {batch.sequenceNo}
+        </p>
+        <div className={styles.itemList}>
+          {batch.items.map((item) => (
+            <div className={styles.item} key={item.id}>
+              <div className={styles.itemDetails}>
+                <strong className={styles.itemName}>
+                  {item.menuNameSnapshot} ×{item.quantity}
+                </strong>
+                <p className={styles.itemNote}>
+                  {item.note ? `Ghi chú: ${item.note}` : "Không có ghi chú"}
+                </p>
+              </div>
+              <strong className={styles.itemPrice}>
+                {money(item.quantity * item.unitPriceVnd)}
+              </strong>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={styles.actions}>
+        <button
+          type="button"
+          className={`danger-btn ${styles.rejectButton}`}
+          disabled={busy || !connected}
+          onClick={() => onReject(batch)}
+        >
           Từ chối
         </button>
         <button
           type="button"
-          className="primary"
+          className={`primary ${styles.approveButton}`}
           disabled={busy || !connected}
           onClick={() => onApprove(batch)}
         >
-          <span>Duyệt toàn đợt</span>
+          <span>Duyệt</span>
           <Check size={16} strokeWidth={2.2} aria-hidden="true" />
         </button>
       </div>
