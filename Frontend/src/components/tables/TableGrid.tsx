@@ -38,16 +38,17 @@ export default function TableGrid() {
     has,
     ask,
     mutate,
-    notify,
     run,
     selectOrder,
     openTable,
     setTableQr,
   } = useAuth();
 
-  const tables = data as Table[];
+  // Sắp xếp tự nhiên theo mã bàn (B01, B02, …, B10) để sơ đồ luôn đúng thứ tự.
+  const tables = [...(data as Table[])].sort((a, b) =>
+    a.code.localeCompare(b.code, "vi", { numeric: true, sensitivity: "base" }),
+  );
   const canManage = has("MANAGER", "ADMIN");
-  const canUnlockQr = has("WAITER", "MANAGER", "ADMIN");
 
   return (
     <>
@@ -98,26 +99,12 @@ export default function TableGrid() {
             busy={busy}
             connected={connected}
             canManage={canManage}
-            canUnlockQr={canUnlockQr}
             onSelectOrder={selectOrder}
             onOpenTable={openTable}
             onViewQr={(table) =>
               run(async () => {
                 setTableQr(await api(`/tables/${table.id}/qr`));
               })
-            }
-            onUnlockQr={(table) =>
-              ask(
-                `Mở khóa QR bàn ${table.code}`,
-                [],
-                async () => {
-                  await mutate(`/tables/${table.id}/qr/unlock`, {});
-                  notify(
-                    `Đã thu hồi phiên khách cũ của bàn ${table.code}. Một thiết bị mới tại bàn có thể quét QR ngay.`,
-                  );
-                },
-                "Phiên của thiết bị đang giữ bàn sẽ bị thu hồi nhưng đơn và các món đã gọi vẫn giữ nguyên, để một thiết bị khác tại bàn quét lại QR.",
-              )
             }
             onEditTable={(table) =>
               ask("Chỉnh sửa bàn", buildEditTableFields(table), async (v) => {

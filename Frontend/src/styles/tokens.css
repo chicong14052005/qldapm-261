@@ -61,4 +61,10 @@
   --topbar-height: 76px;
   --mobile-nav-height: 68px;
   --shadow-modal: 0 20px 60px rgba(31, 44, 35, 0.22);
+
+  /* Khung trang (sidebar + tiêu đề) theo mẫu UI 20/11/2026 */
+  --shell-ink: #23362c;
+  --shell-muted: #7f8f84;
+  --shell-venue-bg: #c9e1bf;
+  --shell-logout: #df0000;
 }
