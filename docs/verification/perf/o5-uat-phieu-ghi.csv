@@ -1,0 +1,6 @@
+﻿STT,Ngày,Mã người thử (P1–P5),Nhóm (khách lần đầu/đã dùng),Thiết bị và trình duyệt,Bàn,Giờ quét QR (hh:mm:ss),Giờ thấy đợt đầu "Đã gửi bếp" (hh:mm:ss),Thời gian (giây),Đạt ≤ 180 giây? (Có/Không),Tự làm không cần trợ giúp? (Có/Không),Số lần hỏi người hướng dẫn,Khó khăn quan sát được,Mức hài lòng (1–5)
+1,21/11/2026,P1,khách lần đầu,Windows PC - Chrome,B03,09:19:35,09:19:55,20,Có,Có,0,Không,3
+2,21/11/2026,P2,khách lần đầu,Windows PC - Chrome,B10,09:23:19,09:23:53,34,Có,Có,0,Không,3
+3,21/11/2026,P3,khách lần đầu,Windows PC - Chrome,B18,09:25:00,09:26:01,61,Có,Có,0,Không,4
+4,21/11/2026,P4,khách đã dùng,Windows PC - Chrome,B30,09:26:35,09:26:47,12,Có,Có,0,Không,5
+5,21/11/2026,P5,khách đã dùng,Windows PC - Chrome,B27,09:27:28,09:27:38,10,Có,Có,0,Không,5

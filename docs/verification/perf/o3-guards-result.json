@@ -1,0 +1,224 @@
+{
+  "objective": "O3",
+  "target": "Chặn 100% đặt món hết; 100% hủy sau nấu có lý do",
+  "environment": {
+    "base_url": "http://127.0.0.1:3000",
+    "run_at_vn": "2026-11-20T18:50:42+07:00",
+    "git_commit": "74884c8",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "host_cpu_count": 16,
+    "note": "Ghi thêm thủ công vào báo cáo: CPU/RAM máy host, tài nguyên Docker Desktop (Settings > Resources), mạng."
+  },
+  "sold_out_block_rate_percent": 100.0,
+  "sold_out_attempts": 12,
+  "cancel_guard_rate_percent": 100.0,
+  "cancel_attempts": 27,
+  "cases": [
+    {
+      "case": "v1: tạo đơn mang về có món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v1: gọi thêm món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v1: duyệt đợt chờ chứa món vừa hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v1: giá đã đổi (observedPrice sai) → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy món PREPARING thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy món PREPARING lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v1: bếp tự hủy món PREPARING → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy món READY thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy món READY lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v1: bếp tự hủy món READY → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy toàn đơn sau khi đã nấu → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    },
+    {
+      "case": "v1: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    },
+    {
+      "case": "v2: tạo đơn mang về có món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v2: gọi thêm món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v2: duyệt đợt chờ chứa món vừa hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v2: giá đã đổi (observedPrice sai) → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy món PREPARING thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy món PREPARING lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v2: bếp tự hủy món PREPARING → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy món READY thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy món READY lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v2: bếp tự hủy món READY → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy toàn đơn sau khi đã nấu → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    },
+    {
+      "case": "v2: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    },
+    {
+      "case": "v3: tạo đơn mang về có món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v3: gọi thêm món hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v3: duyệt đợt chờ chứa món vừa hết → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v3: giá đã đổi (observedPrice sai) → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy món PREPARING thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy món PREPARING lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v3: bếp tự hủy món PREPARING → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy món READY thiếu lý do → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy món READY lý do rỗng → 422",
+      "expected": 422,
+      "blocked": true
+    },
+    {
+      "case": "v3: bếp tự hủy món READY → 403",
+      "expected": 403,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy toàn đơn sau khi đã nấu → 409",
+      "expected": 409,
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    },
+    {
+      "case": "v3: hủy hợp lệ có ghi lý do trong audit",
+      "expected": "reason logged",
+      "blocked": true
+    }
+  ],
+  "cleanup": {
+    "a8cc7052-926e-4b86-b254-239c8c796a26": "PAID ZERO 0",
+    "54b0ea6f-fe32-4109-98af-c32c8be5f38a": "PAID ZERO 0",
+    "baacb24b-d538-470d-84d5-f5cfbcb74ea0": "PAID ZERO 0",
+    "ecbfffc8-2ecc-4610-be53-9a9f4ac72b0b": "CANCELLED",
+    "e008c9a8-1ee6-4118-b9d5-e0b65ae2a184": "CANCELLED",
+    "08e62f98-f41e-43c6-a9fc-7a2a353599bb": "CANCELLED"
+  },
+  "result": "PASS",
+  "note": "TC-02 trên UI vẫn kiểm thủ công. Đối chiếu toàn DB bằng scripts/perf/o2_o3_db_checks.sql."
+}

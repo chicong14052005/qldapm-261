@@ -1,0 +1,218 @@
+{
+  "objective": "O1",
+  "target": "Batch APPROVED tới KDS: p95 ≤ 3000 ms (ADR-0006 §5)",
+  "environment": {
+    "base_url": "http://localhost:3000",
+    "run_at": "2026-11-20T12:13:05.923Z",
+    "runs": 20,
+    "kds_poll_interval_ms": 1000,
+    "browser": "Chromium headless (Playwright 1.49.1)",
+    "note": "Ghi thêm CPU/RAM host và tài nguyên Docker vào báo cáo."
+  },
+  "overall": {
+    "count": 20,
+    "min_ms": 99.9,
+    "p50_ms": 494.7,
+    "p90_ms": 984.9,
+    "p95_ms": 1020.2,
+    "max_ms": 1102.6,
+    "mean_ms": 594.4
+  },
+  "by_mode": {
+    "first_batch": {
+      "count": 10,
+      "min_ms": 99.9,
+      "p50_ms": 383.8,
+      "p90_ms": 622.8,
+      "p95_ms": 984.9,
+      "max_ms": 984.9,
+      "mean_ms": 440.3
+    },
+    "approved_extra_batch": {
+      "count": 10,
+      "min_ms": 396.7,
+      "p50_ms": 677.1,
+      "p90_ms": 1020.2,
+      "p95_ms": 1102.6,
+      "max_ms": 1102.6,
+      "mean_ms": 748.6
+    }
+  },
+  "timeouts": 0,
+  "pending_batch_leaked_to_kds": false,
+  "samples": [
+    {
+      "n": 1,
+      "mode": "first_batch",
+      "marker": "O1-1-448cce",
+      "request_ms": 45,
+      "latency_ms": 984.9
+    },
+    {
+      "n": 2,
+      "mode": "approved_extra_batch",
+      "marker": "O1-2-d6eebf",
+      "request_ms": 38.8,
+      "visible_before_approve": false,
+      "latency_ms": 1020.2
+    },
+    {
+      "n": 3,
+      "mode": "first_batch",
+      "marker": "O1-3-7e9d6c",
+      "request_ms": 38.7,
+      "latency_ms": 461.2
+    },
+    {
+      "n": 4,
+      "mode": "approved_extra_batch",
+      "marker": "O1-4-df7b2c",
+      "request_ms": 36.1,
+      "visible_before_approve": false,
+      "latency_ms": 940.7
+    },
+    {
+      "n": 5,
+      "mode": "first_batch",
+      "marker": "O1-5-744f04",
+      "request_ms": 34.2,
+      "latency_ms": 622.8
+    },
+    {
+      "n": 6,
+      "mode": "approved_extra_batch",
+      "marker": "O1-6-8a9384",
+      "request_ms": 29.6,
+      "visible_before_approve": false,
+      "latency_ms": 677.1
+    },
+    {
+      "n": 7,
+      "mode": "first_batch",
+      "marker": "O1-7-d11961",
+      "request_ms": 31,
+      "latency_ms": 383.8
+    },
+    {
+      "n": 8,
+      "mode": "approved_extra_batch",
+      "marker": "O1-8-db63b2",
+      "request_ms": 66.1,
+      "visible_before_approve": false,
+      "latency_ms": 1102.6
+    },
+    {
+      "n": 9,
+      "mode": "first_batch",
+      "marker": "O1-9-5f64c0",
+      "request_ms": 168.6,
+      "latency_ms": 308
+    },
+    {
+      "n": 10,
+      "mode": "approved_extra_batch",
+      "marker": "O1-10-4fd0f9",
+      "request_ms": 111.7,
+      "visible_before_approve": false,
+      "latency_ms": 522.9
+    },
+    {
+      "n": 11,
+      "mode": "first_batch",
+      "marker": "O1-11-40fbfa",
+      "request_ms": 42.1,
+      "latency_ms": 99.9
+    },
+    {
+      "n": 12,
+      "mode": "approved_extra_batch",
+      "marker": "O1-12-be8ef0",
+      "request_ms": 31.2,
+      "visible_before_approve": false,
+      "latency_ms": 465.2
+    },
+    {
+      "n": 13,
+      "mode": "first_batch",
+      "marker": "O1-13-77c307",
+      "request_ms": 39.9,
+      "latency_ms": 333.2
+    },
+    {
+      "n": 14,
+      "mode": "approved_extra_batch",
+      "marker": "O1-14-7a3d98",
+      "request_ms": 41.8,
+      "visible_before_approve": false,
+      "latency_ms": 832.2
+    },
+    {
+      "n": 15,
+      "mode": "first_batch",
+      "marker": "O1-15-a1f6f6",
+      "request_ms": 36.5,
+      "latency_ms": 456.8
+    },
+    {
+      "n": 16,
+      "mode": "approved_extra_batch",
+      "marker": "O1-16-dcd95d",
+      "request_ms": 32.9,
+      "visible_before_approve": false,
+      "latency_ms": 659.2
+    },
+    {
+      "n": 17,
+      "mode": "first_batch",
+      "marker": "O1-17-0ab893",
+      "request_ms": 33.9,
+      "latency_ms": 494.7
+    },
+    {
+      "n": 18,
+      "mode": "approved_extra_batch",
+      "marker": "O1-18-89516f",
+      "request_ms": 44.8,
+      "visible_before_approve": false,
+      "latency_ms": 868.8
+    },
+    {
+      "n": 19,
+      "mode": "first_batch",
+      "marker": "O1-19-66f1dc",
+      "request_ms": 38.9,
+      "latency_ms": 257.9
+    },
+    {
+      "n": 20,
+      "mode": "approved_extra_batch",
+      "marker": "O1-20-4e29d4",
+      "request_ms": 38,
+      "visible_before_approve": false,
+      "latency_ms": 396.7
+    }
+  ],
+  "cleanup": {
+    "e271984c-fdf6-4276-9430-17efb3a581c6": "CANCELLED",
+    "ca697a7d-7d65-4990-9c56-327836ced3ac": "CANCELLED",
+    "ae1de303-25b2-438d-9ddd-56befd82fa1a": "CANCELLED",
+    "5e307a97-26f2-4a75-a2a5-e6b97463390f": "CANCELLED",
+    "bda10cac-d198-47cc-95d7-f1596198216e": "CANCELLED",
+    "aafb55ea-1c54-4d18-b353-bf218df0fc30": "CANCELLED",
+    "dd7bc22c-f688-4995-a8e4-bdcff305e07c": "CANCELLED",
+    "2313841b-363b-45f4-9946-7d699413aff5": "CANCELLED",
+    "e81f98a6-c542-440e-9bec-3374999bf772": "CANCELLED",
+    "b0d26f54-be30-4756-b166-480bc3a31fd1": "CANCELLED",
+    "8279d82d-e6fb-40ee-8594-7132840fdc4d": "CANCELLED",
+    "0f2231ad-41d6-4914-9735-c6fd28f3aa2d": "CANCELLED",
+    "4d46b86d-87a0-41d2-981b-512b73a0fb1d": "CANCELLED",
+    "57db7895-c478-4806-a741-df188fca4932": "CANCELLED",
+    "1600ce98-b33f-430a-ac2f-da4c78a1a484": "CANCELLED",
+    "0d1bf172-47ed-42ce-a979-87603fd25a3d": "CANCELLED",
+    "8160fb68-a071-444c-b0b5-e9597a6388f4": "CANCELLED",
+    "5a67f127-7f03-4f7d-9eb4-da56e2a29703": "CANCELLED",
+    "164ca18c-8a3e-4314-a9c4-2c9d8ce7c2b5": "CANCELLED",
+    "b21158b7-bb1a-45d3-a640-0a6a65add32a": "CANCELLED"
+  },
+  "result": "PASS"
+}

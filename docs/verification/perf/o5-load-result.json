@@ -1,0 +1,237 @@
+{
+  "objective": "O5 (tải)",
+  "target": "Chịu tải 30 bàn đồng thời theo ngưỡng ADR-0006 §5",
+  "environment": {
+    "base_url": "http://127.0.0.1:3000",
+    "run_at_vn": "2026-11-20T19:09:20+07:00",
+    "git_commit": "74884c8",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "host_cpu_count": 16,
+    "note": "Ghi thêm thủ công vào báo cáo: CPU/RAM máy host, tài nguyên Docker Desktop (Settings > Resources), mạng."
+  },
+  "config": {
+    "tables": 28,
+    "warmup": 120,
+    "duration": 600,
+    "waiters": 10,
+    "kitchens": 7,
+    "cashiers": 2,
+    "managers": 1,
+    "max_extra": 3,
+    "no_cleanup": false,
+    "threads": 48,
+    "staff_poll_s": 1,
+    "guest_poll_s": 2
+  },
+  "steady_seconds": 600.0,
+  "steady_requests": 27408,
+  "throughput_rps": 45.7,
+  "steady_status_counts": {
+    "200": 26841,
+    "409": 567
+  },
+  "conflicts_409": 567,
+  "server_errors_5xx_or_timeout": 0,
+  "api_overall": {
+    "count": 26389,
+    "min_ms": 4.6,
+    "p50_ms": 17.6,
+    "p90_ms": 44.0,
+    "p95_ms": 98.9,
+    "p99_ms": 385.6,
+    "max_ms": 1087.9,
+    "mean_ms": 32.5
+  },
+  "staff_queue_reads": {
+    "count": 14611,
+    "min_ms": 5.4,
+    "p50_ms": 16.1,
+    "p90_ms": 34.1,
+    "p95_ms": 75.9,
+    "p99_ms": 352.0,
+    "max_ms": 955.2,
+    "mean_ms": 29.2
+  },
+  "approved_to_kitchen_queue": {
+    "count": 112,
+    "min_ms": 3.6,
+    "p50_ms": 227.8,
+    "p90_ms": 784.1,
+    "p95_ms": 868.3,
+    "p99_ms": 918.8,
+    "max_ms": 1235.4,
+    "mean_ms": 322.5,
+    "note": "Đo ở mức API (lần đầu batch xuất hiện trong /kitchen/items), không gồm thời gian render UI; O1 đo UI riêng."
+  },
+  "by_endpoint": {
+    "GET /approval-batches": {
+      "count": 3882,
+      "min_ms": 5.4,
+      "p50_ms": 13.8,
+      "p90_ms": 34.6,
+      "p95_ms": 67.7,
+      "p99_ms": 299.5,
+      "max_ms": 947.3,
+      "mean_ms": 27.5
+    },
+    "GET /checkout/orders": {
+      "count": 1157,
+      "min_ms": 5.5,
+      "p50_ms": 16.1,
+      "p90_ms": 36.4,
+      "p95_ms": 81.3,
+      "p99_ms": 392.3,
+      "max_ms": 912.5,
+      "mean_ms": 29.6
+    },
+    "GET /kitchen/items": {
+      "count": 3882,
+      "min_ms": 5.8,
+      "p50_ms": 17.1,
+      "p90_ms": 32.1,
+      "p95_ms": 71.4,
+      "p99_ms": 358.8,
+      "max_ms": 770.9,
+      "mean_ms": 29.2
+    },
+    "GET /menu": {
+      "count": 755,
+      "min_ms": 4.6,
+      "p50_ms": 12.5,
+      "p90_ms": 35.0,
+      "p95_ms": 67.4,
+      "p99_ms": 181.1,
+      "max_ms": 467.7,
+      "mean_ms": 23.7
+    },
+    "GET /orders": {
+      "count": 578,
+      "min_ms": 5.6,
+      "p50_ms": 18.2,
+      "p90_ms": 33.6,
+      "p95_ms": 88.3,
+      "p99_ms": 357.0,
+      "max_ms": 929.9,
+      "mean_ms": 30.5
+    },
+    "GET /orders/{id} (khách)": {
+      "count": 8274,
+      "min_ms": 5.4,
+      "p50_ms": 18.6,
+      "p90_ms": 38.6,
+      "p95_ms": 100.3,
+      "p99_ms": 405.9,
+      "max_ms": 1058.1,
+      "mean_ms": 32.3
+    },
+    "GET /serving/items": {
+      "count": 5690,
+      "min_ms": 5.4,
+      "p50_ms": 17.0,
+      "p90_ms": 35.2,
+      "p95_ms": 83.2,
+      "p99_ms": 363.0,
+      "max_ms": 955.2,
+      "mean_ms": 30.2
+    },
+    "GET /tables": {
+      "count": 1152,
+      "min_ms": 6.0,
+      "p50_ms": 14.1,
+      "p90_ms": 36.5,
+      "p95_ms": 68.9,
+      "p99_ms": 251.7,
+      "max_ms": 803.9,
+      "mean_ms": 26.9
+    },
+    "POST /batches/{id}/approve": {
+      "count": 102,
+      "min_ms": 13.2,
+      "p50_ms": 47.8,
+      "p90_ms": 174.5,
+      "p95_ms": 283.5,
+      "p99_ms": 378.1,
+      "max_ms": 454.2,
+      "mean_ms": 81.6
+    },
+    "POST /order-items/{id}/(accept|prepare|ready)": {
+      "count": 538,
+      "min_ms": 9.7,
+      "p50_ms": 41.4,
+      "p90_ms": 194.0,
+      "p95_ms": 278.4,
+      "p99_ms": 417.3,
+      "max_ms": 689.2,
+      "mean_ms": 74.0
+    },
+    "POST /order-items/{id}/serve": {
+      "count": 323,
+      "min_ms": 12.9,
+      "p50_ms": 59.0,
+      "p90_ms": 346.4,
+      "p95_ms": 416.1,
+      "p99_ms": 752.4,
+      "max_ms": 1087.9,
+      "mean_ms": 134.6
+    },
+    "POST /orders/{id}/batches": {
+      "count": 56,
+      "min_ms": 26.3,
+      "p50_ms": 46.1,
+      "p90_ms": 226.7,
+      "p95_ms": 361.2,
+      "p99_ms": 435.8,
+      "max_ms": 435.8,
+      "mean_ms": 86.0
+    },
+    "csrf": {
+      "count": 1019,
+      "min_ms": 4.3,
+      "p50_ms": 13.8,
+      "p90_ms": 77.9,
+      "p95_ms": 142.7,
+      "p99_ms": 348.2,
+      "max_ms": 602.6,
+      "mean_ms": 34.6
+    }
+  },
+  "errors_sample": [],
+  "verdict": {
+    "api_p95_le_2000ms": true,
+    "staff_queue_p95_le_500ms": true,
+    "no_5xx_or_timeout": true,
+    "approved_to_kds_p95_le_3000ms": true
+  },
+  "result": "PASS",
+  "cleanup": {
+    "8063e341-5287-4458-a3f2-173229856abd": "PAID",
+    "be77aba1-0ec8-4c39-844e-2309b82be4f0": "PAID",
+    "9eb89736-6aaa-4aaa-a166-2f0c0c5e7d44": "PAID",
+    "81713d0f-42ec-41c3-9b30-1fc38f217817": "PAID",
+    "b7b92613-e701-4806-8444-5e5a6987f888": "PAID",
+    "ea83327b-118c-4498-8325-f98b7fb3e78d": "PAID",
+    "e653b7dd-4e88-4f0c-95aa-f0fc78e24224": "PAID",
+    "99e352a7-549e-4436-bbe7-d678813b50ae": "PAID",
+    "3521a865-0a11-45b2-946f-183db1c60704": "PAID",
+    "8b2a9b7d-e77d-4486-92ca-48815ef5174c": "PAID",
+    "17c604dc-7a4c-497b-a1b7-ba83cd5e646b": "PAID",
+    "58532536-7bf4-408f-b5d2-4566ee2181f8": "PAID",
+    "180f414c-2014-4762-9a2e-2d6409912a18": "PAID",
+    "7b184689-3bb2-48b8-a5ef-42bb7cc6a755": "PAID",
+    "ac305a4d-e477-48d7-ab95-2c18c775dfc0": "PAID",
+    "bf6a0750-76e6-4094-93a1-2cc9301928af": "PAID",
+    "3deb9b94-d16a-4196-9702-ccdffb34a78c": "PAID",
+    "22fd42a6-d00e-4a08-b481-a8dcbb9cf75e": "PAID",
+    "1779ff6d-3812-4d7d-a44a-618a377db61e": "PAID",
+    "ce7c4a13-0638-44e8-80ab-4beece905124": "PAID",
+    "5cacaf91-de1d-43f1-90cd-8e893266fb0c": "PAID",
+    "c240a30b-3547-4709-9608-5beff8e4fc6e": "PAID",
+    "c40175b4-d8dc-4a40-8142-af96c0d37c8b": "PAID",
+    "6beb7bd3-8e5c-47f9-a878-6f4eb974fe2f": "PAID",
+    "34d6ad67-1953-409a-9b0b-4fbed14b831a": "PAID",
+    "a39a5fac-663c-4191-8b5b-8f90eb8bbfe1": "PAID",
+    "8d4f0f7f-5021-446a-853d-d066a321bd1a": "PAID",
+    "8840ff15-ad0e-451f-bbf0-9cb2d6bb98ff": "PAID"
+  }
+}

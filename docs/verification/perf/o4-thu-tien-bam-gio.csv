@@ -1,0 +1,6 @@
+﻿STT,Ngày đo,Người thao tác (thu ngân),Mã đơn,Mã nhận / Bàn,Tổng tiền (đ),Phương thức (CASH/BANK_TRANSFER),Giờ bắt đầu (hh:mm:ss),Giờ thấy biên nhận (hh:mm:ss),Thời gian (giây),Đạt ≤ 60 giây? (Có/Không),Khó khăn / ghi chú
+1,21/11/2026,Nhân viên thu ngân (cashier),DH-5482ABA7ECDD,MV-47FC7FCB (mang về),270000,BANK_TRANSFER,07:32:50,07:33:04,14,Có, Phải tự ghi thông tin chuyển khoản
+2,21/11/2026,Nhân viên thu ngân (cashier),DH-C5726E60424E,MV-53D6E66B (mang về),360000,CASH,07:32:17,07:32:36,19,Có,Không
+3,21/11/2026,Nhân viên thu ngân (cashier),DH-D01F465C263D,MV-A634C245 (mang về),475000,CASH,07:31:41,07:32:15,34,Có,Không
+4,21/11/2026,Nhân viên thu ngân (cashier),DH-14CC36962815,MV-3536420E (mang về),270000,CASH,07:30:53,07:31:16,23,Có,Không
+5,21/11/2026,Nhân viên thu ngân (cashier),DH-18F7D9BA1886,MV-EE776314 (mang về),360000,CASH,07:30:18,07:30:52,34,Có,Không

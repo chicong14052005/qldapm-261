@@ -47,7 +47,6 @@ export default function WorkspaceShell({
     tableQr,
     setTableQr,
     paymentHistoryRefresh,
-    setPaymentHistoryRefresh,
     pending,
     has,
     notify,
@@ -100,45 +99,19 @@ export default function WorkspaceShell({
       />
       <div className={`workspace ${styles.workspace}`}>
         <AppHeader
-          title={title}
           onToggleMobileNav={() => setMobileNavOpen((v) => !v)}
         />
         <main className="main">
           <div className="page-heading">
-            <div>
-              {!hasSimpleHeading && (
-                <span className="eyebrow">
-                  {guest ? "CHÚC BẠN NGON MIỆNG" : "VẬN HÀNH MỖI NGÀY"}
-                </span>
-              )}
-              <h1>
-                {title}
-                {!hasSimpleHeading && <span className="heading-dot">.</span>}
-              </h1>
-              <p className="muted">
-                {isBilling
-                  ? "Xác nhận thanh toán và hoàn tất lượt khách."
-                  : isPaymentHistory
-                    ? "Tra cứu giao dịch đã hoàn tất của nhà hàng."
-                  : tab === "tables"
-                  ? "Mỗi bàn ăn, một trải nghiệm được chăm chút."
-                  : tab === "menu"
-                    ? "Món ngon từ nguyên liệu tươi, dành cho mọi khẩu vị."
-                    : "Theo dõi công việc và cập nhật trạng thái ngay tại đây."}
-              </p>
-            </div>
+            <h1>{title}</h1>
             {!hasSimpleHeading && (
               <div className="heading-actions">
                 <button
                   type="button"
                   className="secondary"
-                  onClick={() =>
-                    tab === "payment-history"
-                      ? setPaymentHistoryRefresh((v) => v + 1)
-                      : run(refresh)
-                  }
+                  onClick={() => run(refresh)}
                 >
-                  <RefreshCw size={18} strokeWidth={2} aria-hidden="true" />
+                  <RefreshCw size={16} strokeWidth={2} aria-hidden="true" />
                   Làm mới
                 </button>
                 {!guest &&
@@ -148,7 +121,7 @@ export default function WorkspaceShell({
                       className="primary"
                       onClick={startNewTakeaway}
                     >
-                      <Plus size={18} strokeWidth={2} aria-hidden="true" />
+                      <Plus size={16} strokeWidth={2} aria-hidden="true" />
                       Đơn mang về
                     </button>
                   )}
@@ -184,8 +157,8 @@ export default function WorkspaceShell({
 
           {user.mustChangePassword && (
             <div className="alert error">
-              Tài khoản cần đổi mật khẩu lần đầu. Nhấn biểu tượng Cài đặt ở góc
-              trên để cập nhật.
+              Tài khoản cần đổi mật khẩu lần đầu. Chọn Cài đặt tài khoản ở thanh
+              bên để cập nhật.
             </div>
           )}
 
