@@ -60,7 +60,7 @@ function summary(values) {
   await api(context.request, 'POST', '/auth/login', { username: 'kitchen', password: PASSWORD });
   const page = await context.newPage();
   await page.goto('/kitchen');
-  await page.getByText('Hàng đợi chế biến').waitFor({ timeout: 30000 });
+  await page.getByText('Tiến độ chế biến').waitFor({ timeout: 30000 });
   await page.waitForTimeout(2000); // để vòng polling ổn định
 
   const samples = [];

@@ -1,0 +1,277 @@
+{
+  "objective": "O4",
+  "target": "100% hóa đơn khớp tiền; thao tác thu tiền ≤ 1 phút/đơn",
+  "environment": {
+    "base_url": "http://127.0.0.1:3000",
+    "run_at_vn": "2026-11-20T18:50:56+07:00",
+    "git_commit": "74884c8",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "host_cpu_count": 16,
+    "note": "Ghi thêm thủ công vào báo cáo: CPU/RAM máy host, tài nguyên Docker Desktop (Settings > Resources), mạng."
+  },
+  "invoices": 10,
+  "invoices_matched": 10,
+  "match_rate_percent": 100.0,
+  "api_latency": {
+    "request_payment": {
+      "count": 10,
+      "min_ms": 25.6,
+      "p50_ms": 29.9,
+      "p90_ms": 90.1,
+      "p95_ms": 101.2,
+      "p99_ms": 101.2,
+      "max_ms": 101.2,
+      "mean_ms": 48.1
+    },
+    "payment": {
+      "count": 10,
+      "min_ms": 30.4,
+      "p50_ms": 56.0,
+      "p90_ms": 86.3,
+      "p95_ms": 139.2,
+      "p99_ms": 139.2,
+      "max_ms": 139.2,
+      "mean_ms": 66.1
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "01 một món SL1, tiền mặt",
+      "orderId": "599252d9-10a4-45b6-9e9b-138fd7ce8c43",
+      "method": "CASH",
+      "expected_total_vnd": 145000,
+      "checkout_total_vnd": 145000,
+      "receipt_amount_vnd": 145000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "02 nhiều món, SL khác nhau, chuyển khoản",
+      "orderId": "02b51321-68b4-49cb-a140-c46d04b253f9",
+      "method": "BANK_TRANSFER",
+      "expected_total_vnd": 775000,
+      "checkout_total_vnd": 775000,
+      "receipt_amount_vnd": 775000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "03 SL tối đa 99 món đắt nhất (tràn số)",
+      "orderId": "d779e398-bd57-45fb-ac7b-1a52914c7605",
+      "method": "CASH",
+      "expected_total_vnd": 14355000,
+      "checkout_total_vnd": 14355000,
+      "receipt_amount_vnd": 14355000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "04 hủy 1 món trước khi nấu",
+      "orderId": "338f3904-f6de-402a-8a98-a3c888ed169f",
+      "method": "CASH",
+      "expected_total_vnd": 145000,
+      "checkout_total_vnd": 145000,
+      "receipt_amount_vnd": 145000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "05 hủy 1 món sau khi nấu (quản lý, có lý do)",
+      "orderId": "5905d246-3d71-4259-9373-e42c720a15b0",
+      "method": "BANK_TRANSFER",
+      "expected_total_vnd": 220000,
+      "checkout_total_vnd": 220000,
+      "receipt_amount_vnd": 220000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "06 đợt gọi thêm bị từ chối",
+      "orderId": "5fd79fe1-5248-404f-94d4-8f1c9b71b852",
+      "method": "CASH",
+      "expected_total_vnd": 125000,
+      "checkout_total_vnd": 125000,
+      "receipt_amount_vnd": 125000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "07 đợt gọi thêm bị rút",
+      "orderId": "625e254c-3fd5-4b40-a188-85e2eb42b2f6",
+      "method": "CASH",
+      "expected_total_vnd": 125000,
+      "checkout_total_vnd": 125000,
+      "receipt_amount_vnd": 125000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "08 đợt gọi thêm được duyệt",
+      "orderId": "c4794e8d-1b4b-429f-bda9-b2ff8eb40717",
+      "method": "BANK_TRANSFER",
+      "expected_total_vnd": 380000,
+      "checkout_total_vnd": 380000,
+      "receipt_amount_vnd": 380000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "09 đổi giá menu sau khi đặt (giữ giá lúc đặt)",
+      "orderId": "b5666cf4-291a-4db4-a7f7-e5e9289dc767",
+      "method": "CASH",
+      "expected_total_vnd": 250000,
+      "checkout_total_vnd": 250000,
+      "receipt_amount_vnd": 250000,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true,
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "negative_details": {
+        "amount_mismatch_blocked": true,
+        "cash_short_blocked": true
+      },
+      "match": true
+    },
+    {
+      "scenario": "10 hủy hết sau nấu → tổng 0, ZERO",
+      "orderId": "376f6134-4c62-4f1d-bce0-c9859b0ba8da",
+      "method": "ZERO",
+      "expected_total_vnd": 0,
+      "checkout_total_vnd": 0,
+      "receipt_amount_vnd": 0,
+      "checks": {
+        "checkout_total_equals_expected": true,
+        "receipt_amount_equals_expected": true,
+        "receipt_order_total_equals_expected": true,
+        "change_correct": true,
+        "history_amount_equals_expected": true,
+        "line_statuses_as_expected": true,
+        "order_paid": true
+      },
+      "negative_details": {},
+      "match": true
+    }
+  ],
+  "result": "PASS",
+  "note": "Vế \"≤ 1 phút\" đo thủ công: chạy --prepare-timing 5 rồi ghi vào o4-thu-tien-bam-gio.csv. Ca 09 tạm đổi giá menu (+5.000đ) rồi trả lại giá cũ; nên chạy trên môi trường đo riêng."
+}

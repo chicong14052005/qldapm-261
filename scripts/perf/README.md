@@ -43,10 +43,11 @@ O5 cần đủ số bàn trống đang hoạt động (seed có 30 bàn); đóng
 ## O1 — Playwright trong Docker (không cần cài Node trên máy)
 
 ```powershell
-docker run --rm --network restaurant_ordering_default -e BASE_URL=http://gateway -v "${PWD}:/work" -w /work mcr.microsoft.com/playwright:v1.49.1-noble sh -c "npm i --prefix /tmp/pw playwright@1.49.1 >/dev/null && NODE_PATH=/tmp/pw/node_modules node scripts/perf/o1_kds_latency.cjs"
+docker run --rm --network host -e BASE_URL=http://localhost:3000 -v "${PWD}:/work" -w /work mcr.microsoft.com/playwright:v1.49.1-noble sh -c "npm i --prefix /tmp/pw playwright@1.49.1 >/dev/null && NODE_PATH=/tmp/pw/node_modules node scripts/perf/o1_kds_latency.cjs"
 ```
 
 Đổi số lần đo bằng `-e RUNS=30`. Nếu máy đã có Node và Playwright: `set BASE_URL=http://127.0.0.1:3000` rồi `node scripts/perf/o1_kds_latency.cjs`.
+Dùng `--network host` vì frontend chạy Next ở chế độ dev và chặn origin "gateway" (log: Blocked cross-origin request ... allowedDevOrigins), khiến trang bếp kẹt ở "Đang chuẩn bị gian bếp…". Đã kiểm chứng ngày 20/11/2026 trên Docker Desktop (Windows).
 Lưu ý: KDS hỏi server mỗi 1 giây và dừng khi tab bị ẩn, nên độ trễ lý thuyết nằm trong khoảng 0–1 s + thời gian request/render.
 
 ## Cách đọc kết quả

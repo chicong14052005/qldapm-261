@@ -1,0 +1,54 @@
+{
+  "objective": "O2",
+  "target": "0% sai/sót món; 0 đơn trùng khi gửi lại/mất mạng",
+  "environment": {
+    "base_url": "http://127.0.0.1:3000",
+    "run_at_vn": "2026-11-20T18:50:28+07:00",
+    "git_commit": "74884c8",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "host_cpu_count": 16,
+    "note": "Ghi thêm thủ công vào báo cáo: CPU/RAM máy host, tài nguyên Docker Desktop (Settings > Resources), mạng."
+  },
+  "scenarios": {
+    "A_sequential_retry": {
+      "requests_create": 10,
+      "distinct_orders_created": 1,
+      "requests_extra_batch": 10,
+      "distinct_batches_from_retry": 1,
+      "batches_in_order": 2,
+      "expected_batches_in_order": 2,
+      "pass": true
+    },
+    "B_parallel_same_key": {
+      "parallel_requests": 8,
+      "ok_responses": 8,
+      "errors": [],
+      "distinct_orders_created": 1,
+      "pass": true
+    },
+    "C_key_reuse_different_body": {
+      "status": 409,
+      "batches_unchanged": true,
+      "pass": true
+    }
+  },
+  "line_check": {
+    "lines_sent": 19,
+    "lines_matched": 19,
+    "error_rate_percent": 0.0,
+    "mismatches": []
+  },
+  "duplicates_found": 0,
+  "result": "PASS",
+  "cleanup": {
+    "83677807-7289-41a0-a185-eb5d1f03e49e": "CANCELLED",
+    "8e640398-c078-4098-8073-6508fdc81a1d": "CANCELLED",
+    "76c3f132-5966-4d43-95fc-38d4adc1beb7": "CANCELLED",
+    "dde4941d-2768-433f-bd88-5ccca02b6f6e": "CANCELLED",
+    "4e59acde-e3c3-419b-b8b5-a7b638eef789": "CANCELLED",
+    "25a07d81-4a9c-4dcc-8cd9-4470c0572507": "CANCELLED",
+    "7281064d-3ac3-4cef-b98a-6c3f61611aec": "CANCELLED"
+  },
+  "note": "Đối chiếu thêm trong DB bằng scripts/perf/o2_o3_db_checks.sql. TC-05 (bấm Gửi 2 lần trên UI) vẫn kiểm thủ công."
+}
