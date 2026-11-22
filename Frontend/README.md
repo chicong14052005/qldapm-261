@@ -18,6 +18,4 @@ Tham khảo tài liệu kiến trúc:
 
 Run tại repo root: `docker compose up -d --build`, mở `http://localhost:3000`; F12 → Ctrl+Shift+M để xem mobile/tablet. Browser gọi API cùng origin qua Caddy, không DB trực tiếp. CSS responsive thuần Vanilla CSS + CSS Modules, không dùng Tailwind/TanStack/Zod theo [ADR-0008](../ADR/0008-mvp-local-va-quyet-dinh-trien-khai.md). Nhiều tab cùng profile chia sẻ staff cookie; dùng profile/ẩn danh riêng cho nhiều role. Khách có header `X-Actor: guest` để chọn cookie khách khi cùng giữ cookie staff.
 
-Khung trang (20/11/2026): `RoleSidebar` chứa menu, mục Cài đặt tài khoản (đổi mật khẩu) và nút Đăng xuất/Thoát; `AppHeader` chỉ hiện trên điện thoại (≤640px) để mở menu; tiêu đề trang và nút Làm mới/Đơn mang về nằm trong `WorkspaceShell`. Màu khung dùng biến `--shell-*` trong `styles/tokens.css`.
-
 QR cố định: `src/components/tables/TableQrDialog.tsx`, `qrcode 1.5.4` render PNG cục bộ; `copy-table-url.ts`, `date-time.ts` và `format.ts` có unit tests trong `tests/*.test.mjs`. Chạy `docker build --target tests -t restaurant-ordering-frontend-tests ./Frontend`. QR page tự join bằng token, không mã nhập. [Hướng dẫn](../GUIDE/QR-TAI-BAN.md).

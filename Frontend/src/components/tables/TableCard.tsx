@@ -1,93 +1,121 @@
 "use client";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LayoutGrid } from "lucide-react";
 import type { Table } from "@/types/table";
 import styles from "./TableCard.module.css";
-
-type CardState = "occupied" | "free" | "inactive";
-
-const BADGE_TEXT: Record<CardState, string> = {
-  occupied: "Có khách",
-  free: "Còn trống",
-  inactive: "Tạm ngưng",
-};
 
 export default function TableCard({
   table,
   busy,
   connected,
   canManage,
+  canUnlockQr,
   onSelectOrder,
   onOpenTable,
   onViewQr,
+  onUnlockQr,
   onEditTable,
 }: {
   table: Table;
   busy: boolean;
   connected: boolean;
   canManage: boolean;
+  canUnlockQr: boolean;
   onSelectOrder: (orderId: string) => void;
   onOpenTable: (table: Table) => void;
   onViewQr: (table: Table) => void;
+  onUnlockQr: (table: Table) => void;
   onEditTable: (table: Table) => void;
 }) {
-  const state: CardState = table.visit
-    ? "occupied"
+  const isOccupied = Boolean(table.visit);
+  const subStatusText = table.visit
+    ? table.visit.hasActiveGuestSession
+      ? "Đã giữ QR"
+      : "Chờ quét QR"
     : table.isActive
-      ? "free"
-      : "inactive";
-  const isOccupied = state === "occupied";
+      ? "Sẵn sàng đón khách"
+      : "Bàn đang tạm ngưng";
+
+  const subStatusClass = table.visit
+    ? table.visit.hasActiveGuestSession
+      ? styles.metaSubClaimed
+      : styles.metaSubWaiting
+    : "";
 
   return (
-    <article className={`${styles.card} ${styles[state]}`}>
-      <header className={styles.head}>
-        <h2 className={styles.code}>{table.code}</h2>
-        <div className={styles.status}>
-          <span className={styles.statusLabel}>Trạng thái</span>
-          <span className={styles.badge}>{BADGE_TEXT[state]}</span>
-        </div>
-      </header>
+    <article
+      className={`table-card ${styles.card} ${
+        isOccupied ? `occupied ${styles.occupied}` : ""
+      }`.trim()}
+    >
+      <div className="card-top">
+        <span className="table-symbol" aria-hidden="true">
+          <LayoutGrid size={18} strokeWidth={1.9} />
+        </span>
+        <span className={`badge ${isOccupied ? "serving" : "free"}`}>
+          {isOccupied
+            ? "Có khách"
+            : table.isActive
+              ? "Bàn trống"
+              : "Tạm ngưng"}
+        </span>
+      </div>
 
-      <p className={styles.meta}>
-        {table.visit
-          ? `${table.visit.partySize} khách đang dùng bữa`
-          : `Tối đa ${table.capacity} khách`}
-      </p>
+      <h2 className={styles.code}>{table.code}</h2>
 
-      <hr className={styles.divider} />
+      <div className={styles.meta}>
+        <p className={styles.metaPrimary}>
+          {table.visit
+            ? `${table.visit.partySize} khách đang dùng bữa`
+            : `Tối đa ${table.capacity} khách`}
+        </p>
+        <span className={`${styles.metaSub} ${subStatusClass}`.trim()}>
+          {subStatusText}
+        </span>
+      </div>
 
-      <button
-        type="button"
-        className={styles.cta}
-        disabled={busy || !table.isActive || !connected}
-        onClick={() =>
-          table.visit ? onSelectOrder(table.visit.orderId) : onOpenTable(table)
-        }
-      >
-        <span>{isOccupied ? "Xem đơn & gọi thêm" : "Mở lượt khách"}</span>
-        {isOccupied && (
-          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-        )}
-      </button>
-
-      <div className={styles.actions}>
+      <div className={styles.footer}>
         <button
           type="button"
-          className={styles.qrBtn}
-          onClick={() => onViewQr(table)}
+          className={`${isOccupied ? "secondary" : "primary"} wide ${styles.ctaBtn}`}
+          disabled={busy || !table.isActive || !connected}
+          onClick={() =>
+            table.visit ? onSelectOrder(table.visit.orderId) : onOpenTable(table)
+          }
         >
-          Xem QR &amp; link
+          <span>{isOccupied ? "Xem đơn & gọi thêm" : "Mở lượt khách"}</span>
+          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
         </button>
-        {canManage && (
+
+        <div className={styles.links}>
           <button
             type="button"
-            className={styles.editBtn}
-            disabled={isOccupied}
-            title={isOccupied ? "Không sửa bàn khi đang có khách" : undefined}
-            onClick={() => onEditTable(table)}
+            className={`text-btn ${styles.linkBtn}`}
+            onClick={() => onViewQr(table)}
           >
-            Chỉnh sửa
+            Xem QR &amp; link
           </button>
-        )}
+
+          {canUnlockQr && table.visit?.hasActiveGuestSession && (
+            <button
+              type="button"
+              className={`text-btn ${styles.linkBtn}`}
+              disabled={busy || !connected}
+              onClick={() => onUnlockQr(table)}
+            >
+              Mở khóa QR
+            </button>
+          )}
+
+          {canManage && !isOccupied && (
+            <button
+              type="button"
+              className={`text-btn ${styles.linkBtn}`}
+              onClick={() => onEditTable(table)}
+            >
+              Sửa
+            </button>
+          )}
+        </div>
       </div>
     </article>
   );

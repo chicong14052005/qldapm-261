@@ -1,170 +1,76 @@
-/* Thẻ bàn theo mẫu UI mới (20/11/2026): màu theo trạng thái bàn, 2 nút QR/Chỉnh sửa chia đôi */
 .card {
-  --tc-bg: #eaf0f7;
-  --tc-border: #235ea2;
-  --tc-accent: #3f6f9f;
-  --tc-badge-bg: #9dcaff;
-  --tc-badge-border: #235ea2;
-  --tc-badge-fg: #2c5a8a;
-
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px 14px;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 14px 14px 16px;
-  background: var(--tc-bg);
-  border: 1.5px solid var(--tc-border);
-  border-radius: var(--radius-lg);
 }
 
 .occupied {
-  --tc-bg: #dcffcc;
-  --tc-border: #519d2f;
-  --tc-accent: #4a8f2a;
-  --tc-badge-bg: #9aea74;
-  --tc-badge-border: #519d2f;
-  --tc-badge-fg: #2f5d1a;
-}
-
-.inactive {
-  --tc-bg: #f1f2ef;
-  --tc-border: #b8beb6;
-  --tc-accent: var(--ink-subtle);
-  --tc-badge-bg: var(--disabled-bg);
-  --tc-badge-border: #b8beb6;
-  --tc-badge-fg: var(--disabled-fg);
-}
-
-.head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
+  border-color: #b9d2c0;
+  background: #fbfdfb;
 }
 
 .code {
-  margin: 0;
-  font-family: "JetBrains Mono", "Roboto Mono", ui-monospace, "Cascadia Mono",
-    Consolas, monospace;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.status {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.statusLabel {
-  font-size: 15px;
-  line-height: 1.2;
-  color: var(--tc-accent);
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 96px;
-  padding: 6px 10px;
-  border: 1px solid var(--tc-badge-border);
-  border-radius: var(--radius-md);
-  background: var(--tc-badge-bg);
-  color: var(--tc-badge-fg);
-  font-family: var(--font-display);
-  font-size: 15px;
-  line-height: 1.3;
-  text-transform: uppercase;
-  white-space: nowrap;
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 14px 0 6px;
 }
 
 .meta {
-  margin: 12px 0 0;
-  font-size: 16px;
-  line-height: 1.4;
-  color: var(--tc-accent);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 44px;
+  margin-bottom: 16px;
 }
 
-.divider {
-  width: 100%;
-  margin: 10px 0 12px;
-  border: 0;
-  border-top: 2px solid #cacaca;
-}
-
-.cta,
-.qrBtn,
-.editBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 40px;
-  padding: 8px 10px;
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
+.metaPrimary {
   font-size: 14px;
-  line-height: 1.3;
-  white-space: nowrap;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
 }
 
-.cta {
-  width: 100%;
-  background: #52769c;
-  color: #ffffff;
+.metaSub {
+  font-size: 100%!important;
+  line-height: 1.4;
   font-weight: 600;
+  color: var(--ink-subtle);
 }
 
-.cta:hover:not(:disabled) {
-  background: #43648a;
+.metaSubClaimed {
+  color: var(--brand-600);
 }
 
-.actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
+.metaSubWaiting {
+  color: var(--warning);
 }
 
-.qrBtn {
-  background: #519d2f;
-  border: 1px solid #519d2f;
-  color: #ffffff;
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.qrBtn:hover:not(:disabled) {
-  background: #448626;
+.ctaBtn {
+  font-size: 15px !important;
+  padding: 10px 14px !important;
 }
 
-.editBtn {
-  background: #f2ff00;
-  border: 1px solid #519d2f;
-  color: #1f2c23;
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 44px;
 }
 
-.editBtn:hover:not(:disabled) {
-  background: #e2ef00;
-}
-
-.cta:disabled {
-  background: var(--disabled-bg);
-  color: var(--disabled-fg);
-}
-
-.editBtn:disabled {
-  background: #e3ff8f;
-  border-color: #c9e88a;
-  color: #9fb56a;
-  opacity: 1;
-}
-
-/* Lưới hẹp: chữ nút dài vẫn nằm gọn */
-@media (max-width: 420px) {
-  .code {
-    font-size: 34px;
-  }
+.linkBtn {
+  font-size: 13px !important;
+  padding: 6px 8px !important;
+  white-space: nowrap;
 }

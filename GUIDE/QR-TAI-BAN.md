@@ -6,7 +6,7 @@
 2. Bấm **Xem QR & link** trên bàn. Hộp thoại có ảnh QR, URL đầy đủ, nút Sao chép URL, Mở link gốc, Tải ảnh QR.
 3. Dùng cùng QR đó cho các lượt khách sau; xem hoặc tải lại không đổi mã. Không cần bấm Thay mã QR mỗi lượt.
 4. Trước khi khách gọi, mở lượt trên bàn và nhập số khách. Thực khách đầu tiên tại bàn quét hoặc mở link sẽ giữ phiên duy nhất của lượt đó, không cần nhập mã.
-5. Nếu thực khách giữ phiên làm mất trình duyệt/hết pin hoặc cần nhường máy khác trong bàn quét lại (mà chưa bấm **Thoát**), nhân viên (`WAITER`/`MANAGER`/`ADMIN`) gọi API **Mở khóa QR** (`POST /api/v1/tables/{id}/qr/unlock`) để thu hồi phiên cũ mà vẫn giữ nguyên toàn bộ đơn và món đã gọi. Từ 20/11/2026 thẻ bàn không còn nút này (SSOT P1.3 revision 1.4).
+5. Nếu thực khách giữ phiên làm mất trình duyệt/hết pin hoặc cần nhường máy khác trong bàn quét lại (mà chưa bấm **Thoát**), nhân viên (`WAITER`/`MANAGER`/`ADMIN`) bấm **Mở khóa QR** ngay trên thẻ bàn để thu hồi phiên cũ mà vẫn giữ nguyên toàn bộ đơn và món đã gọi.
 6. Nhân viên cũng có thể mở chi tiết đơn để gọi hộ. Gọi thêm vẫn cần duyệt như bình thường.
 
 ## Thử vai khách trên cùng PC
@@ -14,7 +14,7 @@
 - Sao chép URL bàn, mở trong cửa sổ ẩn danh/profile khác. Nếu dùng cùng browser có cookie nhân viên, QR page vẫn gọi API khách với `X-Actor: guest`; profile riêng giúp bạn dễ phân biệt vai.
 - Chưa mở lượt: trang báo liên hệ nhân viên, không tự tạo lượt/order.
 - Đã mở lượt (chưa ai quét hoặc sau khi mở khóa): thiết bị đầu tiên tự vào menu và đơn hiện tại.
-- Đã có thiết bị khác đang giữ phiên: thiết bị thứ 2 quét cùng QR sẽ bị chặn (`409 TABLE_QR_CLAIMED`) nhằm ngăn người ngoài bàn quét chèn gọi món ngoài tầm kiểm soát. Muốn đổi sang thiết bị thứ 2, thiết bị thứ 1 bấm **Thoát** hoặc nhân viên gọi API **Mở khóa QR** (thẻ bàn không còn nút này từ 20/11/2026).
+- Đã có thiết bị khác đang giữ phiên: thiết bị thứ 2 quét cùng QR sẽ bị chặn (`409 TABLE_QR_CLAIMED`) nhằm ngăn người ngoài bàn quét chèn gọi món ngoài tầm kiểm soát. Muốn đổi sang thiết bị thứ 2, thiết bị thứ 1 bấm **Thoát** hoặc nhân viên bấm **Mở khóa QR** trên thẻ bàn.
 - Đã thanh toán/hủy lượt: cookie cũ hết quyền. Chỉ khi nhân viên mở lượt mới thì thực khách tiếp theo mới quét cùng QR để tham gia lượt mới; không đọc được đơn lượt trước.
 
 ## Sao chép và tải ảnh

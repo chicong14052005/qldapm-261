@@ -1,6 +1,5 @@
 "use client";
-import { CornerUpLeft, X } from "lucide-react";
-import { api } from "@/lib/api";
+import { Store, X } from "lucide-react";
 import { navs } from "@/config/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import BrandLogo from "@/components/common/BrandLogo";
@@ -14,47 +13,12 @@ export default function RoleSidebar({
   mobileOpen?: boolean;
   onCloseMobile?: () => void;
 }) {
-  const {
-    user,
-    setUser,
-    guest,
-    tab,
-    setTab,
-    setData,
-    ask,
-    mutate,
-    notify,
-    logout,
-  } = useAuth();
+  const { user, guest, tab, setTab, setData, connected } = useAuth();
   if (!user) return null;
 
   const allowed = navs.filter((n) =>
     n.roles.some((r) => user.roles.includes(r)),
   );
-
-  const openAccountSettings = () => {
-    onCloseMobile?.();
-    ask(
-      "Cài đặt tài khoản",
-      [
-        {
-          name: "currentPassword",
-          label: "Mật khẩu hiện tại",
-          type: "password",
-        },
-        {
-          name: "newPassword",
-          label: "Mật khẩu mới (ít nhất 12 ký tự)",
-          type: "password",
-        },
-      ],
-      async (v) => {
-        await mutate("/auth/change-password", v);
-        setUser(await api("/auth/me"));
-        notify("Đã đổi mật khẩu.");
-      },
-    );
-  };
 
   return (
     <>
@@ -72,7 +36,7 @@ export default function RoleSidebar({
       >
         <div className="sidebar-top">
           <a className="brand" href="/">
-            <BrandLogo size={44} showText />
+            <BrandLogo size={38} showText />
           </a>
           <button
             type="button"
@@ -85,8 +49,13 @@ export default function RoleSidebar({
           </button>
         </div>
         <div className="venue">
-          <strong>Bếp nhà - Ấm cúng yêu thương</strong>
-          <small>Không gian phục vụ</small>
+          <span className="venue-icon" aria-hidden="true">
+            <Store size={20} strokeWidth={1.9} />
+          </span>
+          <div>
+            <strong>Bếp Nhà</strong>
+            <small>Ấm cúng - Thân thiện</small>
+          </div>
         </div>
         <span className="nav-caption">ĐIỀU HÀNH NHÀ HÀNG</span>
         <nav aria-label="Điều hướng chính">
@@ -103,23 +72,11 @@ export default function RoleSidebar({
               }}
             >
               <span className="nav-icon">
-                <NavIcon name={n.icon} />
+                <NavIcon name={n.icon} size={22} />
               </span>
               <span className="nav-label">{n.label}</span>
             </button>
           ))}
-          {!guest && (
-            <button
-              type="button"
-              title="Cài đặt tài khoản"
-              onClick={openAccountSettings}
-            >
-              <span className="nav-icon">
-                <NavIcon name="settings" />
-              </span>
-              <span className="nav-label">Cài đặt tài khoản</span>
-            </button>
-          )}
         </nav>
         {guest && (
           <div className="guest-note">
@@ -127,15 +84,11 @@ export default function RoleSidebar({
             <strong> quản lý nhà hàng</strong> phê duyệt.
           </div>
         )}
-        <button
-          type="button"
-          className="logout-btn"
-          title={guest ? "Thoát" : "Đăng xuất"}
-          onClick={logout}
-        >
-          <CornerUpLeft size={18} strokeWidth={2.4} aria-hidden="true" />
-          <span className="logout-label">{guest ? "Thoát" : "Đăng xuất"}</span>
-        </button>
+        <div className="sidebar-bottom">
+          <span className={`connection-dot ${connected ? "" : "offline"}`} />
+          {connected ? "Đang kết nối hệ thống" : "Mất kết nối"}
+          <small>Bếp Nhà · v1.0</small>
+        </div>
       </aside>
     </>
   );

@@ -23,7 +23,3 @@ Cập nhật 03/11/2026: migration004, lịch sử thanh toán ADMIN với snaps
 03/11/2026 — Hoàn thiện từ điển database: 16 bảng/144 trường/10 trigger functions, metadata catalog chỉ đọc, generator/check offline và hướng dẫn Up/Down theo đúng 4 migration. ADR0003/0004 được đối chiếu hiện trạng; quy trình đồng bộ code/SSOT/ADR/docs ghi ở ADR0011 và AGENTS.md. Không thay runtime/schema, không chạy migration/seed/smoke ghi dữ liệu, không xóa Docker images hoặc dữ liệu.
 
 Cập nhật 18/11/2026: migration005 (`202611180005_SingleActiveGuestPerVisit`), khóa 1 phiên khách hoạt động duy nhất trên mỗi lượt `OPEN` (`409 TABLE_QR_CLAIMED` khi người khác quét), bổ sung API/nút nhân viên **Mở khóa QR** (`POST /api/v1/tables/{id}/qr/unlock`) và đồng bộ 56 endpoints trong OpenAPI/Postman/docs. [ADR-0009](../ADR/0009-qr-co-dinh-tai-ban.md).
-
-Cập nhật 20/11/2026: giao diện thẻ bàn theo mẫu mới (`TableCard`), sơ đồ bàn sắp xếp tự nhiên theo mã; bỏ nút **Mở khóa QR** khỏi thẻ bàn theo quyết định chủ dự án, API unlock giữ nguyên. [SSOT P1.3](../SSOT/P1.3-ban-va-luot-khach.md).
-
-Cập nhật 20/11/2026 (khung trang): bỏ thanh trên desktop (breadcrumb, avatar, nút bánh răng/Thoát); tiêu đề trang IN HOA font Agbalumo kèm nút Làm mới/Đơn mang về. Sidebar theo mẫu mới: ô "Bếp nhà - Ấm cúng yêu thương", menu font Agbalumo với ký hiệu mảnh, mục **Cài đặt tài khoản** (đổi mật khẩu) và nút đỏ **Đăng xuất** (khách: **Thoát**). Trên điện thoại vẫn có thanh nhỏ với nút ☰. Không đổi API/schema.

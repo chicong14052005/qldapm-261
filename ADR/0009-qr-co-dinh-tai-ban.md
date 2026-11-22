@@ -8,8 +8,6 @@ Mỗi bàn có một QR cố định. Nhân viên xem được ảnh QR, URL đ�
 
 **Cập nhật 18/11/2026 — Khóa 1 phiên khách hoạt động/lượt:** Để ngăn người ngoài bàn lưu QR cố định rồi quét chèn gọi món ngoài tầm kiểm soát khi bàn đang có khách, mỗi lượt `OPEN` chỉ cho phép **tối đa 1 `GuestSession` đang hoạt động** (`revoked_at IS NULL` và `expires_at > now`). Thực khách đang giữ cookie hợp lệ reload/quét lại vẫn giữ nguyên phiên; thiết bị khác quét vào lượt đã có người giữ phiên sẽ bị từ chối HTTP 409 (`TABLE_QR_CLAIMED`). Quyền quét chỉ mở lại khi khách hiện tại bấm **Thoát**, khi nhân viên (`WAITER`/`MANAGER`/`ADMIN`) bấm **Mở khóa QR** (`POST /api/v1/tables/{id}/qr/unlock` để thu hồi phiên cũ mà giữ nguyên đơn), hoặc khi kết thúc lượt cũ và mở lượt mới. Link bàn cố định vẫn được giữ cho lượt sau khi nhân viên mở lượt mới; cookie cũ bị thu hồi khi đóng lượt/mở khóa và không tự có quyền ở lượt mới.
 
-**Cập nhật 20/11/2026 — Giao diện thẻ bàn:** Theo quyết định của chủ dự án, thẻ bàn dùng mẫu UI mới và không còn dòng "Đã giữ QR/Chờ quét QR" cũng như nút **Mở khóa QR**. Quy tắc khóa 1 phiên và API `POST /api/v1/tables/{id}/qr/unlock` giữ nguyên; xem [SSOT P1.3 revision 1.4](../SSOT/P1.3-ban-va-luot-khach.md).
-
 ## Lưu trữ và nâng cấp
 
 Migration `202611020003_FixedTableQr` thêm `restaurant_tables.qr_token_ciphertext bytea`, bỏ join_code_hmac/join_generation của visits và join_generation của guest_sessions. Token ngẫu nhiên256bit, giữ SHA256 hash để lookup; mã hóa token bằng Data Protection scope `restaurant.table-qr.v1` để nhân viên mở lại được QR. Keyring dùng volume auth_keys hiện có, không gửi token cho dịch vụ QR ngoài.
