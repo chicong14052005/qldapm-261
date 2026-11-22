@@ -26,7 +26,7 @@ export default function StaffTable() {
                 username: v.username,
                 displayName: v.displayName,
                 initialPassword: v.initialPassword,
-                roles: [v.role],
+                roles: v.roles.split(",").filter(Boolean),
               });
             })
           }
@@ -70,9 +70,7 @@ export default function StaffTable() {
                             await mutate(
                               `/staff/${u.id}/roles`,
                               {
-                                roles: v.roles
-                                  .split(",")
-                                  .map((x) => x.trim().toUpperCase()),
+                                roles: v.roles.split(",").filter(Boolean),
                                 expectedVersion: u.version,
                               },
                               "PUT",

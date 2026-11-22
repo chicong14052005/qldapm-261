@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { X } from "lucide-react";
 import type { FormConfig } from "@/types/api";
 import type { Category } from "@/types/menu";
@@ -22,6 +23,8 @@ export default function ConfirmDialog({
   onClose: () => void;
   onSubmit: (values: Record<string, string>) => void;
 }) {
+  const [localError, setLocalError] = useState("");
+
   return (
     <div className="modal-backdrop" onClick={() => !busy && onClose()}>
       <section className="modal" onClick={(e) => e.stopPropagation()}>
@@ -40,13 +43,46 @@ export default function ConfirmDialog({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const values = Object.fromEntries(
-              new FormData(e.currentTarget),
-            ) as Record<string, string>;
+            const formData = new FormData(e.currentTarget);
+            const values = Object.fromEntries(formData) as Record<
+              string,
+              string
+            >;
+            for (const f of form.fields) {
+              if (f.type !== "checkboxes") continue;
+              const picked = formData.getAll(f.name).map(String);
+              if (picked.length === 0 && f.required !== false) {
+                setLocalError(`Chọn ít nhất một mục cho "${f.label}".`);
+                return;
+              }
+              values[f.name] = picked.join(",");
+            }
+            setLocalError("");
             onSubmit(values);
           }}
         >
-          {form.fields.map((f) => (
+          {form.fields.map((f) =>
+            f.type === "checkboxes" ? (
+              <fieldset key={f.name} className="checkbox-group">
+                <legend>{f.label}</legend>
+                <div className="checkbox-grid">
+                  {f.options?.map((o) => (
+                    <label key={o} className="checkbox-option">
+                      <input
+                        type="checkbox"
+                        name={f.name}
+                        value={o}
+                        defaultChecked={String(f.value ?? "")
+                          .split(",")
+                          .includes(o)}
+                        onChange={() => setLocalError("")}
+                      />
+                      <span>{roleNames[o] ?? o}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            ) : (
             <label key={f.name}>
               {f.label}
               {f.type === "select" ? (
@@ -70,7 +106,9 @@ export default function ConfirmDialog({
                 />
               )}
             </label>
-          ))}
+            ),
+          )}
+          {localError && <div className="alert error">{localError}</div>}
           {error && <div className="alert error">{error}</div>}
           <div className="modal-actions">
             <button type="button" className="secondary" onClick={onClose}>
