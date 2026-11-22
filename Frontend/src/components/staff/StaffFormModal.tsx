@@ -1,6 +1,8 @@
 import type { FormField } from "@/types/api";
 import type { StaffMember } from "@/types/auth";
 
+const STAFF_ROLE_OPTIONS = ["WAITER", "KITCHEN", "CASHIER", "MANAGER", "ADMIN"];
+
 export function buildCreateStaffFields(): FormField[] {
   return [
     { name: "username", label: "Tên đăng nhập", value: "phucvu02" },
@@ -11,10 +13,11 @@ export function buildCreateStaffFields(): FormField[] {
       type: "password",
     },
     {
-      name: "role",
-      label: "Vai trò",
-      type: "select",
-      options: ["WAITER", "KITCHEN", "CASHIER", "MANAGER", "ADMIN"],
+      name: "roles",
+      label: "Vai trò (chọn một hoặc nhiều)",
+      type: "checkboxes",
+      options: STAFF_ROLE_OPTIONS,
+      value: "WAITER",
     },
   ];
 }
@@ -23,7 +26,9 @@ export function buildChangeRolesFields(staff: StaffMember): FormField[] {
   return [
     {
       name: "roles",
-      label: "Role, cách nhau bởi dấu phẩy",
+      label: "Vai trò (chọn một hoặc nhiều)",
+      type: "checkboxes",
+      options: STAFF_ROLE_OPTIONS,
       value: staff.roles.join(","),
     },
   ];

@@ -23,3 +23,5 @@ Cập nhật 03/11/2026: migration004, lịch sử thanh toán ADMIN với snaps
 03/11/2026 — Hoàn thiện từ điển database: 16 bảng/144 trường/10 trigger functions, metadata catalog chỉ đọc, generator/check offline và hướng dẫn Up/Down theo đúng 4 migration. ADR0003/0004 được đối chiếu hiện trạng; quy trình đồng bộ code/SSOT/ADR/docs ghi ở ADR0011 và AGENTS.md. Không thay runtime/schema, không chạy migration/seed/smoke ghi dữ liệu, không xóa Docker images hoặc dữ liệu.
 
 Cập nhật 18/11/2026: migration005 (`202611180005_SingleActiveGuestPerVisit`), khóa 1 phiên khách hoạt động duy nhất trên mỗi lượt `OPEN` (`409 TABLE_QR_CLAIMED` khi người khác quét), bổ sung API/nút nhân viên **Mở khóa QR** (`POST /api/v1/tables/{id}/qr/unlock`) và đồng bộ 56 endpoints trong OpenAPI/Postman/docs. [ADR-0009](../ADR/0009-qr-co-dinh-tai-ban.md).
+
+Cập nhật 22/11/2026: trang Tài khoản nhân viên dùng ô tick để chọn một hoặc nhiều vai trò khi tạo nhân viên và khi phân quyền (thay ô chọn một vai trò và ô nhập role cách nhau bởi dấu phẩy); bắt buộc chọn ít nhất một vai trò. Không đổi API/schema, đúng quy tắc nhiều role của [SSOT P1.1](../SSOT/P1.1-tai-khoan-va-phan-quyen.md).

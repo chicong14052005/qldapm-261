@@ -102,3 +102,7 @@ Kiểm tra chỉ đọc dữ liệu chờ thanh toán đang có. Không chạy m
 | Chi tiết thanh toán | Đạt: bấm hàng mở modal chỉ đọc hiện hữu; không gửi mutation |
 
 Kiểm tra chỉ đọc lịch sử hiện có. Không chạy migration/seed/smoke, không tạo payment và không thay đổi route, query, phân trang hoặc payload API.
+
+## Công cụ đo mục tiêu O1–O5 — 20/11/2026
+
+Bổ sung bộ script đo trong [`scripts/perf/`](../../scripts/perf/README.md): O1 độ trễ tới KDS (Playwright), O2 không trùng/không sai sót dòng, O3 chặn món hết và hủy sau nấu phải có lý do, O4 khớp tiền 10 hóa đơn mẫu, O5 tải 30 bàn; kèm truy vấn SQL chỉ đọc và phiếu bấm giờ/UAT trong [`perf/`](perf/). Kết quả JSON ghi vào `docs/verification/perf/` khi chạy. **Chưa có số liệu đo trên máy demo của nhóm**; không suy mục tiêu đạt khi chưa chạy. Không đổi code ứng dụng, schema hay migration.

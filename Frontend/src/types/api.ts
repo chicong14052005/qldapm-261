@@ -21,6 +21,7 @@ export type PendingRequest = {
 export type FormField = {
   name: string;
   label: string;
+  /** "checkboxes": chọn nhiều giá trị trong options; value là danh sách cách nhau bởi dấu phẩy. */
   type?: string;
   value?: string | number;
   options?: string[];
