@@ -16,10 +16,6 @@ export default function ApprovalQueue() {
 
   return (
     <>
-      <header className={styles.pageHeading}>
-        <h1>Duyệt gọi thêm</h1>
-        <p>Kiểm tra các món bổ sung trước khi chuyển xuống bếp.</p>
-      </header>
       <section className={styles.metrics} aria-label="Thống kê yêu cầu gọi thêm">
         <div className={styles.metric}>
           <span className={styles.metricLabel}>Yêu cầu mới</span>

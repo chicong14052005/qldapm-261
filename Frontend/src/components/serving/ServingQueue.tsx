@@ -13,10 +13,6 @@ export default function ServingQueue() {
 
   return (
     <>
-      <header className={styles.pageHeading}>
-        <h1>Chờ phục vụ</h1>
-        <p>Món đã hoàn thành cần được đưa đến khách.</p>
-      </header>
       <section className={styles.metrics} aria-label="Thống kê món chờ phục vụ">
         <div className={styles.metric}>
           <span className={styles.metricLabel}>Món chờ phục vụ</span>

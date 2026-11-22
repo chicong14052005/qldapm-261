@@ -120,11 +120,15 @@ export default function WorkspaceShell({
                   ? "Xác nhận thanh toán và hoàn tất lượt khách."
                   : isPaymentHistory
                     ? "Tra cứu giao dịch đã hoàn tất của nhà hàng."
-                  : tab === "tables"
-                  ? "Mỗi bàn ăn, một trải nghiệm được chăm chút."
-                  : tab === "menu"
-                    ? "Món ngon từ nguyên liệu tươi, dành cho mọi khẩu vị."
-                    : "Theo dõi công việc và cập nhật trạng thái ngay tại đây."}
+                    : tab === "tables"
+                      ? "Mỗi bàn ăn, một trải nghiệm được chăm chút."
+                      : tab === "menu"
+                        ? "Món ngon từ nguyên liệu tươi, dành cho mọi khẩu vị."
+                        : tab === "approvals"
+                          ? "Kiểm tra các món bổ sung trước khi chuyển xuống bếp."
+                          : tab === "serving"
+                            ? "Món đã hoàn thành cần được đưa đến khách."
+                            : "Theo dõi công việc và cập nhật trạng thái ngay tại đây."}
               </p>
             </div>
             {!hasSimpleHeading && (
